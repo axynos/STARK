@@ -1,0 +1,929 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JackSharp</name>
+    </assembly>
+    <members>
+        <member name="T:JackSharp.Events.PortRegistrationEventArgs">
+            <summary>
+            Port registration event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.PortRegistrationEventArgs.Port">
+            <summary>
+            Gets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="P:JackSharp.Events.PortRegistrationEventArgs.ChangeType">
+            <summary>
+            Gets the type of the change.
+            </summary>
+            <value>The type of the change.</value>
+        </member>
+        <member name="M:JackSharp.Events.PortRegistrationEventArgs.#ctor(JackSharp.Ports.PortReference,JackSharp.Events.ChangeType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.PortRegistrationEventArgs"/> class.
+            </summary>
+            <param name="port">Port.</param>
+            <param name="changeType">Change type.</param>
+        </member>
+        <member name="T:JackSharp.Events.ConnectionChangeEventArgs">
+            <summary>
+            Connection change event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.ConnectionChangeEventArgs.Outlet">
+            <summary>
+            Gets the outlet.
+            </summary>
+            <value>The outlet.</value>
+        </member>
+        <member name="P:JackSharp.Events.ConnectionChangeEventArgs.Inlet">
+            <summary>
+            Gets the inlet.
+            </summary>
+            <value>The inlet.</value>
+        </member>
+        <member name="P:JackSharp.Events.ConnectionChangeEventArgs.ChangeType">
+            <summary>
+            Gets the type of the change.
+            </summary>
+            <value>The type of the change.</value>
+        </member>
+        <member name="M:JackSharp.Events.ConnectionChangeEventArgs.#ctor(JackSharp.Ports.PortReference,JackSharp.Ports.PortReference,JackSharp.Events.ChangeType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.ConnectionChangeEventArgs"/> class.
+            </summary>
+            <param name="outlet">Outlet.</param>
+            <param name="inlet">Inlet.</param>
+            <param name="changeType">Change type.</param>
+        </member>
+        <member name="T:JackSharp.Events.ClientRegistrationEventArgs">
+            <summary>
+            Client registration event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.ClientRegistrationEventArgs.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:JackSharp.Events.ClientRegistrationEventArgs.ChangeType">
+            <summary>
+            Gets the type of the change.
+            </summary>
+            <value>The type of the change.</value>
+        </member>
+        <member name="M:JackSharp.Events.ClientRegistrationEventArgs.#ctor(System.String,JackSharp.Events.ChangeType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.ClientRegistrationEventArgs"/> class.
+            </summary>
+            <param name="name">Name.</param>
+            <param name="changeType">Change type.</param>
+        </member>
+        <member name="T:JackSharp.Events.ChangeType">
+            <summary>
+            Change type.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Events.ChangeType.New">
+            <summary>
+            Item is new.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Events.ChangeType.Deleted">
+            <summary>
+            Item has been deleted.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Events.ChangeType.Renamed">
+            <summary>
+            Item has been renamed.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Events.NotAvailableEventArgs">
+            <summary>
+            Not available event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.NotAvailableEventArgs.EventName">
+            <summary>
+            Gets the name of the event.
+            </summary>
+            <value>The name of the event.</value>
+        </member>
+        <member name="M:JackSharp.Events.NotAvailableEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.NotAvailableEventArgs"/> class.
+            </summary>
+            <param name="eventName">Event name.</param>
+        </member>
+        <member name="T:JackSharp.Events.BufferSizeEventArgs">
+            <summary>
+            Buffer size event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.BufferSizeEventArgs.BufferSize">
+            <summary>
+            Gets the size of the buffer.
+            </summary>
+            <value>The size of the buffer.</value>
+        </member>
+        <member name="M:JackSharp.Events.BufferSizeEventArgs.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.BufferSizeEventArgs"/> class.
+            </summary>
+            <param name="bufferSize">Buffer size.</param>
+        </member>
+        <member name="T:JackSharp.Events.SampleRateEventArgs">
+            <summary>
+            Sample rate event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.SampleRateEventArgs.SampleRate">
+            <summary>
+            Gets the sample rate.
+            </summary>
+            <value>The sample rate.</value>
+        </member>
+        <member name="M:JackSharp.Events.SampleRateEventArgs.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.SampleRateEventArgs"/> class.
+            </summary>
+            <param name="sampleRate">Sample rate.</param>
+        </member>
+        <member name="T:JackSharp.Events.XrunEventArgs">
+            <summary>
+            Xrun event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.XrunEventArgs.XrunDelay">
+            <summary>
+            Gets the xrun delay.
+            </summary>
+            <value>The xrun delay.</value>
+        </member>
+        <member name="M:JackSharp.Events.XrunEventArgs.#ctor(System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.XrunEventArgs"/> class.
+            </summary>
+            <param name="xrunDelay">Xrun delay.</param>
+        </member>
+        <member name="T:JackSharp.Events.PortRenameEventArgs">
+            <summary>
+            Port rename event arguments.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Events.PortRenameEventArgs.Port">
+            <summary>
+            Gets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="M:JackSharp.Events.PortRenameEventArgs.#ctor(JackSharp.Ports.PortReference)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Events.PortRenameEventArgs"/> class.
+            </summary>
+            <param name="port">Port.</param>
+        </member>
+        <member name="T:JackSharp.Controller">
+            <summary>
+            Controller.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Controller.ClientChanged">
+            <summary>
+            Occurs when a client has changed.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Controller.PortChanged">
+            <summary>
+            Occurs when a port has changed.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Controller.ConnectionChanged">
+            <summary>
+            Occurs when a connection has changed.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Controller.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Controller"/> class.
+            </summary>
+            <param name="name">Name.</param>
+        </member>
+        <member name="M:JackSharp.Controller.Start(System.Boolean)">
+            <summary>
+            Activates the client and connects to Jack.
+            </summary>
+            <param name="startServer">If [true], the client will start Jack if it is not running.</param>
+        </member>
+        <member name="M:JackSharp.Controller.Stop">
+            <summary>
+            Stops the client and disconnects from Jack.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Controller.Connect(JackSharp.Ports.PortReference,JackSharp.Ports.PortReference)">
+            <summary>
+            Connect the specified outPort and inPort.
+            </summary>
+            <param name="outPort">Out port.</param>
+            <param name="inPort">In port.</param>
+        </member>
+        <member name="M:JackSharp.Controller.Disconnect(JackSharp.Ports.PortReference,JackSharp.Ports.PortReference)">
+            <summary>
+            Disconnect the specified outPort and inPort.
+            </summary>
+            <param name="outPort">Out port.</param>
+            <param name="inPort">In port.</param>
+        </member>
+        <member name="F:JackSharp.Pointers.StructPointer`1._pointer">
+            <summary>
+            Pointer
+            </summary>
+        </member>
+        <member name="P:JackSharp.Pointers.StructPointer`1.Size">
+            <summary>
+            Number of elements in pointer
+            </summary>
+        </member>
+        <member name="P:JackSharp.Pointers.StructPointer`1.Array">
+            <summary>
+            Array
+            </summary>
+        </member>
+        <member name="M:JackSharp.Pointers.StructPointer`1.CopyToPointer">
+            <summary>
+            Copy Array to pointer. Must be called after operating on Array and before using the pointer in P/Invoke.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Pointers.StructPointer`1.CopyFromPointer">
+            <summary>
+            Copy Pointer to Array
+            </summary>
+        </member>
+        <member name="M:JackSharp.Pointers.StructPointer`1.#ctor(System.IntPtr,System.UInt32)">
+            <summary>
+            Constructor. Copies pointer to Array.
+            </summary>
+            <param name="pointer">Pointer</param>
+            <param name="length">Number of elements in pointer</param>
+        </member>
+        <member name="T:JackSharp.Ports.AudioInPort">
+            <summary>
+            Audio in port.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Ports.AudioOutPort">
+            <summary>
+            Audio out port.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Ports.MidiOutPort">
+            <summary>
+            MIDI out port.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Ports.Port">
+            <summary>
+            Port for client to contain data to process.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Ports.Port.PortType">
+            <summary>
+            Gets the type of the port.
+            </summary>
+            <value>The type of the port.</value>
+        </member>
+        <member name="P:JackSharp.Ports.Port.Direction">
+            <summary>
+            Gets the direction of the port.
+            </summary>
+            <value>The direction.</value>
+        </member>
+        <member name="P:JackSharp.Ports.Port.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="M:JackSharp.Ports.Port.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the <see cref="T:JackSharp.Ports.Port"/>
+            is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Ports.Port.Dispose">
+            <summary>
+            Releases all resource used by the <see cref="T:JackSharp.Ports.Port"/> object.
+            </summary>
+            <remarks>Call <see cref="M:JackSharp.Ports.Port.Dispose"/> when you are finished using the <see cref="T:JackSharp.Ports.Port"/>. The
+            <see cref="M:JackSharp.Ports.Port.Dispose"/> method leaves the <see cref="T:JackSharp.Ports.Port"/> in an unusable state. After calling
+            <see cref="M:JackSharp.Ports.Port.Dispose"/>, you must release all references to the <see cref="T:JackSharp.Ports.Port"/> so the garbage
+            collector can reclaim the memory that the <see cref="T:JackSharp.Ports.Port"/> was occupying.</remarks>
+        </member>
+        <member name="M:JackSharp.Ports.Port.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:JackSharp.Ports.Port"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:JackSharp.Ports.Port"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:System.Object"/> is equal to the current
+            <see cref="T:JackSharp.Ports.Port"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.Port.Equals(JackSharp.Ports.Port)">
+            <summary>
+            Determines whether the specified <see cref="T:JackSharp.Ports.Port"/> is equal to the current <see cref="T:JackSharp.Ports.Port"/>.
+            </summary>
+            <param name="other">The <see cref="T:JackSharp.Ports.Port"/> to compare with the current <see cref="T:JackSharp.Ports.Port"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:JackSharp.Ports.Port"/> is equal to the current
+            <see cref="T:JackSharp.Ports.Port"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.Port.GetHashCode">
+            <summary>
+            Serves as a hash function for a <see cref="T:JackSharp.Ports.Port"/> object.
+            </summary>
+            <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.Port.op_Equality(JackSharp.Ports.Port,JackSharp.Ports.Port)">
+            <param name="a">The Port a.</param>
+            <param name="b">The Port b.</param>
+        </member>
+        <member name="M:JackSharp.Ports.Port.op_Inequality(JackSharp.Ports.Port,JackSharp.Ports.Port)">
+            <param name="a">The Port a.</param>
+            <param name="b">The Port b.</param>
+        </member>
+        <member name="T:JackSharp.Ports.PortReference">
+            <summary>
+            Port reference for Controller.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Ports.PortReference.Direction">
+            <summary>
+            Gets the direction.
+            </summary>
+            <value>The direction.</value>
+        </member>
+        <member name="P:JackSharp.Ports.PortReference.IsPhysicalPort">
+            <summary>
+            Gets whether the port is corresponding to a physical inlet or outlet.
+            </summary>
+            <value>[true] if port is physical.</value>
+        </member>
+        <member name="P:JackSharp.Ports.PortReference.PortType">
+            <summary>
+            Gets the type of the port.
+            </summary>
+            <value>The type of the port.</value>
+        </member>
+        <member name="P:JackSharp.Ports.PortReference.ClientName">
+            <summary>
+            Gets the name of the client.
+            </summary>
+            <value>The name of the client.</value>
+        </member>
+        <member name="P:JackSharp.Ports.PortReference.PortName">
+            <summary>
+            Gets the name of the port.
+            </summary>
+            <value>The name of the port.</value>
+        </member>
+        <member name="M:JackSharp.Ports.PortReference.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:JackSharp.Ports.PortReference"/>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:JackSharp.Ports.PortReference"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:System.Object"/> is equal to the current
+            <see cref="T:JackSharp.Ports.PortReference"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.PortReference.Equals(JackSharp.Ports.PortReference)">
+            <summary>
+            Determines whether the specified <see cref="T:JackSharp.Ports.PortReference"/> is equal to the current <see cref="T:JackSharp.Ports.PortReference"/>.
+            </summary>
+            <param name="other">The <see cref="T:JackSharp.Ports.PortReference"/> to compare with the current <see cref="T:JackSharp.Ports.PortReference"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:JackSharp.Ports.PortReference"/> is equal to the current
+            <see cref="T:JackSharp.Ports.PortReference"/>; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.PortReference.GetHashCode">
+            <summary>
+            Serves as a hash function for a <see cref="T:JackSharp.Ports.PortReference"/> object.
+            </summary>
+            <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
+        </member>
+        <member name="M:JackSharp.Ports.PortReference.op_Equality(JackSharp.Ports.PortReference,JackSharp.Ports.PortReference)">
+            <param name="a">The PortReference a.</param>
+            <param name="b">The PortReference b.</param>
+        </member>
+        <member name="M:JackSharp.Ports.PortReference.op_Inequality(JackSharp.Ports.PortReference,JackSharp.Ports.PortReference)">
+            <param name="a">The PortReference a.</param>
+            <param name="b">The PortReference b.</param>
+        </member>
+        <member name="T:JackSharp.Ports.PortType">
+            <summary>
+            Port type.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Ports.PortType.Audio">
+            <summary>
+            Audio.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Ports.PortType.Midi">
+            <summary>
+            MIDI.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Ports.Direction">
+            <summary>
+            Direction of data flow in ports.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Ports.Direction.In">
+            <summary>
+            Port is inlet.
+            </summary>
+        </member>
+        <member name="F:JackSharp.Ports.Direction.Out">
+            <summary>
+            Port is outlet.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Ports.BufferOperations">
+            <summary>
+            Buffer operations.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Ports.BufferOperations.InterlaceAudio(JackSharp.Processing.AudioBuffer[],System.Int32,System.Int32)">
+            <summary>
+            Merges audio buffers such that all samples of a frame appear directly after each other.
+            </summary>
+            <returns>The audio.</returns>
+            <param name="audioBuffers">Audio buffers.</param>
+            <param name="bufferSize">Buffer size.</param>
+            <param name="bufferCount">Buffer count.</param>
+        </member>
+        <member name="M:JackSharp.Ports.BufferOperations.DeinterlaceAudio(System.Single[],JackSharp.Processing.AudioBuffer[],System.Int32,System.Int32)">
+            <summary>
+            Unmerges interlaced audio such that samples of a frame are put into audio buffers.
+            </summary>
+            <param name="interlaced">Interlaced.</param>
+            <param name="audioBuffers">Audio buffers.</param>
+            <param name="bufferSize">Buffer size.</param>
+            <param name="bufferCount">Buffer count.</param>
+        </member>
+        <member name="T:JackSharp.Ports.MidiInPort">
+            <summary>
+            MIDI in port.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Processing.IMidiEvent">
+            <summary>
+            MIDI event.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.IMidiEvent.Time">
+            <summary>
+            Gets the time.
+            </summary>
+            <value>The index of the MIDI event in the current processing frame.</value>
+        </member>
+        <member name="P:JackSharp.Processing.IMidiEvent.MidiData">
+            <summary>
+            Gets the midi data. Please read the MIDI specifications for valid content.
+            </summary>
+            <value>The midi data.</value>
+        </member>
+        <member name="T:JackSharp.Processing.MidiOutEvent">
+            <summary>
+            Midi out event.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.MidiOutEvent.Time">
+            <summary>
+            Gets the time.
+            </summary>
+            <value>The index of the MIDI event in the current processing frame.</value>
+        </member>
+        <member name="P:JackSharp.Processing.MidiOutEvent.MidiData">
+            <summary>
+            Gets the midi data. Please read the MIDI specifications for valid content.
+            </summary>
+            <value>The midi data.</value>
+        </member>
+        <member name="M:JackSharp.Processing.MidiOutEvent.#ctor(System.Int32,System.Byte[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Processing.MidiOutEvent"/> class.
+            </summary>
+            <param name="time">Time.</param>
+            <param name="midiData">Midi data.</param>
+        </member>
+        <member name="T:JackSharp.Processing.AudioBuffer">
+            <summary>
+            Audio buffer for an audio port. Contains a float array with the specified buffer size.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.AudioBuffer.Port">
+            <summary>
+            Gets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="P:JackSharp.Processing.AudioBuffer.BufferSize">
+            <summary>
+            Gets the size of the buffer.
+            </summary>
+            <value>The size of the buffer.</value>
+        </member>
+        <member name="P:JackSharp.Processing.AudioBuffer.Audio">
+            <summary>
+            Gets or sets the audio.
+            </summary>
+            <value>The audio.</value>
+        </member>
+        <member name="T:JackSharp.Processing.IProcessingItem">
+            <summary>
+            Processing item.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Processing.MidiInEvent">
+            <summary>
+            Midi in event. Should not be changed.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.MidiInEvent.Time">
+            <summary>
+            Gets the time.
+            </summary>
+            <value>The index of the MIDI event in the current processing frame.</value>
+        </member>
+        <member name="P:JackSharp.Processing.MidiInEvent.MidiData">
+            <summary>
+            Gets the midi data. Please read the MIDI specifications for valid content.
+            </summary>
+            <value>The midi data.</value>
+        </member>
+        <member name="T:JackSharp.Processing.MidiEventCollection`1">
+            <summary>
+            Midi event collection.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.MidiEventCollection`1.Port">
+            <summary>
+            Gets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="M:JackSharp.Processing.MidiEventCollection`1.#ctor(JackSharp.Ports.Port)">
+            <summary>
+            Initializes a new instance of the <see cref="!:JackSharp.Processing.MidiEventCollection`1"/> class.
+            </summary>
+            <param name="port">Port.</param>
+        </member>
+        <member name="M:JackSharp.Processing.MidiEventCollection`1.AddEvent(`0)">
+            <summary>
+            Adds a MIDI event.
+            </summary>
+            <param name="midiEvent">Midi event.</param>
+        </member>
+        <member name="M:JackSharp.Processing.MidiEventCollection`1.GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="T:JackSharp.Processing.ProcessBuffer">
+            <summary>
+            Buffer containing audio and MIDI data in arrays.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.ProcessBuffer.AudioIn">
+            <summary>
+            Audio in buffers. Should not be changed.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.ProcessBuffer.AudioOut">
+            <summary>
+            Audio out buffers.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.ProcessBuffer.MidiIn">
+            <summary>
+            MIDI in buffers. Should not be changed.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.ProcessBuffer.MidiOut">
+            <summary>
+            Midi out buffers.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processing.ProcessBuffer.Frames">
+            <summary>
+            Number of frames for this buffer.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackLatencyCallbackMode.JackCaptureLatency">
+            <summary>
+            Latency Callback for Capture Latency.
+            Input Ports have their latency value setup.
+            In the Callback the client needs to set the latency of the output ports
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackLatencyCallbackMode.JackPlaybackLatency">
+            <summary>
+            Latency Callback for Playback Latency.
+            Output Ports have their latency value setup.
+            In the Callback the client needs to set the latency of the input ports
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackNullOption">
+            <summary>
+            Null value to use when no option bits are needed.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackNoStartServer">
+            <summary>
+            Do not automatically start the JACK server when it is not
+            already running.  This option is always selected if
+            JACK_NO_START_SERVER is defined in the calling process
+            environment.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackUseExactName">
+            <summary>
+            Use the exact client name requested.  Otherwise, JACK
+            automatically generates a unique one, if needed.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackServerName">
+            <summary>
+            Open with optional <em>(char *) server_name</em> parameter.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackLoadName">
+            <summary>
+            Load internal client from optional <em>(char *)
+            load_name</em>.  Otherwise use the @a client_name.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackLoadInit">
+            <summary>
+            Pass optional <em>(char *) load_init</em> string to the
+            jack_initialize() entry point of an internal client.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackOptions.JackSessionID">
+            <summary>
+            pass a SessionID Token this allows the sessionmanager to identify the client again.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackPortFlags.JackPortIsInput">
+            <summary>
+            if JackPortIsInput is set, then the port can receive
+            data.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackPortFlags.JackPortIsOutput">
+            <summary>
+            if JackPortIsOutput is set, then data can be read from
+            the port.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackPortFlags.JackPortIsPhysical">
+            <summary>
+            if JackPortIsPhysical is set, then the port corresponds
+            to some kind of physical I/O connector.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackPortFlags.JackPortCanMonitor">
+             <summary>
+             if JackPortCanMonitor is set, then a call to
+             jack_port_request_monitor() makes sense.
+            
+             Precisely what this means is dependent on the client. A typical
+             result of it being called with TRUE as the second argument is
+             that data that would be available from an output port (with
+             JackPortIsPhysical set) is sent to a physical output connector
+             as well, so that it can be heard/seen/whatever.
+            
+             Clients that do not control physical interfaces
+             should never create ports with this bit set.
+             </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackPortFlags.JackPortIsTerminal">
+             <summary>
+             JackPortIsTerminal means:
+            
+             for an input port: the data received by the port
+                                will not be passed on or made
+                                available at any other port
+            
+             for an output port: the data available at the port
+                                 does not originate from any other port
+            
+             Audio synthesizers, I/O hardware interface clients, HDR
+             systems are examples of clients that would set this flag for
+             their ports.
+             </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackFailure">
+            <summary>
+            Overall operation failed.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackInvalidOption">
+            <summary>
+            The operation contained an invalid or unsupported option.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackNameNotUnique">
+            <summary>
+            The desired client name was not unique.  With the @ref
+            JackUseExactName option this situation is fatal.  Otherwise,
+            the name was modified by appending a dash and a two-digit
+            number in the range "-01" to "-99".  The
+            jack_get_client_name() function will return the exact string
+            that was used.  If the specified @a client_name plus these
+            extra characters would be too long, the open fails instead.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackServerStarted">
+            <summary>
+            The JACK server was started as a result of this operation.
+            Otherwise, it was running already.  In either case the caller
+            is now connected to jackd, so there is no race condition.
+            When the server shuts down, the client will find out.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackServerFailed">
+            <summary>
+            Unable to connect to the JACK server.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackServerError">
+            <summary>
+            Communication error with the JACK server.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackNoSuchClient">
+            <summary>
+            Requested client does not exist.
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackLoadFailure">
+            <summary>
+            Unable to load internal client
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackInitFailure">
+            <summary>
+            Unable to initialize client
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackShmFailure">
+            <summary>
+            Unable to access shared memory
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackVersionError">
+            <summary>
+            Client's protocol version does not match
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackBackendError">
+            <summary>
+            Backend error
+            </summary>
+        </member>
+        <member name="F:JackSharp.ApiWrapper.JackStatus.JackClientZombie">
+            <summary>
+            Client zombified failure
+            </summary>
+        </member>
+        <member name="T:JackSharp.Processor">
+            <summary>
+            Processor.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Processor.ProcessFunc">
+            <summary>
+            Delegates to be called on the process callback of Jack. Multiple Actions can be added.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Processor.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JackSharp.Processor"/> class.
+            </summary>
+            <param name="name">Name.</param>
+            <param name="audioInPorts">Number of audio in ports.</param>
+            <param name="audioOutPorts">Number of audio out ports.</param>
+            <param name="midiInPorts">Number of MIDI in ports.</param>
+            <param name="midiOutPorts">Number of MIDI out ports.</param>
+            <param name="autoconnect">If set to <c>true</c>, autoconnect inlets and outlets to physical ports.</param>
+        </member>
+        <member name="M:JackSharp.Processor.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the <see cref="T:JackSharp.Processor"/> is
+            reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:JackSharp.Processor.Dispose">
+            <summary>
+            Releases all resource used by the <see cref="T:JackSharp.Processor"/> object.
+            </summary>
+            <remarks>Call <see cref="M:JackSharp.Processor.Dispose"/> when you are finished using the <see cref="T:JackSharp.Processor"/>. The
+            <see cref="M:JackSharp.Processor.Dispose"/> method leaves the <see cref="T:JackSharp.Processor"/> in an unusable state. After calling
+            <see cref="M:JackSharp.Processor.Dispose"/>, you must release all references to the <see cref="T:JackSharp.Processor"/> so the garbage
+            collector can reclaim the memory that the <see cref="T:JackSharp.Processor"/> was occupying.</remarks>
+        </member>
+        <member name="P:JackSharp.Processor.MidiOutPorts">
+            <summary>
+            Gets the MIDI out ports.
+            </summary>
+            <value>The MIDI out ports.</value>
+        </member>
+        <member name="P:JackSharp.Processor.MidiInPorts">
+            <summary>
+            Gets the MIDI in ports.
+            </summary>
+            <value>The MIDI in ports.</value>
+        </member>
+        <member name="P:JackSharp.Processor.AudioOutPorts">
+            <summary>
+            Gets the audio out ports.
+            </summary>
+            <value>The audio out ports.</value>
+        </member>
+        <member name="P:JackSharp.Processor.AudioInPorts">
+            <summary>
+            Gets the audio in ports.
+            </summary>
+            <value>The audio in ports.</value>
+        </member>
+        <member name="P:JackSharp.Processor.PortNameFormat">
+            <summary>
+            Sets the port name format.
+            
+            Placeholders for replacement: 
+            	{direction}: will be replaced by "in" or "out".
+            	{type}: will be replaced by "audio" or "midi".
+            	{index}: 1-based index of ports.
+            </summary>
+            <value>The port name format.</value>
+        </member>
+        <member name="M:JackSharp.Processor.Start(System.Boolean)">
+            <summary>
+            Activates the client and connects to Jack.
+            </summary>
+            <param name="startServer">If [true], the client will start Jack if it is not running.</param>
+        </member>
+        <member name="M:JackSharp.Processor.Stop">
+            <summary>
+            Stop this instance and disconnects from Jack.
+            </summary>
+        </member>
+        <member name="T:JackSharp.Client">
+            <summary>
+            Base class for JackClients.
+            </summary>
+        </member>
+        <member name="P:JackSharp.Client.IsConnectedToJack">
+            <summary>
+            Gets whether the client is connected to Jack.
+            </summary>
+            <value>[true] if client is connected to Jack.</value>
+        </member>
+        <member name="P:JackSharp.Client.SampleRate">
+            <summary>
+            Gets the sample rate.
+            </summary>
+            <value>The sample rate.</value>
+        </member>
+        <member name="P:JackSharp.Client.BufferSize">
+            <summary>
+            Gets the size of the buffer.
+            </summary>
+            <value>The size of the buffer.</value>
+        </member>
+        <member name="E:JackSharp.Client.BufferSizeChanged">
+            <summary>
+            Occurs when buffer size has changed.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Client.SampleRateChanged">
+            <summary>
+            Occurs when sample rate has changed.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Client.Shutdown">
+            <summary>
+            Occurs when jack shuts down.
+            </summary>
+        </member>
+        <member name="E:JackSharp.Client.Xrun">
+            <summary>
+            Occurs on xrun.
+            </summary>
+        </member>
+    </members>
+</doc>
