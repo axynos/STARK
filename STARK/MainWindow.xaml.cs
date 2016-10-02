@@ -1,12 +1,13 @@
 ﻿using MahApps.Metro;
 using MahApps.Metro.Controls;
-using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Speech.Synthesis;
-using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,8 +29,6 @@ namespace STARK {
         //Formats
         WaveFormat audioFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
 
-
-
 		//Volume Controllers & Buffers
 		VolumeSampleProvider vspMicrophone;
 		BufferedWaveProvider bwpMicrophone;
@@ -39,6 +38,7 @@ namespace STARK {
         public AudioFileManager afm;
         AudioPlaybackEngine ape; //Rip Harambe
         CommandReader cmdReader;
+        ConsoleUI conUI;
 
 		bool wiMicrophoneRecording = false;
         int combinedOutputSelectedIndex;
@@ -46,6 +46,8 @@ namespace STARK {
         int inputSelectedIndex;
 
         bool loaded = false;
+
+        //Timer steamAppsLoop; BURN IN HELL YOU FUCKING CUNT
         #endregion
 
         public MainWindow() {
@@ -66,18 +68,48 @@ namespace STARK {
 			qss = new QueuedSpeechSynthesizer(ref mspStandard, ref mspLoopback, 50, -1);
             afm = new AudioFileManager(@"C:\Users\axynos\Desktop");
             ape = new AudioPlaybackEngine(ref audioFormat, ref mspStandard, ref mspLoopback, ref afm, 10);
-            cmdReader = new CommandReader(ref qss, ref ape, ref afm, TTS_CommandTextBox.Text);
 
 			InitializeSynthQueue();
             InitializeVoiceComboBox();
 			populateSetupComboBoxes();
             InitializeAudioItemList();
 
-            ape.Play(@"C:\Users\axynos\Desktop\teadvus.mp3", 100);
-			loaded = true;
-		}
+            FindSteamApps();
 
-        
+            MessageBox.Show("hello");
+			loaded = true;
+        }
+
+        private async void FindSteamApps() {
+            //Finds all proccesses that have "Steam" in them
+            Process[] procs = Process.GetProcessesByName("Steam");
+            Process steam = null;
+
+            string steamPath;
+            if (procs.Length > 0) {
+                //Gets actual Steam process
+                steam = procs[0];
+
+                //Gets steam directory
+                steamPath = Path.GetDirectoryName(steam.MainModule.FileName);
+                PathManager.steamApps = steamPath + @"\SteamApps";
+                steamAppsFolderPath.Text = PathManager.steamApps;
+
+                //Gets the current game
+                SourceGame game = SourceGameManager.getByName(Setup_Game.Text);
+                var cmdText = TTS_CommandTextBox.Text;
+                Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
+
+                //Init things that need the steamapps folder
+                conUI = new ConsoleUI(game);
+                cmdReader = new CommandReader(ref qss, ref ape, ref afm, game, cmdText);
+            } else {
+                //keep looking for the steam process each 500ms
+                await Task.Delay(new TimeSpan(0, 0, 0, 0, 500));
+                FindSteamApps();
+            }
+        }
+
         //UTILS
         #region "utils"
         private float IntToFloat(int input) {
@@ -247,6 +279,11 @@ namespace STARK {
                 WaveOutCapabilities woCap = WaveOut.GetCapabilities(dID);
                 Setup_SynthesizerOnly.Items.Add(woCap.ProductName);
             }
+
+            //Game Selection
+            Setup_Game.ItemsSource = SourceGameManager.gamesList;
+            Setup_Game.SelectedIndex = 0;
+            SourceGameManager.selectedGame = Setup_Game.SelectedItem as SourceGame;
 
             //Set selected
             Setup_Microphone.SelectedItem = WaveIn.GetCapabilities(0).ProductName;
@@ -458,6 +495,33 @@ namespace STARK {
             }
         }
         #endregion
+
+        private void steamAppsFolderSelectButton_Click(object sender, EventArgs e) {
+            var fbd = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            //true if clicks OK, false otherwise
+            var result = fbd.ShowDialog();
+
+            if (result == true) {
+                if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
+                    PathManager.steamApps = fbd.SelectedPath;
+                    steamAppsFolderPath.Text = fbd.SelectedPath;
+                }
+            }
+        }
+
+        private void Setup_Game_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (loaded) {
+                var game = (e.AddedItems[0] as SourceGame);
+                SourceGameManager.ChangeSelectedGame(game);
+                cmdReader.ChangeSelectedGame(game);
+            }
+        }
+
+        private void Setup_GameLaunch_Click(object sender, RoutedEventArgs e) {
+            if (loaded) {
+                SourceGameManager.selectedGame.launchGame();
+            }
+        }
 
     }
 }

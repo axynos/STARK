@@ -17,7 +17,7 @@
                     <CheckBox x:Name="synthesizerToggle" Content="Enable Synthesizer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" IsChecked="True" Checked="synthesizerToggle_Checked" Unchecked="synthesizerToggle_Checked"/>
 
                     <!--Command Selection-->
-                    <TextBox x:Name="TTS_CommandTextBox" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" Text="!tts" VerticalAlignment="Top" Width="155" UndoLimit="5" TextChanged="TTS_CommandTextBox_TextChanged" MaxLength="9"/>
+                    <TextBox x:Name="TTS_CommandTextBox" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" Text=".tts" VerticalAlignment="Top" Width="155" UndoLimit="5" TextChanged="TTS_CommandTextBox_TextChanged" MaxLength="9"/>
                     <Label x:Name="CommandLabel" Content="Command" HorizontalAlignment="Left" Margin="170,40,0,0" VerticalAlignment="Top"/>
 
                     <!--Play|Pause & Skip Buttons-->
@@ -126,8 +126,14 @@
                     <!--Output Synthesizer Loopback-->
                     <ComboBox x:Name="Setup_SynthesizerOnly" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_SynthesizerOnly_SelectionChanged"/>
                     <Label x:Name="Setup_SynthesizerOnlyLabel" Content="Loopback Output" HorizontalAlignment="Left" Margin="230,80,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40"/>
-                    <Button x:Name="button" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4"/>
+                    <TextBox x:Name="steamAppsFolderPath" HorizontalAlignment="Left" Height="23" Margin="10,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40" IsEnabled="False"/>
+                    <Label x:Name="Setup_steamAppsLabel" Content="SteamApps Folder (Looking - Open Steam)" HorizontalAlignment="Left" Margin="230,111,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="False" Visibility="Hidden" IsEnabled="False"/>
+
+                    <!--Game Selection-->
+                    <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged"  />
+                    <Label x:Name="Setup_GameLabel" Content="Current Game" HorizontalAlignment="Left" Margin="301,142,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="Setup_GameLaunch" Content="Launch" HorizontalAlignment="Left" Margin="235,142,0,0" VerticalAlignment="Top" Width="61" Height="25" FontSize="14" Padding="5,2,5,3" Click="Setup_GameLaunch_Click" VerticalContentAlignment="Center"/>
 
                 </Grid>
             </TabItem>

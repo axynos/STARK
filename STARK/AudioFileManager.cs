@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace STARK {
     public class AudioFileManager {
@@ -42,7 +35,7 @@ namespace STARK {
 
         public void LoadCurrentFiles() {
             if (watchFolder != null && directoryExists) {
-                var files = Directory.GetFiles(watchFolder);
+                string[] files = Directory.GetFiles(watchFolder);
                 foreach (string file in files) {
                     if (IsAudioFile(Path.GetExtension(file))) {
                         AddToCollection(new AudioPlaybackItem("", file, 100));
@@ -53,13 +46,13 @@ namespace STARK {
 
         public void ChangeWatchFolder(string watchFolder) {
             if (Directory.Exists(watchFolder)) {
+                if (watcher == null) SetupWatcher();
                 this.watchFolder = watchFolder;
                 watcher.Path = this.watchFolder;
-                directoryExists = true;
 
-                if (watcher == null) {
-                    SetupWatcher();
-                }
+                ClearCollection();
+                LoadCurrentFiles();
+                directoryExists = true;
             } else {
                 directoryExists = false;
             }
@@ -77,6 +70,12 @@ namespace STARK {
             App.Current.Dispatcher.Invoke(delegate {
                 item.ChangeId(collection.Count);
                 collection.Add(item);
+            });
+        }
+
+        public void ClearCollection() {
+            App.Current.Dispatcher.Invoke(delegate {
+                collection.Clear();
             });
         }
 

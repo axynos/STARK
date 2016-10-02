@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace STARK {
-	public class QSSQueueItem {
+    public class QSSQueueItem {
 
 		public String QIText { get; set; }
 

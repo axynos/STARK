@@ -2,12 +2,10 @@
 using System.IO;
 using System.Text;
 using System.Timers;
-using System.Windows;
 
 namespace STARK {
     class CommandReader {
 
-        string path = @"E:\Steam\SteamApps\common\Counter-Strike Global Offensive\csgo\!tts-axynos.slf";
         Command synthCmd;
         Command audioCmd;
         Command pauseCmd;
@@ -17,15 +15,18 @@ namespace STARK {
         Timer loop; //no, you can't use FileSystemWatcher, it doesn't work. I tried.
         StreamReader reader;
 
+        SourceGame selectedGame;
+        string logFile = "";
+
         QueuedSpeechSynthesizer qss;
         AudioPlaybackEngine ape;
         AudioFileManager afm;
 
         bool changingPath = false;
 
-        public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, string synthCmd) {
-            Setup(path);
-            StartReadLoop();
+        public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame, string synthCmd) {
+            this.selectedGame = selectedGame;
+            this.logFile = selectedGame.libDir + @"\!tts-axynos.slf";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
@@ -35,6 +36,9 @@ namespace STARK {
             pauseCmd = new Command(".pause");
             resumeCmd = new Command(".resume");
             stopCmd = new Command(".stop");
+
+            StartReadLoop();
+            Setup(logFile);
         }
 
 
@@ -86,7 +90,9 @@ namespace STARK {
         }
 
         private void Setup(string path) {
-            reader = new StreamReader(File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite));
+            //makes a file if there is none
+            File.Create(path).Close();
+            reader = new StreamReader(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.ReadWrite));
             //skips the lines that are in the file on load so we don't get historic commands
             reader.ReadToEnd();
         }
@@ -97,7 +103,7 @@ namespace STARK {
         }
 
         private void Loop_Elapsed(object sender, ElapsedEventArgs e) {
-            if (changingPath == false && File.Exists(path)) {
+            if (changingPath == false && File.Exists(logFile)) {
                 //goes through lines that don't interest us at once, no need to loop again between each line
                 while (true) {
                     var line = reader.ReadLine();
@@ -114,7 +120,7 @@ namespace STARK {
             changingPath = true;
             if (File.Exists(path)) {
                 reader.Close();
-                this.path = path;
+                this.logFile = path;
                 Setup(path);
             }
             changingPath = false;
@@ -122,6 +128,12 @@ namespace STARK {
 
         public void ChangeSynthCommand(string newCmd) {
             synthCmd.changeCommand(newCmd);
+        }
+
+        public void ChangeSelectedGame(SourceGame selectedGame) {
+            if (selectedGame != null) {
+                this.selectedGame = selectedGame;
+            }
         }
         #endregion
 
