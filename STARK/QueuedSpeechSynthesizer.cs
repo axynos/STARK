@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Utils;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Timers;
 using System.Windows;
 
 namespace STARK {
-    class QueuedSpeechSynthesizer : IDisposable {
+    public class QueuedSpeechSynthesizer : IDisposable {
 
         //VARIABLES
         #region "variables"
@@ -37,6 +38,7 @@ namespace STARK {
 		int volume;
 		int rate;
 
+        bool enabled = true;
 		bool currentlySpeaking = false;
 		bool paused = false;
 		bool playingFromPausedState = false;
@@ -65,45 +67,36 @@ namespace STARK {
 			if (currentlySpeaking == false) {
 				currentlySpeaking = true;
 
-                string prompt = queue.First().QIText;
+                String prompt = queue.First().QIText;
 
-				Stream synthesizerStream = new MemoryStream();
-                Stream synthesizerStream2 = new MemoryStream();
-				
+                Stream rawStream = new MemoryStream();
+                Stream tempStream1 = new MemoryStream();
+                Stream tempStream2 = new MemoryStream();
+
+
+                synthesizer.SetOutputToWaveStream(rawStream);
 				synthesizer.Rate = rate;
 
-
-                //Output 1
-				synthesizer.SetOutputToWaveStream(synthesizerStream);
-
-				synthesizerStream.Flush();
-				synthesizerStream.SetLength(0);
-
                 synthesizer.Speak(prompt);
 
-				synthesizerStream.Flush();
-				synthesizerStream.Seek(0, SeekOrigin.Begin);
+				rawStream.Seek(0, SeekOrigin.Begin);
+                WriteToStream(tempStream1, new WaveFileReader(rawStream));
+                rawStream.Seek(0, SeekOrigin.Begin);
+                WriteToStream(tempStream2, new WaveFileReader(rawStream));
 
-                //Output 2
-                synthesizer.SetOutputToWaveStream(synthesizerStream2);
+                tempStream1.Seek(0, SeekOrigin.Begin);
+                tempStream2.Seek(0, SeekOrigin.Begin);
+                
 
-                synthesizerStream2.Flush();
-                synthesizerStream2.SetLength(0);
-
-                synthesizer.Speak(prompt);
-
-                synthesizerStream2.Flush();
-                synthesizerStream2.Seek(0, SeekOrigin.Begin);
-
-                WaveFileReader reader = new WaveFileReader(synthesizerStream);
+                WaveFileReader reader = new WaveFileReader(tempStream1);
 				reader.CurrentTime = savedTime;
 
-                WaveFileReader reader2 = new WaveFileReader(synthesizerStream2);
+                WaveFileReader reader2 = new WaveFileReader(tempStream2);
                 reader2.CurrentTime = savedTime;
                 
                 if (volume < 0) volume = 0;
                 vsp = new VolumeSampleProvider(reader.ToSampleProvider());
-                vsp2 = new VolumeSampleProvider(reader.ToSampleProvider());
+                vsp2 = new VolumeSampleProvider(reader2.ToSampleProvider());
                 vsp.Volume = this.IntToFloat(volume);
                 vsp2.Volume = this.IntToFloat(volume);
 
@@ -159,40 +152,50 @@ namespace STARK {
         //ACTIONS
         #region "actions"
         public void AddToQueue(QSSQueueItem item) {
-            Application.Current.Dispatcher.Invoke(delegate {
-                queue.Add(item);
-            });
+            if (enabled) {
+                Application.Current.Dispatcher.Invoke(delegate {
+                    queue.Add(item);
+                });
+            }
 		}
 
 		private void removeFirst() {
-            Application.Current.Dispatcher.Invoke(delegate {
-                queue.RemoveAt(0);
-            });
+            if (enabled) {
+                Application.Current.Dispatcher.Invoke(delegate {
+                    queue.RemoveAt(0);
+                });
+            }
 		}
 
 		public void PauseSpeaking() {
-			paused = true;
-			tokenSource.Cancel();
-			tokenSource.Dispose();
-			tokenSource = new System.Threading.CancellationTokenSource();
+            if (enabled) {
+			    paused = true;
+			    tokenSource.Cancel();
+			    tokenSource.Dispose();
+			    tokenSource = new System.Threading.CancellationTokenSource();
+            }
 		}
 
 		public void ResumeSpeaking() {
-			playingFromPausedState = true;
-			paused = false;
-			tokenSource.Dispose();
-			tokenSource = new System.Threading.CancellationTokenSource();
+            if (enabled) {
+			    playingFromPausedState = true;
+			    paused = false;
+			    tokenSource.Dispose();
+			    tokenSource = new System.Threading.CancellationTokenSource();
+            }
 		}
 
 		public void SkipCurrent() {
-			if (paused) {
-				removeFirst();
-				overridePausedState = true;
-			} else {
-				tokenSource.Cancel();
-			}
-			tokenSource.Dispose();
-			tokenSource = new System.Threading.CancellationTokenSource();
+            if (enabled) {
+			    if (paused) {
+				    removeFirst();
+				    overridePausedState = true;
+			    } else {
+				    tokenSource.Cancel();
+			    }
+			    tokenSource.Dispose();
+			    tokenSource = new System.Threading.CancellationTokenSource();
+            }
 		}
 
         public void Remove(QSSQueueItem item) {
@@ -209,6 +212,23 @@ namespace STARK {
                 tokenSource = new System.Threading.CancellationTokenSource();
             });
         }
+
+        public void Disable() {
+            PauseSpeaking();
+            Clear();
+            enabled = false;
+        }
+
+        public void Enable() {
+            enabled = true;
+            savedTime = TimeSpan.Zero;
+            ResumeSpeaking();
+        }
+
+        public void ToggleState() {
+            if (enabled) Disable();
+            else Enable();
+        }
         #endregion
 
         //UTILS
@@ -216,11 +236,34 @@ namespace STARK {
         private float IntToFloat(int input) {
             return 0.01f * input;
         }
+
+        /// <summary>
+        /// Writes to a stream by reading all the data from a WaveProvider
+        /// BEWARE: the WaveProvider MUST return 0 from its Read method when it is finished,
+        /// or the Wave File will grow indefinitely.
+        /// </summary>
+        /// <param name="outStream">The stream the method will output to</param>
+        /// <param name="sourceProvider">The source WaveProvider</param>
+        private static void WriteToStream(Stream outStream, IWaveProvider sourceProvider) {
+            using (var writer = new WaveFileWriter(new IgnoreDisposeStream(outStream), sourceProvider.WaveFormat)) {
+                var buffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond * 4];
+                while (true) {
+                    int bytesRead = sourceProvider.Read(buffer, 0, buffer.Length);
+                    if (bytesRead == 0) {
+                        // end of source provider
+                        outStream.Flush();
+                        break;
+                    }
+
+                    writer.Write(buffer, 0, bytesRead);
+                }
+            }
+        }
         #endregion
 
         //GET METHODS
         #region "getmethods"
-		public IReadOnlyCollection<InstalledVoice> GetVoices() {
+        public IReadOnlyCollection<InstalledVoice> GetVoices() {
 			return synthesizer.GetInstalledVoices();
 		}
 

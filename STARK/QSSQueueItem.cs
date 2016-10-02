@@ -8,9 +8,9 @@ using System.Windows.Controls;
 namespace STARK {
 	public class QSSQueueItem {
 
-		public string QIText { get; set; }
+		public String QIText { get; set; }
 
-		public String QISource { get; set; }
+		public string QISource { get; set; }
 
         public QSSQueueItem(string text, string source) {
             QIText = text;

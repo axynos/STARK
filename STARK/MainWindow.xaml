@@ -14,10 +14,10 @@
                 <Grid Background="#FFE5E5E5">
 
                     <!--Synth State Checkbox-->
-                    <CheckBox x:Name="checkBox" Content="Enable Synthesizer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" IsChecked="True"/>
+                    <CheckBox x:Name="synthesizerToggle" Content="Enable Synthesizer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" IsChecked="True" Checked="synthesizerToggle_Checked" Unchecked="synthesizerToggle_Checked"/>
 
                     <!--Command Selection-->
-                    <TextBox x:Name="TTS_CommandTextBox" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" Text="!tts" VerticalAlignment="Top" Width="155" UndoLimit="5"/>
+                    <TextBox x:Name="TTS_CommandTextBox" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" Text="!tts" VerticalAlignment="Top" Width="155" UndoLimit="5" TextChanged="TTS_CommandTextBox_TextChanged" MaxLength="9"/>
                     <Label x:Name="CommandLabel" Content="Command" HorizontalAlignment="Left" Margin="170,40,0,0" VerticalAlignment="Top"/>
 
                     <!--Play|Pause & Skip Buttons-->
@@ -60,7 +60,7 @@
                 <Grid Background="#FFE5E5E5">
 
                     <!--Enable/Disable Mic-->
-                    <CheckBox x:Name="Audio_MicCheckBox" Content="Microphone Enabled" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <CheckBox x:Name="Audio_MicCheckBox" Content="Microphone Enabled" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="Audio_MicCheckBox_Checked" Unchecked="Audio_MicCheckBox_Checked"/>
 
                     <!--Microphone Volume Slider-->
                     <Slider x:Name="Audio_MicVolumeSlider" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" Maximum="200" ValueChanged="Audio_MicVolumeSlider_ValueChanged" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_MicVolumeTextBox, StringFormat=\{0:###\}}"/>
@@ -68,31 +68,37 @@
                     <Label x:Name="Audio_MicVolumeLabel" Content="Microphone Volume" HorizontalAlignment="Left" Margin="192,33,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Buffer for Microphone Slider-->
-                    <Slider x:Name="Audio_MicBufferSlider" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="20" TickPlacement="BottomRight" Maximum="200" Value="{Binding Text, ElementName=Audio_MicBufferTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_MicBufferSlider_ValueChanged"/>
+                    <Slider x:Name="Audio_MicBufferSlider" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="20" TickPlacement="BottomRight" Maximum="200" Value="{Binding Text, ElementName=Audio_MicBufferTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_MicBufferSlider_ValueChanged" Minimum="25"/>
                     <TextBox x:Name="Audio_MicBufferTextBox" HorizontalAlignment="Left" Height="25" Margin="149,67,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
                     <Label x:Name="Audio_MicBufferLabel" Content="Microphone Buffer Time" HorizontalAlignment="Left" Margin="192,68,0,0" VerticalAlignment="Top" Height="25"/>
 
-                    <!--LOOPBACK-->
-
-                    <!--Enable/Disable Synth Loopback-->
-                    <CheckBox x:Name="Audio_SynthLoopbackCheckBox" Content="Synthesizer Loopback" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" IsChecked="True"/>
-                    <!--Enable/Disable Audio From File Loopback-->
-                    <CheckBox x:Name="Audio_AFFLoopbackCheckBox" Content="File Media Loopback" HorizontalAlignment="Left" Margin="153,160,0,0" VerticalAlignment="Top" IsChecked="True"/>
-
                     <!--Loopback Volume Slider-->
-                    <Slider x:Name="Audio_LoopbackVolumeSlider" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_LoopbackVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_LoopbackVolumeSlider_ValueChanged"/>
-                    <TextBox x:Name="Audio_LoopbackVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,187,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_LoopbackVolumeLabel" Content="Synthesizer &amp; File Media Loopback Volume" HorizontalAlignment="Left" Margin="192,188,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Slider x:Name="Audio_LoopbackVolumeSlider" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_LoopbackVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_LoopbackVolumeSlider_ValueChanged"/>
+                    <TextBox x:Name="Audio_LoopbackVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,127,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_LoopbackVolumeLabel" Content="Loopback Volume" HorizontalAlignment="Left" Margin="192,128,0,0" VerticalAlignment="Top" Height="25"/>
 
-                    <!--Enable/Disable Audio From File-->
-                    <CheckBox x:Name="Audio_AFFCheckBox" Content="Audio From File" HorizontalAlignment="Left" Margin="10,101,0,0" VerticalAlignment="Top" IsChecked="True"/>
+                    <!--Loopback Volume-->
+                    <Slider x:Name="Audio_AFFVolumeSlider" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_AFFVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_AFFVolumeSlider_ValueChanged" Maximum="200"/>
+                    <TextBox x:Name="Audio_AFFVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,98,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_AFFVolumeLabel" Content="File Media Volume" HorizontalAlignment="Left" Margin="192,97,0,0" VerticalAlignment="Top" Height="25"/>
 
-                    <!--Loopback Volume Audio From File-->
-                    <Slider x:Name="Audio_AFFVolumeSlider" HorizontalAlignment="Left" Margin="10,124,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_AFFVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_AFFVolumeSlider_ValueChanged" Maximum="200"/>
-                    <TextBox x:Name="Audio_AFFVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,125,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_AFFVolumeLabel" Content="File Media Volume" HorizontalAlignment="Left" Margin="192,124,0,0" VerticalAlignment="Top" Height="25"/>
+                    <!--Standard Output Volume-->
+                    <Slider x:Name="Audio_OutputVolumeSlider" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_OutputVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_OutputVolumeSlider_ValueChanged"/>
+                    <TextBox x:Name="Audio_OutputVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,159,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_OutputVolumeLabel" Content="Output Volume" HorizontalAlignment="Left" Margin="192,160,0,0" VerticalAlignment="Top" Height="25"/>
 
-
+                    <!--AUDIO LIST-->
+                    <ListView x:Name="AudioItemList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="250" Margin="10,211,0,0" VerticalAlignment="Top" Width="455" BorderThickness="0" IsHitTestVisible="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="ID" Width="35" DisplayMemberBinding="{Binding id}"/>
+                                <GridViewColumn Header="DEF" Width="40" DisplayMemberBinding="{Binding isDefault}"/>
+                                <GridViewColumn Header="TRACK" Width="150" DisplayMemberBinding="{Binding name}"/>
+                                <GridViewColumn Header="BIND" Width="50" DisplayMemberBinding="{Binding name}"/>
+                                <GridViewColumn Header="TAGS" Width="180" DisplayMemberBinding="{Binding displayTags, UpdateSourceTrigger=PropertyChanged}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
 
                 </Grid>
             </TabItem>
@@ -102,7 +108,7 @@
                     <!--Theme Selection-->
 
                     <!--Accent Selection-->
-                    <Label x:Name="AccentLabel" Content="Accent Colour" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="AccentLabel" Content="Interface Accent Colour" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top"/>
                     <ComboBox x:Name="AccentComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="AccentComboBox_SelectionChanged"/>
                 </Grid>
             </TabItem>
@@ -111,15 +117,15 @@
 
                     <!--Input Line - Microphone-->
                     <ComboBox x:Name="Setup_Microphone" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Microphone_SelectionChanged"/>
-                    <Label x:Name="Setup_MicrophoneLabel" Content="Microphone Input" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="Setup_MicrophoneLabel" Content="Microphone" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
 
                     <!--Output Synthesizer + Microphone-->
                     <ComboBox x:Name="Setup_OutputCombined" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_OutputCombined_SelectionChanged"/>
-                    <Label x:Name="Setup_OutputCombinedLabel" Content="Synthesizer + File Media + Microphone Output" HorizontalAlignment="Left" Margin="230,45,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="Setup_OutputCombinedLabel" Content="Standard Output" HorizontalAlignment="Left" Margin="230,45,0,0" VerticalAlignment="Top"/>
 
                     <!--Output Synthesizer Loopback-->
                     <ComboBox x:Name="Setup_SynthesizerOnly" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_SynthesizerOnly_SelectionChanged"/>
-                    <Label x:Name="Setup_SynthesizerOnlyLabel" Content="Synthesizer + File Media Loopback Output" HorizontalAlignment="Left" Margin="230,80,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="Setup_SynthesizerOnlyLabel" Content="Loopback Output" HorizontalAlignment="Left" Margin="230,80,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40"/>
                     <Button x:Name="button" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4"/>
 

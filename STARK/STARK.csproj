@@ -80,8 +80,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AudioFileManager.cs" />
     <Compile Include="AudioPlaybackEngine.cs" />
     <Compile Include="AudioPlaybackItem.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandReader.cs" />
     <Compile Include="QSSQueueItem.cs" />
     <Compile Include="QueuedSpeechSynthesizer.cs" />
     <Compile Include="MainWindow.xaml.cs">
