@@ -83,6 +83,9 @@ namespace STARK {
             App.Current.Dispatcher.Invoke(delegate {
                 foreach (AudioPlaybackItem item in collection) {
                     if (item.GetPath() == path) {
+                        foreach (string tag in item.tags) {
+                            tagsTracker.Remove(tag);
+                        }
                         collection.Remove(item);
                         RecalculateIDs();
                         break;

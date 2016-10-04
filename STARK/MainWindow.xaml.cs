@@ -45,6 +45,8 @@ namespace STARK {
         int loopbackOutputSelectedIndex;
         int inputSelectedIndex;
 
+        MainWindow mw;
+
         bool loaded = false;
 
         //Timer steamAppsLoop; BURN IN HELL YOU FUCKING CUNT
@@ -74,9 +76,9 @@ namespace STARK {
 			populateSetupComboBoxes();
             InitializeAudioItemList();
 
+            mw = this;
             FindSteamApps();
 
-            MessageBox.Show("hello");
 			loaded = true;
         }
 
@@ -101,7 +103,7 @@ namespace STARK {
                 Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
 
                 //Init things that need the steamapps folder
-                conUI = new ConsoleUI(game);
+                conUI = new ConsoleUI(game, afm, ref mw);
                 cmdReader = new CommandReader(ref qss, ref ape, ref afm, game, cmdText);
             } else {
                 //keep looking for the steam process each 500ms
@@ -514,6 +516,9 @@ namespace STARK {
                 var game = (e.AddedItems[0] as SourceGame);
                 SourceGameManager.ChangeSelectedGame(game);
                 cmdReader.ChangeSelectedGame(game);
+                if (conUI != null) {
+                    conUI.Render();
+                }
             }
         }
 
@@ -523,5 +528,10 @@ namespace STARK {
             }
         }
 
+        private void STARK_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            if (conUI != null) {
+                conUI.DeleteFiles();
+            }
+        }
     }
 }

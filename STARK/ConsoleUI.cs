@@ -10,27 +10,36 @@ namespace STARK {
         List<string> startUpContent;
         List<string> trackListContent;
         List<string> helpContent;
+        List<TrackListItem> tracks;
 
+        AudioFileManager afm;
         SourceGame game;
+        MainWindow mw;
 
         //AudioFileManager afm;
 
-        public ConsoleUI(SourceGame game) {
-            //afm = (App.Current.MainWindow as MainWindow).getAFM();
+        public ConsoleUI(SourceGame game, AudioFileManager afm, ref MainWindow mw) {
+            this.afm = afm;
             startUpContent = new List<string>();
             trackListContent = new List<string>();
             helpContent = new List<string>();
+            tracks = new List<TrackListItem>();
+            this.mw = mw;
             this.game = game;
 
             Render();
         }
 
         public void Render() {
+            DeleteFiles();
+
             startUpContent.Clear();
             trackListContent.Clear();
             helpContent.Clear();
+            tracks.Clear();
 
-            AddLines(ref startUpContent, new string[25] {
+            //Create help menu
+            AddLines(ref helpContent, new string[] {
                 "clear",
                 "echo \"============ STARK by axynos ============\"",
                 "echo \"\"",
@@ -53,7 +62,40 @@ namespace STARK {
                 "echo \"        - .stop       - stop playback\"",
                 "echo \"\"",
                 "echo \"      * Text-to-Speech\"",
-                "echo \"        - .tts <text> - say text from tts\"",
+                "echo \"        - " + mw.TTS_CommandTextBox.Text + " <text> - say text from tts\"",
+                "echo \"\"",
+                "echo \"=========================================\""
+            });
+
+            //Create startup
+            AddLines(ref startUpContent, new string[] {
+                "clear",
+                "alias s_pause \"exec s_pause\"",
+                "alias s_resume \"exec s_resume\"",
+                "alias s_stop \"exec s_stop\"",
+                "alias s_tracklist \"exec s_tracklist\"",
+                "alias s_help \"exec s_help\"",
+                "exec s_help"
+            });
+
+            //Create list of tracks
+            foreach (AudioPlaybackItem item in afm.getCollection()) {
+                tracks.Add(new TrackListItem("echo \"     " + item.id + " - " + item.name + "\"", item.id));
+            }
+
+            //Create tracklist
+            AddLines(ref trackListContent, new string[] {
+                "clear",
+                "echo \"============ STARK by axynos ============\"",
+                "echo \"\"",
+                "echo \"   + Available audio tracks:\"",
+            });
+
+            foreach (TrackListItem track in tracks) {
+                trackListContent.Add(track.display);
+            }
+
+            AddLines(ref trackListContent, new string[] {
                 "echo \"\"",
                 "echo \"=========================================\""
             });
@@ -61,9 +103,6 @@ namespace STARK {
             WriteToFiles();
         }
 
-        public void DeleteFiles() {
-
-        }
 
         private void AddLines(ref List<string> target, string[] input) {
             foreach (string line in input) {
@@ -72,33 +111,110 @@ namespace STARK {
         }
 
         private void WriteToFiles() {
-            string path = game.cfgDir + @"\shelp.cfg";
-            MessageBox.Show(path);
+            WriteToFile("s_help", helpContent);
+            WriteToFile("stark", startUpContent);
+            WriteToFile("s_pause", new List<string>() { "STARK: Pausing audio track playback.", "echo \"CONSOLE : .pause\"" });
+            WriteToFile("s_resume", new List<string>() { "STARK: Resuming audio track playback.", "echo \"CONSOLE : .resume\"" });
+            WriteToFile("s_stop", new List<string>() { "STARK: Stopping audio track playback.", "echo \"CONSOLE : .stop\"" });
+            WriteToFile("s_tracklist", trackListContent);
+            //todo save track play files
+            
+            //save track play files
+            if (tracks != null && tracks.Count > 0) {
+                foreach (TrackListItem item in tracks) {
+                    WriteToFile(item.fileName, new List<string> {
+                        "echo \"Playing track: \"" + afm.getCollection()[item.id].name,
+                        item.display
+                    });
+                }
+            }   
+        }
 
-            //MessageBox.Show(path);
+        public void DeleteFiles() {
+            DeleteFile("s_help");
+            DeleteFile("stark");
+            DeleteFile("s_pause");
+            DeleteFile("s_resume");
+            DeleteFile("s_stop");
+            DeleteFile("s_tracklist");
+            
+            if (tracks != null && tracks.Count > 0) {
+                foreach (TrackListItem item in tracks) {
+                    DeleteFile(item.fileName);
+                }
+            }
+        }
 
-            //if (File.Exists(path)) {
-            //    File.Delete(path);
-            //    File.Create(path);
-            //} else {
-            //    File.Create(path);
-            //}
+        private void DeleteFile(string fileName) {
+            string path = game.cfgDir + "\\" + fileName + ".cfg";
 
             try {
-                File.Create(path).Close();
-                //TextWriter writer = new StreamWriter(path, true);
-                //writer.WriteLine("wtffff");
-                //writer.Flush();
-                //writer.Close();
-            } catch (Exception e) {
-                MessageBox.Show(e.ToString());
+                if (File.Exists(path)) File.Delete(path);
+            } catch (IOException e) {
+                MessageBox.Show(e.Message);
             }
-            //for (int i = 0; i < startUpContent.Count; i++) {
-            //    writer.WriteLine(startUpContent[i]);
-            //}
-            //foreach (string line in startUpContent) {
+        }
 
-            //}
+        private void WriteToFile(string fileName, List<string> content) {
+            string path = game.cfgDir + "\\" + fileName + ".cfg";
+
+            
+            if (!File.Exists(path)) {
+                File.Create(path).Close();
+            }
+
+            using (StreamWriter writer = new StreamWriter(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Delete))) {
+                try {
+                    foreach (string line in content) {
+                        writer.WriteLine(line);
+                    }
+                } catch (IOException e) {
+                    MessageBox.Show(e.Message);
+                }
+
+                if (writer != null) {
+                    writer.Close();
+                }
+            }
+        }
+
+        private void WriteToFile(string fileName, string content) {
+            string path = game.cfgDir + "\\" + fileName + ".cfg";
+
+
+            if (!File.Exists(path)) {
+                File.Create(path).Close();
+            }
+
+            using (StreamWriter writer = new StreamWriter(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Delete))) {
+                try {
+                    writer.WriteLine(content);
+                }
+                catch (IOException e) {
+                    MessageBox.Show(e.Message);
+                }
+
+                if (writer != null) {
+                    writer.Close();
+                }
+            }
+        }
+    }
+
+    class TrackListItem {
+
+        public int id;
+        public string display;
+        public string fileName;
+
+        public TrackListItem(string display, int id) {
+            this.display = display;
+            this.id = id;
+            buildFileName();
+        }
+
+        private void buildFileName() {
+            fileName = "s_play " + id;
         }
     }
 }

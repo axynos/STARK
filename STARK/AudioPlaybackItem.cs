@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +15,7 @@ namespace STARK {
         
         string fileName { get; set; }
         public string path { get; set; }
-        ObservableCollection<string> tags { get; set; }
+        public ObservableCollection<string> tags { get; set; }
 
         AudioFileManager afm;
 
@@ -64,12 +65,14 @@ namespace STARK {
         }
 
         private void GenerateTags() {
-            string[] potTags = Regex.Split(name, " ");
+            string[] potTags = name.Split(new string[] { " ", ".", "-", "_" }, StringSplitOptions.None);
             App.Current.Dispatcher.Invoke(delegate {
                 foreach (string tag in potTags) {
-                    if (!afm.getTagsTracker().Contains(tag)) {
-                        tags.Add(tag);
-                        afm.getTagsTracker().Add(tag);
+                    if (!IsNumeric(tag)) {
+                        if (!afm.getTagsTracker().Contains(tag)) {
+                            tags.Add(tag);
+                            afm.getTagsTracker().Add(tag);
+                        }
                     }
                 }
             });
@@ -113,6 +116,11 @@ namespace STARK {
         #region "utils"
         private float IntToFloat(int input) {
             return 0.01f * input;
+        }
+
+        private bool IsNumeric(string input) {
+            double test;
+            return double.TryParse(input, out test);
         }
         #endregion
     }

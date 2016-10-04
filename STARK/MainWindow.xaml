@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:STARK"
 		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="STARK by axynos" Height="500" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" ShowMinButton="True" ShowIconOnTitleBar="True" ShowMaxRestoreButton="False" TitleCaps="False" TextOptions.TextFormattingMode="Display" TitleAlignment="Center">
+        Title="STARK by axynos" Height="500" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" ShowMinButton="True" ShowIconOnTitleBar="True" ShowMaxRestoreButton="False" TitleCaps="False" TextOptions.TextFormattingMode="Display" TitleAlignment="Center"
+        Closing="STARK_Closing">
 
     <Grid Margin="0" UseLayoutRounding="True">
         <Controls:MetroAnimatedTabControl x:Name="tabControl" HorizontalAlignment="Left" Height="471" VerticalAlignment="Top" Width="754" TabStripPlacement="Left" BorderThickness="0" Padding="16,-2,-16,2" ClipToBounds="True">
@@ -27,7 +28,7 @@
                     <!-- Volume Slider & Custom Input Box -->
                     <Slider x:Name="TTS_VolumeSlider" Maximum="100" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="155" Height="25" Padding="0" SmallChange="1" TickPlacement="BottomRight" TickFrequency="10" Value="{Binding Text, ElementName=TTS_VolumeSliderBox, StringFormat=\{0:###\}}" BorderThickness="0" ValueChanged="TTS_VolumeSlider_ValueChanged"/>
                     <TextBox x:Name="TTS_VolumeSliderBox" HorizontalAlignment="Left" Height="25" Margin="170,75,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="38"/>
-                    <Label x:Name="TTS_VolumeLabel" Content="Synthesizer Volume" HorizontalAlignment="Left" Margin="213,76,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="TTS_VolumeLabel" Content="Volume" HorizontalAlignment="Left" Margin="213,76,0,0" VerticalAlignment="Top"/>
 
                     <!--Rate Slider & Custom Input Box-->
                     <Slider x:Name="TTS_RateSlider" Maximum="4" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="155" Height="25" Padding="0" SmallChange="1" TickPlacement="BottomRight" BorderThickness="0" Minimum="-4" Value="{Binding Text, ElementName=TTS_RateSliderBox, StringFormat=\{0:D\}}" ValueChanged="TTS_RateSlider_ValueChanged" IsSnapToTickEnabled="True"/>
@@ -39,7 +40,7 @@
 
                     <!--TTS VOICE COMBOBOX-->
                     <ComboBox x:Name="TTS_VoiceComboBox" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" Width="155" SelectionChanged="TTS_VoiceComboBox_SelectionChanged" Padding="0"/>
-                    <Label x:Name="TTS_VoiceLabel" Content="Synthesizer Voice" HorizontalAlignment="Left" Margin="170,143,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="TTS_VoiceLabel" Content="Voice" HorizontalAlignment="Left" Margin="170,143,0,0" VerticalAlignment="Top"/>
 
                     <!--TTS QUEUE-->
                     <ListView x:Name="SynthQueue" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="250" Margin="10,211,0,0" VerticalAlignment="Top" Width="455" BorderThickness="0" IsHitTestVisible="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True">
@@ -70,7 +71,7 @@
                     <!--Buffer for Microphone Slider-->
                     <Slider x:Name="Audio_MicBufferSlider" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="20" TickPlacement="BottomRight" Maximum="200" Value="{Binding Text, ElementName=Audio_MicBufferTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_MicBufferSlider_ValueChanged" Minimum="25"/>
                     <TextBox x:Name="Audio_MicBufferTextBox" HorizontalAlignment="Left" Height="25" Margin="149,67,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_MicBufferLabel" Content="Microphone Buffer Time" HorizontalAlignment="Left" Margin="192,68,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Label x:Name="Audio_MicBufferLabel" Content="Microphone Buffer Time (ms)" HorizontalAlignment="Left" Margin="192,68,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Loopback Volume Slider-->
                     <Slider x:Name="Audio_LoopbackVolumeSlider" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_LoopbackVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_LoopbackVolumeSlider_ValueChanged"/>
@@ -80,7 +81,7 @@
                     <!--Loopback Volume-->
                     <Slider x:Name="Audio_AFFVolumeSlider" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_AFFVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_AFFVolumeSlider_ValueChanged" Maximum="200"/>
                     <TextBox x:Name="Audio_AFFVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,98,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_AFFVolumeLabel" Content="File Media Volume" HorizontalAlignment="Left" Margin="192,97,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Label x:Name="Audio_AFFVolumeLabel" Content="Audio Track Volume" HorizontalAlignment="Left" Margin="192,97,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Standard Output Volume-->
                     <Slider x:Name="Audio_OutputVolumeSlider" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_OutputVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_OutputVolumeSlider_ValueChanged"/>
