@@ -53,3 +53,26 @@ F:\_Development\Visual_Studio\STARK\STARK\obj\Debug\STARK.g.resources
 F:\_Development\Visual_Studio\STARK\STARK\obj\Debug\STARK.Properties.Resources.resources
 F:\_Development\Visual_Studio\STARK\STARK\obj\Debug\STARK.csproj.GenerateResource.Cache
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\STARK.exe.config
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\STARK.exe
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\STARK.pdb
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\MahApps.Metro.dll
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\NAudio.dll
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\System.Windows.Interactivity.dll
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\MahApps.Metro.pdb
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\MahApps.Metro.xml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Debug\NAudio.xml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\Resources\Icons.baml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\Resources\IconsNonShared.baml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\MainWindow.g.cs
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\App.g.cs
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK_MarkupCompile.cache
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK_MarkupCompile.lref
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\App.baml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\MainWindow.baml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.g.resources
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.Properties.Resources.resources
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.csproj.GenerateResource.Cache
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.exe
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.pdb
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Debug\STARK.csprojResolveAssemblyReference.cache

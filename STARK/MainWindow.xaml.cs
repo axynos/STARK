@@ -57,30 +57,35 @@ namespace STARK {
 			InitializeComponent();
 			populateAccentComboBox();
             CommandManager.synthCmd.changeCommand(TTS_CommandTextBox.Text);
+            mw = this;
 
 			InitializeMixer(ref mspStandard);
 			InitializeMixer(ref mspLoopback);
-
-            //latency has to be >= 25
-			InitializeMicrophone(ref wiMicrophone, 0, 25, 100);
-
-            //latency has to be >= 100
-            InitializeOutput(ref woStandard, 1, 100, ref mspStandard);
-            InitializeOutput(ref woLoopback, 0, 100, ref mspLoopback);
 
             //Startup fam
 			qss = new QueuedSpeechSynthesizer(ref mspStandard, ref mspLoopback, 50, -1);
             afm = new AudioFileManager();
             ape = new AudioPlaybackEngine(ref audioFormat, ref mspStandard, ref mspLoopback, ref afm, 10);
 
+
 			InitializeSynthQueue();
             InitializeVoiceComboBox();
 			populateSetupComboBoxes();
             InitializeAudioItemList();
 
-            mw = this;
-
             loadSettings();
+
+            //latency has to be >= 25
+			InitializeMicrophone(ref wiMicrophone, Setup_Microphone.SelectedIndex, 25, 100);
+
+            //latency has to be >= 100
+            InitializeOutput(ref woStandard, Setup_OutputCombined.SelectedIndex, (int)Audio_OutputVolumeSlider.Value, ref mspStandard);
+            InitializeOutput(ref woLoopback, Setup_SynthesizerOnly.SelectedIndex, (int)Audio_LoopbackVolumeSlider.Value, ref mspLoopback);
+
+            changeMicrophone(Setup_Microphone.SelectedIndex);
+            changeCombinedOutput(Setup_OutputCombined.SelectedIndex);
+            changeLoopbackOutput(Setup_SynthesizerOnly.SelectedIndex);
+
 
             FindSteamApps();
 
@@ -165,15 +170,11 @@ namespace STARK {
                 TTS_RateSliderBox.Text = "" + settings.Synthesizer_Rate;
 
                 Audio_MicVolumeTextBox.Text = "" + settings.Microphone_Volume;
-                changeMicrophoneVolume(settings.Microphone_Volume);
                 Audio_MicBufferTextBox.Text = "" + settings.Microphone_Buffer_Time;
-                changeMicrophoneBuffer(settings.Microphone_Buffer_Time);
 
                 Audio_AFFVolumeTextBox.Text = "" + settings.Media_Volume;
                 Audio_OutputVolumeTextBox.Text = "" + settings.Standard_Volume;
-                changeStandardVolume(settings.Standard_Volume);
                 Audio_LoopbackVolumeTextBox.Text = "" + settings.Loopback_Volume;
-                changeLoopbackVolume(settings.Loopback_Volume);
 
                 Setup_Microphone.SelectedIndex = settings.Setup_Microphone_SelectedIndex;
                 Setup_SynthesizerOnly.SelectedIndex = settings.Setup_Standard_Output_SelectedIndex;
@@ -217,7 +218,7 @@ namespace STARK {
         #region "events"
         private void WiMicrophone_DataAvailable(object sender, WaveInEventArgs e) {
             //Gives a buffer full exception if not outputting to anything.
-            //The reason I don't enable buffer discarding is that the exception never gets thrown and usually something else is wrong.
+            //The reason I don't enable buffer discarding is that the exception never gets thrown and usually something else is wrong. axynos(05.10.2016): nvm lol
             if (bwpMicrophone != null) {
 				bwpMicrophone.AddSamples(e.Buffer, 0, e.BytesRecorded);
 			}
@@ -241,21 +242,32 @@ namespace STARK {
             if (wiMicrophone == null) return false;
             mspStandard.RemoveMixerInput(vspMicrophone);
             wiMicrophone.StopRecording();
+            wiMicrophone.Dispose();
+            wiMicrophone = new WaveIn();
             wiMicrophone.DeviceNumber = deviceID;
-            wiMicrophone.StartRecording();
-            mspStandard.AddMixerInput(vspMicrophone);
+            InitializeMicrophone(ref wiMicrophone, wiMicrophone.DeviceNumber, wiMicrophone.BufferMilliseconds, (int)Audio_MicVolumeSlider.Value);
             return true;
         }
 
         private bool changeCombinedOutput(int deviceID) {
             if (woStandard == null) return false;
+            woStandard.Stop();
+            woStandard.Dispose();
+            woStandard = new WaveOut();
             woStandard.DeviceNumber = deviceID;
+            woStandard.Init(mspStandard);
+            woStandard.Play();
             return true;
         }
 
         private bool changeLoopbackOutput(int deviceID) {
             if (woLoopback == null) return false;
+            woLoopback.Stop();
+            woLoopback.Dispose();
+            woLoopback = new WaveOut();
             woLoopback.DeviceNumber = deviceID;
+            woLoopback.Init(mspLoopback);
+            woLoopback.Play();
             return true;
         }
 
@@ -314,7 +326,10 @@ namespace STARK {
         private void InitializeOutput(ref WaveOut wo, int id, int iLat, ref MixingSampleProvider source) {
 
             //Gets rid of previous instance, if there is one
-            if (wo != null) wo.Dispose();
+            if (wo != null) {
+                wo.Stop();
+                wo.Dispose();
+            }
             wo = new WaveOut();
 
             wo.DeviceNumber = id; //0 is default audio device
