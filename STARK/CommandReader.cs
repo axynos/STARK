@@ -83,7 +83,7 @@ namespace STARK {
         }
 
         private void StartReadLoop() {
-            loop = new Timer(100);
+            loop = new Timer(50);
             loop.AutoReset = false;
             loop.Elapsed += Loop_Elapsed;
             loop.Start();

@@ -79,8 +79,8 @@ namespace STARK {
 			InitializeMicrophone(ref wiMicrophone, Setup_Microphone.SelectedIndex, 25, 100);
 
             //latency has to be >= 100
-            InitializeOutput(ref woStandard, Setup_OutputCombined.SelectedIndex, (int)Audio_OutputVolumeSlider.Value, ref mspStandard);
-            InitializeOutput(ref woLoopback, Setup_SynthesizerOnly.SelectedIndex, (int)Audio_LoopbackVolumeSlider.Value, ref mspLoopback);
+            InitializeOutput(ref woStandard, Setup_OutputCombined.SelectedIndex, 25, ref mspStandard);
+            InitializeOutput(ref woLoopback, Setup_SynthesizerOnly.SelectedIndex, 25, ref mspLoopback);
 
             changeMicrophone(Setup_Microphone.SelectedIndex);
             changeCombinedOutput(Setup_OutputCombined.SelectedIndex);

@@ -147,8 +147,8 @@ namespace STARK {
 
         public void Resume() {
             if (paused) {
-                paused = false;
                 Play("", fileVolume);
+                paused = false;
             }
         }
 
