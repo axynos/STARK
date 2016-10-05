@@ -29,16 +29,11 @@ F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\STARK.exe.config
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\STARK.exe
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\STARK.pdb
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\MahApps.Metro.dll
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\Microsoft.WindowsAPICodePack.dll
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\NAudio.dll
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\Ookii.Dialogs.Wpf.dll
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\System.Windows.Interactivity.dll
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\MahApps.Metro.pdb
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\MahApps.Metro.xml
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\Microsoft.WindowsAPICodePack.pdb
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\Microsoft.WindowsAPICodePack.xml
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\NAudio.xml
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\bin\Release\Ookii.Dialogs.Wpf.xml
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\Resources\Icons.baml
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\Resources\IconsNonShared.baml
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\MainWindow.g.cs

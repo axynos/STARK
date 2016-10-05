@@ -48,6 +48,8 @@ namespace STARK {
         private async void PlayAudioFile(string path, int volume, CancellationToken token) {
             if (!currentlyPlaying) {
 
+                string currentFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "currentTrack.wav");
+
                 currentlyPlaying = true;
                 if (volume < 0) volume = 0;
                 fileVolume = volume;
@@ -61,14 +63,14 @@ namespace STARK {
                         using(var resampler = new MediaFoundationResampler(stream, audioFormat)) {
                             resampler.ResamplerQuality = 30;
                             //var resamplerSampler = 
-                            WaveFileWriter.CreateWaveFile("currentTrack.wav", resampler);
+                            WaveFileWriter.CreateWaveFile(currentFilePath, resampler);
                         }
                     }
                 }
 
 
-                using (var inputStream = File.OpenRead("currentTrack.wav"))
-                using (var inputStream2 = File.OpenRead("currentTrack.wav")) {
+                using (var inputStream = File.OpenRead(currentFilePath))
+                using (var inputStream2 = File.OpenRead(currentFilePath)) {
                     var reader = new WaveFileReader(inputStream);
                     vsp = new VolumeSampleProvider(reader.ToSampleProvider());
                     vsp.Volume = IntToFloat(masterVolume * (fileVolume / 100));

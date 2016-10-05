@@ -596,16 +596,16 @@ namespace STARK {
         }
 
         private void steamAppsFolderSelectButton_Click(object sender, EventArgs e) {
-            var fbd = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            //true if clicks OK, false otherwise
-            var result = fbd.ShowDialog();
+            //var fbd = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            ////true if clicks OK, false otherwise
+            //var result = fbd.ShowDialog();
 
-            if (result == true) {
-                if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
-                    PathManager.steamApps = fbd.SelectedPath;
-                    steamAppsFolderPath.Text = fbd.SelectedPath;
-                }
-            }
+            //if (result == true) {
+            //    if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
+            //        PathManager.steamApps = fbd.SelectedPath;
+            //        steamAppsFolderPath.Text = fbd.SelectedPath;
+            //    }
+            //}
         }
 
         private void watchFolderSelectButton_Click(object sender, RoutedEventArgs e) {
