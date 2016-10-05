@@ -1,5 +1,5 @@
 ﻿namespace STARK {
-    class Command {
+    public class Command {
 
         string command { get; set; }
         string[] splitter { get; set; }
@@ -28,7 +28,7 @@
         /// <param name="cmd">The identifier that the splitter is based on.</param>
         private void ConstructCommand(string cmd) {
             command = cmd;
-            splitter = new string[] { command };
+            splitter = new string[] { " : " + command };
         }
 
         public string getCommand() {

@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-F:\_Development\Visual Studio\STARK\STARK\obj\Release\
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\
 STARK
 none
 false
 TRACE
-F:\_Development\Visual Studio\STARK\STARK\App.xaml
+F:\_Development\_Desktop\_Visual Studio\STARK\STARK\App.xaml
 3-1260861683
 
-71599747978
-18-2015677301
+17-1786567394
+201739124649
 MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;
 
 False

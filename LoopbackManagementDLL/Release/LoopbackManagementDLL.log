@@ -1,9 +1,0 @@
-﻿  stdafx.cpp
-  dllmain.cpp
-  LoopbackManagementDLL.cpp
-     Creating library F:\_Development\Visual Studio\STARK\Release\LoopbackManagementDLL.lib and object F:\_Development\Visual Studio\STARK\Release\LoopbackManagementDLL.exp
-  Generating code
-  All 2 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  LoopbackManagementDLL.vcxproj -> F:\_Development\Visual Studio\STARK\Release\LoopbackManagementDLL.dll
-  LoopbackManagementDLL.vcxproj -> F:\_Development\Visual Studio\STARK\Release\LoopbackManagementDLL.pdb (Full PDB)

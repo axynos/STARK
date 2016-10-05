@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace STARK {
-    public class AudioFileManager {
+    public class AudioFileManager : IDisposable{
 
         string watchFolder;
         bool directoryExists = false;
@@ -11,8 +13,8 @@ namespace STARK {
         ObservableCollection<AudioPlaybackItem> collection;
         ObservableCollection<string> tagsTracker;
 
-        public AudioFileManager(string watchFolder) {
-            this.watchFolder = watchFolder;
+        public AudioFileManager() {
+            this.watchFolder = PathManager.watchFolder;
             collection = new ObservableCollection<AudioPlaybackItem>();
             tagsTracker = new ObservableCollection<string>();
             SetupWatcher();
@@ -45,17 +47,31 @@ namespace STARK {
         }
 
         public void ChangeWatchFolder(string watchFolder) {
-            if (Directory.Exists(watchFolder)) {
-                if (watcher == null) SetupWatcher();
-                this.watchFolder = watchFolder;
-                watcher.Path = this.watchFolder;
+            if (watcher != null) {
+                if (Directory.Exists(watchFolder)) {
+                    if (watcher == null) SetupWatcher();
+                    this.watchFolder = watchFolder;
+                    watcher.Path = this.watchFolder;
 
-                ClearCollection();
-                LoadCurrentFiles();
-                directoryExists = true;
+                    MessageBox.Show(this.watchFolder);
+
+                    ClearCollection();
+                    LoadCurrentFiles();
+                    directoryExists = true;
+                }
+                else {
+                    directoryExists = false;
+                }
             } else {
-                directoryExists = false;
+                if (Directory.Exists(watchFolder)) {
+                    this.watchFolder = watchFolder;
+                    SetupWatcher();
+                    LoadCurrentFiles();
+                }
             }
+            App.Current.Dispatcher.Invoke(delegate {
+                (App.Current.MainWindow as MainWindow).RenderConUI();
+            });
         }
 
         private bool IsAudioFile(string ext) {
@@ -112,6 +128,9 @@ namespace STARK {
                 //yes i know i could just change the name, but i'm wayyyy to lazy and tired
                 RemoveFromCollection(e.FullPath);
                 AddToCollection(new AudioPlaybackItem("", e.FullPath, 100));
+                App.Current.Dispatcher.Invoke(delegate {
+                    (App.Current.MainWindow as MainWindow).RenderConUI();
+                });
             }
         }
 
@@ -120,6 +139,9 @@ namespace STARK {
 
             if (IsAudioFile(ext)) {
                 RemoveFromCollection(e.FullPath);
+                App.Current.Dispatcher.Invoke(delegate {
+                    (App.Current.MainWindow as MainWindow).RenderConUI();
+                });
             }
         }
 
@@ -128,6 +150,9 @@ namespace STARK {
 
             if (IsAudioFile(ext)) {
                 AddToCollection(new AudioPlaybackItem("", e.FullPath, 100));
+                App.Current.Dispatcher.Invoke(delegate {
+                    (App.Current.MainWindow as MainWindow).RenderConUI();
+                });
             }
         }
         #endregion
@@ -141,6 +166,19 @@ namespace STARK {
         public ObservableCollection<string> getTagsTracker() {
             return tagsTracker;
         }
+
         #endregion
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                watcher.Dispose();
+                watcher = null;
+            }
+        }
     }
 }

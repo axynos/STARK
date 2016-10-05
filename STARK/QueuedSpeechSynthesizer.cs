@@ -106,7 +106,9 @@ namespace STARK {
 				try {
 					await Task.Delay(reader.TotalTime, token); //Wait for current playback to finish
 				}
+#pragma warning disable CS0168 // Variable is declared but never used
 				catch (TaskCanceledException e) {
+#pragma warning restore CS0168 // Variable is declared but never used
 					//We cancelled the task, so remove inputs to stop playback
 					mspStandard.RemoveMixerInput(vsp);
 					mspLoopback.RemoveMixerInput(vsp2);
@@ -297,8 +299,20 @@ namespace STARK {
         #endregion
 
         public void Dispose() {
-            stopLoop = true;
-            synthesizer.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                if (synthesizer != null) synthesizer.Dispose();
+                if (speakLoop != null) speakLoop.Dispose();
+                if (tokenSource != null) tokenSource.Dispose();
+
+                synthesizer = null;
+                speakLoop = null;
+                tokenSource = null;
+            }
 		}
     }
 }

@@ -6,8 +6,14 @@
         xmlns:local="clr-namespace:STARK"
 		xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
+        
         Title="STARK by axynos" Height="500" Width="750" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" ShowMinButton="True" ShowIconOnTitleBar="True" ShowMaxRestoreButton="False" TitleCaps="False" TextOptions.TextFormattingMode="Display" TitleAlignment="Center"
         Closing="STARK_Closing">
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button x:Name="donateButton" Content="donate" Click="donateButton_Click"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
 
     <Grid Margin="0" UseLayoutRounding="True">
         <Controls:MetroAnimatedTabControl x:Name="tabControl" HorizontalAlignment="Left" Height="471" VerticalAlignment="Top" Width="754" TabStripPlacement="Left" BorderThickness="0" Padding="16,-2,-16,2" ClipToBounds="True">
@@ -129,12 +135,17 @@
                     <Label x:Name="Setup_SynthesizerOnlyLabel" Content="Loopback Output" HorizontalAlignment="Left" Margin="230,80,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="steamAppsFolderPath" HorizontalAlignment="Left" Height="23" Margin="10,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40" IsEnabled="False"/>
                     <Label x:Name="Setup_steamAppsLabel" Content="SteamApps Folder (Looking - Open Steam)" HorizontalAlignment="Left" Margin="230,111,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="False" Visibility="Hidden" IsEnabled="False"/>
+                    <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="False" IsEnabled="False" Visibility="Hidden"/>
 
                     <!--Game Selection-->
-                    <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,142,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged"  />
-                    <Label x:Name="Setup_GameLabel" Content="Current Game" HorizontalAlignment="Left" Margin="301,142,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="Setup_GameLaunch" Content="Launch" HorizontalAlignment="Left" Margin="235,142,0,0" VerticalAlignment="Top" Width="61" Height="25" FontSize="14" Padding="5,2,5,3" Click="Setup_GameLaunch_Click" VerticalContentAlignment="Center"/>
+                    <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged"  />
+                    <Label x:Name="Setup_GameLabel" Content="Current Game" HorizontalAlignment="Left" Margin="301,173,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="Setup_GameLaunch" Content="Launch" HorizontalAlignment="Left" Margin="235,173,0,0" VerticalAlignment="Top" Width="61" Height="25" FontSize="14" Padding="5,2,5,3" Click="Setup_GameLaunch_Click" VerticalContentAlignment="Center"/>
+                    
+                    <!--Watch Folder Selection-->
+                    <TextBox x:Name="watchFolderPath" HorizontalAlignment="Left" Height="23" Margin="10,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40" IsEnabled="False"/>
+                    <Label x:Name="watchFolderLabel" Content="Audio Watch Folder" HorizontalAlignment="Left" Margin="270,141,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="watchFolderSelectButton_Copy" Content="..." HorizontalAlignment="Left" Margin="235,142,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="watchFolderSelectButton_Click" IsHitTestVisible="True"/>
 
                 </Grid>
             </TabItem>

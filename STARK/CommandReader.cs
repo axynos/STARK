@@ -2,12 +2,13 @@
 using System.IO;
 using System.Text;
 using System.Timers;
+using System.Windows;
 
 namespace STARK {
-    class CommandReader {
+    class CommandReader : IDisposable{
 
         Command synthCmd;
-        Command audioCmd;
+        Command playCmd;
         Command pauseCmd;
         Command resumeCmd;
         Command stopCmd;
@@ -24,18 +25,18 @@ namespace STARK {
 
         bool changingPath = false;
 
-        public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame, string synthCmd) {
+        public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
             this.logFile = selectedGame.libDir + @"\!tts-axynos.slf";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
-            
-            this.synthCmd = new Command(synthCmd);
-            audioCmd = new Command(".play");
-            pauseCmd = new Command(".pause");
-            resumeCmd = new Command(".resume");
-            stopCmd = new Command(".stop");
+
+            this.synthCmd = CommandManager.synthCmd;
+            playCmd = CommandManager.playCmd;
+            pauseCmd = CommandManager.pauseCmd;
+            resumeCmd = CommandManager.resumeCmd;
+            stopCmd = CommandManager.stopCmd;
 
             StartReadLoop();
             Setup(logFile);
@@ -53,9 +54,9 @@ namespace STARK {
                         qss.AddToQueue(new QSSQueueItem(prompt, player));
                     }
                 }
-                else if (ContainsCommand(line, audioCmd)) {
+                else if (ContainsCommand(line, playCmd)) {
                     if (ape != null) {
-                        var parts = getParts(line, audioCmd);
+                        var parts = getParts(line, playCmd);
                         string player = getPlayer(parts[0]);
                         //Removes the leading space from the command arg
                         string arg1 = new StringBuilder(parts[1]).Remove(0, 1).ToString();
@@ -63,10 +64,9 @@ namespace STARK {
                         int id;
                         if (int.TryParse(arg1, out id) && id >= 0) {
                             if (id < afm.getCollection().Count) {
+                                ape.Stop(); //you can't stop Harambe
                                 ape.Play(id);
                             }
-                        } else {
-                            
                         }
                     }
                 }
@@ -91,8 +91,10 @@ namespace STARK {
 
         private void Setup(string path) {
             //makes a file if there is none
-            File.Create(path).Close();
-            reader = new StreamReader(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.ReadWrite));
+            if (!File.Exists(path)) File.CreateText(path).Close();
+            //var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            reader = new StreamReader(bufferedStream);
             //skips the lines that are in the file on load so we don't get historic commands
             reader.ReadToEnd();
         }
@@ -147,6 +149,14 @@ namespace STARK {
         private string[] getParts(string line, Command command) {
             return line.Split(command.getSplitter(), StringSplitOptions.None);
         }
+
         #endregion
+        public void Dispose() {
+            if (loop != null) loop.Dispose();
+            if (reader != null) reader.Dispose();
+
+            loop = null;
+            reader = null;
+        }
     }
 }

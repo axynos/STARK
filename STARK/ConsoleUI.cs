@@ -18,7 +18,7 @@ namespace STARK {
 
         //AudioFileManager afm;
 
-        public ConsoleUI(SourceGame game, AudioFileManager afm, ref MainWindow mw) {
+        public ConsoleUI(SourceGame game, ref AudioFileManager afm, ref MainWindow mw) {
             this.afm = afm;
             startUpContent = new List<string>();
             trackListContent = new List<string>();
@@ -33,10 +33,15 @@ namespace STARK {
         public void Render() {
             DeleteFiles();
 
-            startUpContent.Clear();
-            trackListContent.Clear();
-            helpContent.Clear();
-            tracks.Clear();
+            startUpContent = null;
+            trackListContent = null;
+            helpContent = null;
+            tracks = null;
+
+            startUpContent = new List<string>();
+            trackListContent = new List<string>();
+            helpContent = new List<string>();
+            tracks = new List<TrackListItem>();
 
             //Create help menu
             AddLines(ref helpContent, new string[] {
@@ -46,7 +51,7 @@ namespace STARK {
                 "echo \"     + Available *CONSOLE* commands:\"",
                 "echo \"\"",
                 "echo \"      * Media\"",
-                "echo \"        - s_play <id> - play file by id\"",
+                "echo \"        - exec s_play_<id> - play file by id\"",
                 "echo \"        - s_pause     - pause playback\"",
                 "echo \"        - s_resume    - resume playback\"",
                 "echo \"        - s_stop      - stop playback\"",
@@ -75,6 +80,7 @@ namespace STARK {
                 "alias s_stop \"exec s_stop\"",
                 "alias s_tracklist \"exec s_tracklist\"",
                 "alias s_help \"exec s_help\"",
+                "con_logfile !tts-axynos.slf",
                 "exec s_help"
             });
 
@@ -113,9 +119,9 @@ namespace STARK {
         private void WriteToFiles() {
             WriteToFile("s_help", helpContent);
             WriteToFile("stark", startUpContent);
-            WriteToFile("s_pause", new List<string>() { "STARK: Pausing audio track playback.", "echo \"CONSOLE : .pause\"" });
-            WriteToFile("s_resume", new List<string>() { "STARK: Resuming audio track playback.", "echo \"CONSOLE : .resume\"" });
-            WriteToFile("s_stop", new List<string>() { "STARK: Stopping audio track playback.", "echo \"CONSOLE : .stop\"" });
+            WriteToFile("s_pause", new List<string>() { "echo \"STARK: Pausing audio track playback.\"", "echo \"CONSOLE : .pause\"" });
+            WriteToFile("s_resume", new List<string>() { "echo \"STARK: Resuming audio track playback.\"", "echo \"CONSOLE : .resume\"" });
+            WriteToFile("s_stop", new List<string>() { "echo \"STARK: Stopping audio track playback.\"", "echo \"CONSOLE : .stop\"" });
             WriteToFile("s_tracklist", trackListContent);
             //todo save track play files
             
@@ -124,6 +130,7 @@ namespace STARK {
                 foreach (TrackListItem item in tracks) {
                     WriteToFile(item.fileName, new List<string> {
                         "echo \"Playing track: \"" + afm.getCollection()[item.id].name,
+                        "echo \"CONSOLE : .play " + item.id + "\"",
                         item.display
                     });
                 }
@@ -172,9 +179,6 @@ namespace STARK {
                     MessageBox.Show(e.Message);
                 }
 
-                if (writer != null) {
-                    writer.Close();
-                }
             }
         }
 
@@ -193,10 +197,6 @@ namespace STARK {
                 catch (IOException e) {
                     MessageBox.Show(e.Message);
                 }
-
-                if (writer != null) {
-                    writer.Close();
-                }
             }
         }
     }
@@ -214,7 +214,7 @@ namespace STARK {
         }
 
         private void buildFileName() {
-            fileName = "s_play " + id;
+            fileName = "s_play_" + id;
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace STARK {
-    public partial class MainWindow : MetroWindow {
+    public partial class MainWindow : MetroWindow, IDisposable {
 
         //VARIABLES
         #region "variables"
@@ -40,12 +40,13 @@ namespace STARK {
         CommandReader cmdReader;
         ConsoleUI conUI;
 
-		bool wiMicrophoneRecording = false;
         int combinedOutputSelectedIndex;
         int loopbackOutputSelectedIndex;
         int inputSelectedIndex;
 
         MainWindow mw;
+
+        string currentSettingsVersion = "1.0.0";
 
         bool loaded = false;
 
@@ -55,6 +56,7 @@ namespace STARK {
         public MainWindow() {
 			InitializeComponent();
 			populateAccentComboBox();
+            CommandManager.synthCmd.changeCommand(TTS_CommandTextBox.Text);
 
 			InitializeMixer(ref mspStandard);
 			InitializeMixer(ref mspLoopback);
@@ -68,7 +70,7 @@ namespace STARK {
 
             //Startup fam
 			qss = new QueuedSpeechSynthesizer(ref mspStandard, ref mspLoopback, 50, -1);
-            afm = new AudioFileManager(@"C:\Users\axynos\Desktop");
+            afm = new AudioFileManager();
             ape = new AudioPlaybackEngine(ref audioFormat, ref mspStandard, ref mspLoopback, ref afm, 10);
 
 			InitializeSynthQueue();
@@ -77,38 +79,122 @@ namespace STARK {
             InitializeAudioItemList();
 
             mw = this;
+
+            loadSettings();
+
             FindSteamApps();
 
 			loaded = true;
         }
 
         private async void FindSteamApps() {
-            //Finds all proccesses that have "Steam" in them
-            Process[] procs = Process.GetProcessesByName("Steam");
-            Process steam = null;
+            if (string.IsNullOrWhiteSpace(PathManager.steamApps)) {
+                //Finds all proccesses that have "Steam" in them
+                Process[] procs = Process.GetProcessesByName("Steam");
+                Process steam = null;
 
-            string steamPath;
-            if (procs.Length > 0) {
-                //Gets actual Steam process
-                steam = procs[0];
+                string steamPath;
+                if (procs.Length > 0) {
+                    //Gets actual Steam process
+                    steam = procs[0];
 
-                //Gets steam directory
-                steamPath = Path.GetDirectoryName(steam.MainModule.FileName);
-                PathManager.steamApps = steamPath + @"\SteamApps";
-                steamAppsFolderPath.Text = PathManager.steamApps;
+                    //Gets steam directory
+                    steamPath = Path.GetDirectoryName(steam.MainModule.FileName);
+                    PathManager.steamApps = steamPath + @"\SteamApps";
+                    steamAppsFolderPath.Text = PathManager.steamApps;
 
+                    //Gets the current game
+                    SourceGame game = SourceGameManager.getByName(Setup_Game.Text);
+                    Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
+
+                    //Init things that need the steamapps folder
+                    conUI = new ConsoleUI(game, ref afm, ref mw);
+                    cmdReader = new CommandReader(ref qss, ref ape, ref afm, game);
+                }
+                else {
+                    //keep looking for the steam process each 500ms
+                    await Task.Delay(new TimeSpan(0, 0, 0, 0, 500));
+                    FindSteamApps();
+                }
+            } else {
                 //Gets the current game
                 SourceGame game = SourceGameManager.getByName(Setup_Game.Text);
-                var cmdText = TTS_CommandTextBox.Text;
                 Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
 
                 //Init things that need the steamapps folder
-                conUI = new ConsoleUI(game, afm, ref mw);
-                cmdReader = new CommandReader(ref qss, ref ape, ref afm, game, cmdText);
-            } else {
-                //keep looking for the steam process each 500ms
-                await Task.Delay(new TimeSpan(0, 0, 0, 0, 500));
-                FindSteamApps();
+                conUI = new ConsoleUI(game, ref afm, ref mw);
+                cmdReader = new CommandReader(ref qss, ref ape, ref afm, game);
+            }
+        }
+
+        public void saveSettings() {
+            var settings = Properties.Settings.Default;
+
+            settings.Synthesizer_Command = CommandManager.synthCmd.getCommand();
+            settings.Synthesizer_Volume = (int) TTS_VolumeSlider.Value;
+            settings.Synthesizer_Rate = (int) TTS_RateSlider.Value;
+
+            settings.Microphone_Volume = (int) Audio_MicVolumeSlider.Value;
+            settings.Microphone_Buffer_Time = (int) Audio_MicBufferSlider.Value;
+
+            settings.Media_Volume = (int) Audio_AFFVolumeSlider.Value;
+            settings.Standard_Volume = (int) Audio_OutputVolumeSlider.Value;
+            settings.Loopback_Volume = (int) Audio_LoopbackVolumeSlider.Value;
+
+            settings.Setup_Microphone_SelectedIndex = Setup_Microphone.SelectedIndex;
+            settings.Setup_Standard_Output_SelectedIndex = Setup_SynthesizerOnly.SelectedIndex;
+            settings.Setup_Standard_Output_SelectedIndex = Setup_OutputCombined.SelectedIndex;
+
+            settings.Setup_SteamApps_Folder = PathManager.steamApps;
+
+            settings.Setup_Audio_Watch_Folder = PathManager.watchFolder;
+
+            settings.Interface_Theme_Accent = AccentComboBox.SelectedIndex;
+
+            settings.Save();
+            settings.Reload();
+        }
+
+        public void loadSettings() {
+            var settings = Properties.Settings.Default;
+            settings.Upgrade();
+
+            if (settings.SettingsVersion == currentSettingsVersion) {
+                TTS_CommandTextBox.Text = settings.Synthesizer_Command;
+                TTS_VolumeSliderBox.Text = "" + settings.Synthesizer_Volume;
+                TTS_RateSliderBox.Text = "" + settings.Synthesizer_Rate;
+
+                Audio_MicVolumeTextBox.Text = "" + settings.Microphone_Volume;
+                changeMicrophoneVolume(settings.Microphone_Volume);
+                Audio_MicBufferTextBox.Text = "" + settings.Microphone_Buffer_Time;
+                changeMicrophoneBuffer(settings.Microphone_Buffer_Time);
+
+                Audio_AFFVolumeTextBox.Text = "" + settings.Media_Volume;
+                Audio_OutputVolumeTextBox.Text = "" + settings.Standard_Volume;
+                changeStandardVolume(settings.Standard_Volume);
+                Audio_LoopbackVolumeTextBox.Text = "" + settings.Loopback_Volume;
+                changeLoopbackVolume(settings.Loopback_Volume);
+
+                Setup_Microphone.SelectedIndex = settings.Setup_Microphone_SelectedIndex;
+                Setup_SynthesizerOnly.SelectedIndex = settings.Setup_Standard_Output_SelectedIndex;
+                Setup_OutputCombined.SelectedIndex = settings.Setup_Standard_Output_SelectedIndex;
+
+                PathManager.steamApps = settings.Setup_SteamApps_Folder;
+                steamAppsFolderPath.Text = settings.Setup_SteamApps_Folder;
+
+                PathManager.watchFolder = settings.Setup_Audio_Watch_Folder;
+                watchFolderPath.Text = settings.Setup_Audio_Watch_Folder;
+                afm.ChangeWatchFolder(PathManager.watchFolder);
+
+                AccentComboBox.SelectedIndex = settings.Interface_Theme_Accent;
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(AccentComboBox.SelectedItem as String), ThemeManager.DetectAppStyle().Item1);
+
+            }
+        }
+
+        public void RenderConUI() {
+            if (conUI != null) {
+                conUI.Render();
             }
         }
 
@@ -136,6 +222,17 @@ namespace STARK {
 				bwpMicrophone.AddSamples(e.Buffer, 0, e.BytesRecorded);
 			}
 		}
+
+        private void STARK_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            saveSettings();
+            if (conUI != null) {
+                conUI.DeleteFiles();
+            }
+        }
+
+        private void donateButton_Click(object sender, RoutedEventArgs e) {
+            Process.Start(new ProcessStartInfo("http://google.com"));
+        }
         #endregion
 
         //CHANGE I/O
@@ -207,7 +304,6 @@ namespace STARK {
 			
 			mspStandard.AddMixerInput(vspMicrophone);
 			wi.StartRecording();
-			wiMicrophoneRecording = true;
 		}
 
 		private void InitializeMixer(ref MixingSampleProvider msp) {
@@ -360,7 +456,9 @@ namespace STARK {
 
             private void TTS_CommandTextBox_TextChanged(object sender, TextChangedEventArgs e) {
             if (loaded) {
-                cmdReader.ChangeSynthCommand((sender as TextBox).Text);
+                CommandManager.synthCmd.changeCommand((sender as TextBox).Text);
+                //saveSettings();
+                if (conUI != null) conUI.Render();
             }
         }
 
@@ -496,7 +594,6 @@ namespace STARK {
                 }
             }
         }
-        #endregion
 
         private void steamAppsFolderSelectButton_Click(object sender, EventArgs e) {
             var fbd = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
@@ -507,6 +604,20 @@ namespace STARK {
                 if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
                     PathManager.steamApps = fbd.SelectedPath;
                     steamAppsFolderPath.Text = fbd.SelectedPath;
+                }
+            }
+        }
+
+        private void watchFolderSelectButton_Click(object sender, RoutedEventArgs e) {
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog()) {
+                var result = fbd.ShowDialog();
+
+                if (DialogResult ?? true) {
+                    if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
+                        PathManager.watchFolder = fbd.SelectedPath;
+                        watchFolderPath.Text = fbd.SelectedPath;
+                        afm.ChangeWatchFolder(PathManager.watchFolder);
+                    }
                 }
             }
         }
@@ -527,11 +638,24 @@ namespace STARK {
                 SourceGameManager.selectedGame.launchGame();
             }
         }
+        #endregion
 
-        private void STARK_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            if (conUI != null) {
-                conUI.DeleteFiles();
-            }
+        //Dispose
+        #region "dispose"
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing) {
+            if (qss != null) qss.Dispose();
+            if (afm != null) afm.Dispose();
+            if (ape != null) ape.Dispose();
+
+            qss = null;
+            afm = null;
+            ape = null;
+        }
+        #endregion
     }
 }

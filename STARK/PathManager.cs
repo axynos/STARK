@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace STARK {
+﻿namespace STARK {
     public static class PathManager {
         public static string steamApps = "";
+        public static string watchFolder = "";
         
     }
 }

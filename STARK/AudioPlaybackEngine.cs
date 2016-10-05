@@ -55,42 +55,58 @@ namespace STARK {
                 bool fromPausedState = false;
                 if (paused) fromPausedState = true;
 
-                if (fromPausedState == false) {
-                    using (var stream = new AudioFileReader(path))
-                    using(var resampler = new MediaFoundationResampler(stream, audioFormat)) {
-                        resampler.ResamplerQuality = 30;
-                        WaveFileWriter.CreateWaveFile16("currentTrack.wav", resampler.ToSampleProvider());
+                if (!string.IsNullOrWhiteSpace(path)) {    
+                    if (fromPausedState == false) {
+                        using (var stream = new AudioFileReader(path))
+                        using(var resampler = new MediaFoundationResampler(stream, audioFormat)) {
+                            resampler.ResamplerQuality = 30;
+                            //var resamplerSampler = 
+                            WaveFileWriter.CreateWaveFile("currentTrack.wav", resampler);
+                        }
                     }
                 }
 
-                var inputStream = File.OpenRead("currentTrack.wav");
-                var reader = new WaveFileReader(inputStream);
-                vsp = new VolumeSampleProvider(reader.ToSampleProvider());
-                vsp.Volume = IntToFloat(masterVolume * (fileVolume / 100));
 
-                var inputStream2 = File.OpenRead("currentTrack.wav");
-                var reader2 = new WaveFileReader(inputStream2);
-                vsp2 = new VolumeSampleProvider(reader2.ToSampleProvider());
-                vsp2.Volume = IntToFloat(masterVolume * (fileVolume / 100));
+                using (var inputStream = File.OpenRead("currentTrack.wav"))
+                using (var inputStream2 = File.OpenRead("currentTrack.wav")) {
+                    var reader = new WaveFileReader(inputStream);
+                    vsp = new VolumeSampleProvider(reader.ToSampleProvider());
+                    vsp.Volume = IntToFloat(masterVolume * (fileVolume / 100));
 
-                if (fromPausedState) {
-                    reader.CurrentTime = savedTime;
-                    reader2.CurrentTime = savedTime;
+                    var reader2 = new WaveFileReader(inputStream2);
+                    vsp2 = new VolumeSampleProvider(reader2.ToSampleProvider());
+                    vsp2.Volume = IntToFloat(masterVolume * (fileVolume / 100));
+
+                    if (fromPausedState) {
+                        reader.CurrentTime = savedTime;
+                        reader2.CurrentTime = savedTime;
+                    }
+
+                    mspStandard.AddMixerInput(vsp);
+                    mspLoopback.AddMixerInput(vsp2);
+
+                    try {
+                        await Task.Delay(reader.TotalTime, token);
+                    }
+                    #pragma warning disable CS0168 // Variable is declared but never used
+                    catch (TaskCanceledException e) {
+                    #pragma warning restore CS0168 // Variable is declared but never used
+                        mspStandard.RemoveMixerInput(vsp);
+                        mspLoopback.RemoveMixerInput(vsp2);
+
+                        if (paused) savedTime = reader.CurrentTime;
+                        if (fromPausedState) fromPausedState = false;
+                    }
+
+                    reader.Close();
+                    reader.Dispose();
+                    reader = null;
+
+                    reader2.Close();
+                    reader2.Dispose();
+                    reader2 = null;
                 }
 
-                mspStandard.AddMixerInput(vsp);
-                mspLoopback.AddMixerInput(vsp2);
-
-                try {
-                    await Task.Delay(reader.TotalTime, token);
-                }
-                catch (TaskCanceledException e) {
-                    mspStandard.RemoveMixerInput(vsp);
-                    mspLoopback.RemoveMixerInput(vsp2);
-
-                    if (paused) savedTime = reader.CurrentTime;
-                    if (fromPausedState) fromPausedState = false;
-                }
 
                 if (fromPausedState) {
                     savedTime = TimeSpan.Zero;
@@ -100,15 +116,9 @@ namespace STARK {
 
                 mspStandard.RemoveMixerInput(vsp);
                 mspLoopback.RemoveMixerInput(vsp2);
-                reader.Close();
-                reader2.Close();
-                inputStream.Close();
-                inputStream2.Close();
 
-                reader.Dispose();
-                reader2.Dispose();
-                inputStream.Dispose();
-                inputStream2.Dispose();
+                vsp = null;
+                vsp2 = null;
                 currentlyPlaying = false;
             }
         }
@@ -135,6 +145,7 @@ namespace STARK {
 
         public void Resume() {
             if (paused) {
+                paused = false;
                 Play("", fileVolume);
             }
         }
@@ -199,7 +210,8 @@ namespace STARK {
         #endregion
 
         public void Dispose() {
-            throw new NotImplementedException();
+            if (tokenSource != null) tokenSource.Dispose();
+            tokenSource = null;
         }
     }
 }
