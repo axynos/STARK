@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Timers;
-using System.Windows;
 
 namespace STARK {
     class CommandReader : IDisposable{
@@ -38,10 +37,9 @@ namespace STARK {
             resumeCmd = CommandManager.resumeCmd;
             stopCmd = CommandManager.stopCmd;
 
-            StartReadLoop();
             Setup(logFile);
+            StartReadLoop();
         }
-
 
         private void parseCommand(string line) {
             if (line != "") {
@@ -92,7 +90,6 @@ namespace STARK {
         private void Setup(string path) {
             //makes a file if there is none
             if (!File.Exists(path)) File.CreateText(path).Close();
-            //var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             reader = new StreamReader(bufferedStream);
             //skips the lines that are in the file on load so we don't get historic commands
@@ -100,7 +97,7 @@ namespace STARK {
         }
 
         private bool ContainsCommand(string line, Command command) {
-            if (line.Contains(command.getCommand())) return true;
+            if (line.Contains(command.getSplitterAsString())) return true;
             else return false;
         }
 

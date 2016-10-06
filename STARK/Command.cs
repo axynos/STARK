@@ -38,5 +38,9 @@
         public string[] getSplitter() {
             return splitter;
         }
+
+        public string getSplitterAsString() {
+            return splitter[0];
+        }
     }
 }

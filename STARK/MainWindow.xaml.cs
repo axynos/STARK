@@ -86,7 +86,6 @@ namespace STARK {
             changeCombinedOutput(Setup_OutputCombined.SelectedIndex);
             changeLoopbackOutput(Setup_SynthesizerOnly.SelectedIndex);
 
-
             FindSteamApps();
 
 			loaded = true;
@@ -147,7 +146,7 @@ namespace STARK {
             settings.Loopback_Volume = (int) Audio_LoopbackVolumeSlider.Value;
 
             settings.Setup_Microphone_SelectedIndex = Setup_Microphone.SelectedIndex;
-            settings.Setup_Standard_Output_SelectedIndex = Setup_SynthesizerOnly.SelectedIndex;
+            settings.Setup_Loopback_Output_SelectedIndex = Setup_SynthesizerOnly.SelectedIndex;
             settings.Setup_Standard_Output_SelectedIndex = Setup_OutputCombined.SelectedIndex;
 
             settings.Setup_SteamApps_Folder = PathManager.steamApps;
@@ -177,7 +176,7 @@ namespace STARK {
                 Audio_LoopbackVolumeTextBox.Text = "" + settings.Loopback_Volume;
 
                 Setup_Microphone.SelectedIndex = settings.Setup_Microphone_SelectedIndex;
-                Setup_SynthesizerOnly.SelectedIndex = settings.Setup_Standard_Output_SelectedIndex;
+                Setup_SynthesizerOnly.SelectedIndex = settings.Setup_Loopback_Output_SelectedIndex;
                 Setup_OutputCombined.SelectedIndex = settings.Setup_Standard_Output_SelectedIndex;
 
                 PathManager.steamApps = settings.Setup_SteamApps_Folder;
@@ -663,13 +662,34 @@ namespace STARK {
         }
 
         protected virtual void Dispose(bool disposing) {
-            if (qss != null) qss.Dispose();
-            if (afm != null) afm.Dispose();
-            if (ape != null) ape.Dispose();
+            if (qss != null) {
+                qss.Dispose();
+                qss = null;
+            }
+            if (afm != null) {
+                afm.Dispose();
+                afm = null;
+            }
+            if (ape != null) {
+                ape.Dispose(); //rip Harambe
+                ape = null;
+            }
+            if (wiMicrophone != null) {
+                wiMicrophone.StopRecording();
+                wiMicrophone.Dispose();
+                wiMicrophone = null;
+            }
+            if (woLoopback != null) {
+                woLoopback.Stop();
+                woLoopback.Dispose();
+                woLoopback = null;
+            }
+            if (woStandard != null) {
+                woStandard.Stop();
+                woStandard.Dispose();
+                woStandard = null;
+            }
 
-            qss = null;
-            afm = null;
-            ape = null;
         }
         #endregion
     }

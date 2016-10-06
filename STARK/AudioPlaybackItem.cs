@@ -2,8 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
+
 
 namespace STARK {
     public class AudioPlaybackItem {
@@ -49,7 +48,7 @@ namespace STARK {
         private AudioFileManager getAFM() {
             AudioFileManager afm = null;
             App.Current.Dispatcher.Invoke(delegate {
-                afm = (Application.Current.MainWindow as MainWindow).getAFM();
+                afm = (App.Current.MainWindow as MainWindow).getAFM();
             });
 
             if (afm == null) return null;

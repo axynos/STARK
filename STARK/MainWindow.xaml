@@ -99,10 +99,10 @@
                         <ListView.View>
                             <GridView AllowsColumnReorder="False">
                                 <GridViewColumn Header="ID" Width="35" DisplayMemberBinding="{Binding id}"/>
-                                <GridViewColumn Header="DEF" Width="40" DisplayMemberBinding="{Binding isDefault}"/>
-                                <GridViewColumn Header="TRACK" Width="150" DisplayMemberBinding="{Binding name}"/>
-                                <GridViewColumn Header="BIND" Width="50" DisplayMemberBinding="{Binding name}"/>
-                                <GridViewColumn Header="TAGS" Width="180" DisplayMemberBinding="{Binding displayTags, UpdateSourceTrigger=PropertyChanged}"/>
+                                <!--<GridViewColumn Header="DEF" Width="40" DisplayMemberBinding="{Binding isDefault}"/>-->
+                                <GridViewColumn Header="TRACK" Width="220" DisplayMemberBinding="{Binding name}"/>
+                                <!--<GridViewColumn Header="BIND" Width="50" DisplayMemberBinding="{Binding name}"/>-->
+                                <GridViewColumn Header="TAGS" Width="200" DisplayMemberBinding="{Binding displayTags, UpdateSourceTrigger=PropertyChanged}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

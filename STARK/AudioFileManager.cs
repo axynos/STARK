@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace STARK {
     public class AudioFileManager : IDisposable{
@@ -52,8 +51,6 @@ namespace STARK {
                     if (watcher == null) SetupWatcher();
                     this.watchFolder = watchFolder;
                     watcher.Path = this.watchFolder;
-
-                    MessageBox.Show(this.watchFolder);
 
                     ClearCollection();
                     LoadCurrentFiles();
