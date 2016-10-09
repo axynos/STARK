@@ -157,7 +157,7 @@ namespace STARK.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int Interface_Theme_Accent {
             get {
                 return ((int)(this["Interface_Theme_Accent"]));

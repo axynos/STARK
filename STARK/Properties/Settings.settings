@@ -36,7 +36,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Interface_Theme_Accent" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="Setup_SteamApps_Folder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

@@ -231,7 +231,7 @@ namespace STARK {
         }
 
         private void donateButton_Click(object sender, RoutedEventArgs e) {
-            Process.Start(new ProcessStartInfo("http://google.com"));
+            Process.Start(new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LB5YVGD9F8U5L"));
         }
         #endregion
 
