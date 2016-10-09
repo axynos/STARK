@@ -48,4 +48,3 @@ F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\STARK.Properties
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\STARK.csproj.GenerateResource.Cache
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\STARK.exe
 F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\STARK.pdb
-F:\_Development\_Desktop\_Visual Studio\STARK\STARK\obj\Release\STARK.csprojResolveAssemblyReference.cache

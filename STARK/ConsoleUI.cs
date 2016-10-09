@@ -138,18 +138,21 @@ namespace STARK {
         }
 
         public void DeleteFiles() {
-            DeleteFile("s_help");
-            DeleteFile("stark");
-            DeleteFile("s_pause");
-            DeleteFile("s_resume");
-            DeleteFile("s_stop");
-            DeleteFile("s_tracklist");
+            if (Directory.Exists(game.cfgDir)) {
+                DeleteFile("s_help");
+                DeleteFile("stark");
+                DeleteFile("s_pause");
+                DeleteFile("s_resume");
+                DeleteFile("s_stop");
+                DeleteFile("s_tracklist");
             
-            if (tracks != null && tracks.Count > 0) {
-                foreach (TrackListItem item in tracks) {
-                    DeleteFile(item.fileName);
+                if (tracks != null && tracks.Count > 0) {
+                    foreach (TrackListItem item in tracks) {
+                        DeleteFile(item.fileName);
+                    }
                 }
             }
+
         }
 
         private void DeleteFile(string fileName) {
@@ -165,20 +168,24 @@ namespace STARK {
         private void WriteToFile(string fileName, List<string> content) {
             string path = game.cfgDir + "\\" + fileName + ".cfg";
 
-            
-            if (!File.Exists(path)) {
-                File.Create(path).Close();
-            }
-
-            using (StreamWriter writer = new StreamWriter(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Delete))) {
-                try {
-                    foreach (string line in content) {
-                        writer.WriteLine(line);
-                    }
-                } catch (IOException e) {
-                    MessageBox.Show(e.Message);
+            try {
+                if (!File.Exists(path)) {
+                    File.Create(path).Close();
                 }
 
+                using (StreamWriter writer = new StreamWriter(File.Open(path, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Delete))) {
+                    try {
+                        foreach (string line in content) {
+                            writer.WriteLine(line);
+                        }
+                    } catch (IOException e) {
+                        
+                    }
+
+                }
+            } catch (IOException e) {
+                
+                mw.setConUItoNull();
             }
         }
 

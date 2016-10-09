@@ -89,11 +89,22 @@ namespace STARK {
 
         private void Setup(string path) {
             //makes a file if there is none
-            if (!File.Exists(path)) File.CreateText(path).Close();
-            var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            reader = new StreamReader(bufferedStream);
-            //skips the lines that are in the file on load so we don't get historic commands
-            reader.ReadToEnd();
+            if (Directory.Exists(selectedGame.cfgDir)) {
+                try {
+                    if (!File.Exists(path)) File.CreateText(path).Close();
+                    var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                    reader = new StreamReader(bufferedStream);
+                    //skips the lines that are in the file on load so we don't get historic commands
+                    reader.ReadToEnd();
+                }
+                catch (IOException e) {
+
+                }
+            } else {
+                App.Current.Dispatcher.Invoke(delegate {
+                    (App.Current.MainWindow as MainWindow).setCmdReadertoNull();
+                });
+            }
         }
 
         private bool ContainsCommand(string line, Command command) {

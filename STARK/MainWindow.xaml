@@ -134,8 +134,8 @@
                     <ComboBox x:Name="Setup_SynthesizerOnly" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_SynthesizerOnly_SelectionChanged"/>
                     <Label x:Name="Setup_SynthesizerOnlyLabel" Content="Loopback Output" HorizontalAlignment="Left" Margin="230,80,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="steamAppsFolderPath" HorizontalAlignment="Left" Height="23" Margin="10,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40" IsEnabled="False"/>
-                    <Label x:Name="Setup_steamAppsLabel" Content="SteamApps Folder (Looking - Open Steam)" HorizontalAlignment="Left" Margin="230,111,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="False" IsEnabled="False" Visibility="Hidden"/>
+                    <Label x:Name="Setup_steamAppsLabel" Content="SteamApps Folder (Looking - Open Steam)" HorizontalAlignment="Left" Margin="270,110,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="True"/>
 
                     <!--Game Selection-->
                     <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged"  />

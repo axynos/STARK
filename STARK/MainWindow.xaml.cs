@@ -55,6 +55,13 @@ namespace STARK {
 
         public MainWindow() {
 			InitializeComponent();
+
+            //DEBUG CODE
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+
+            //
 			populateAccentComboBox();
             CommandManager.synthCmd.changeCommand(TTS_CommandTextBox.Text);
             mw = this;
@@ -89,6 +96,18 @@ namespace STARK {
             FindSteamApps();
 
 			loaded = true;
+        }
+
+        //DEBUG
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args) {
+            Exception e = (Exception)args.ExceptionObject;
+            MessageBox.Show("Handler Caught: " + e.Message);
+            MessageBox.Show("Stacktrace: " + e.StackTrace);
+            if (e.InnerException != null) {
+                MessageBox.Show("InnerException" + e.InnerException.Message);
+                MessageBox.Show("IE ST: " + e.InnerException.StackTrace);
+            }
+            MessageBox.Show("Terminating: " + args.IsTerminating);
         }
 
         private async void FindSteamApps() {
@@ -126,8 +145,10 @@ namespace STARK {
                 Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
 
                 //Init things that need the steamapps folder
-                conUI = new ConsoleUI(game, ref afm, ref mw);
-                cmdReader = new CommandReader(ref qss, ref ape, ref afm, game);
+                if (!Directory.Exists(PathManager.steamApps + SourceGameManager.selectedGame.dir)) {
+                    conUI = new ConsoleUI(game, ref afm, ref mw);
+                    cmdReader = new CommandReader(ref qss, ref ape, ref afm, game);
+                }
             }
         }
 
@@ -610,21 +631,27 @@ namespace STARK {
         }
 
         private void steamAppsFolderSelectButton_Click(object sender, EventArgs e) {
-            //var fbd = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            ////true if clicks OK, false otherwise
-            //var result = fbd.ShowDialog();
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog()) {
+                fbd.ShowDialog();
+                //true if clicks OK, false otherwise
+                if (DialogResult ?? true) {
+                    if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
+                        PathManager.steamApps = fbd.SelectedPath;
+                        steamAppsFolderPath.Text = fbd.SelectedPath;
 
-            //if (result == true) {
-            //    if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
-            //        PathManager.steamApps = fbd.SelectedPath;
-            //        steamAppsFolderPath.Text = fbd.SelectedPath;
-            //    }
-            //}
+                        conUI = null;
+                        conUI = new ConsoleUI(SourceGameManager.selectedGame, ref afm, ref mw);
+
+                        cmdReader = null;
+                        cmdReader = new CommandReader(ref qss, ref ape, ref afm, SourceGameManager.selectedGame);
+                    }
+                }
+            }
         }
 
         private void watchFolderSelectButton_Click(object sender, RoutedEventArgs e) {
             using (var fbd = new System.Windows.Forms.FolderBrowserDialog()) {
-                var result = fbd.ShowDialog();
+                fbd.ShowDialog();
 
                 if (DialogResult ?? true) {
                     if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
@@ -692,5 +719,13 @@ namespace STARK {
 
         }
         #endregion
+
+        public void setConUItoNull() {
+            conUI = null;
+        }
+
+        public void setCmdReadertoNull() {
+            cmdReader = null;
+        }
     }
 }
