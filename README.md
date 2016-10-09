@@ -1,6 +1,8 @@
 ![Logo Image](http://i.imgur.com/Nryqfgk.pngg)
 ##Source Audio Mixer and TTS
 
+##[DOWNLOAD](https://github.com/axynos/STARK/releases/tag/1.0.0)
+
 STARK is an application that allows you to read commands from Source games and playback audio files, or use Text-to-Speech.
 This is a project that evolved from a proof-of-concept I made a while ago using AutoHotKey [link]().
 
@@ -10,7 +12,7 @@ This is a project that evolved from a proof-of-concept I made a while ago using 
 * [Virtual Audio Cable](http://software.muzychenko.net/eng/vac.htm)
 
 ###How to set up
-Either watch this video or follow the steps below.
+[Either watch this video or follow the steps below.](https://www.youtube.com/watch?v=fi5I6bzy2f8&feature=youtu.be)
 
 1. Download [STARK](http://google.com) and Virtual Audio Cable
 2. Install 32/64 bit version of Virtual Audio Cable according to your Windows version
