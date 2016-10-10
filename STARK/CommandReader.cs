@@ -108,7 +108,7 @@ namespace STARK {
         }
 
         private bool ContainsCommand(string line, Command command) {
-            if (line.Contains(command.getSplitterAsString())) return true;
+            if (line.Contains(command.getSplitter()[0]) || line.Contains(command.getSplitter()[1])) return true;
             else return false;
         }
 
@@ -151,7 +151,10 @@ namespace STARK {
         #region "Getters"
         //use only with actual fucking parts[0], not some random shit, you fuck
         private string getPlayer(string input) {
-            return new StringBuilder(input).Remove(input.Length - 2, 2).ToString();
+            if (input.Contains("(Terrorist)")) return new StringBuilder(input).Remove(0, "(Terrorist)".Length-1).ToString();
+            else if (input.Contains("(Counter-Terrorist)")) return new StringBuilder(input).Remove(0, "(Counter - Terrorist)".Length-1).ToString();
+
+            return input;
         }
 
         private string[] getParts(string line, Command command) {

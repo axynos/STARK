@@ -28,7 +28,7 @@
         /// <param name="cmd">The identifier that the splitter is based on.</param>
         private void ConstructCommand(string cmd) {
             command = cmd;
-            splitter = new string[] { " : " + command };
+            splitter = new string[] { ": " + command, ":  " + command };
         }
 
         public string getCommand() {
