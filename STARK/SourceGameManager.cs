@@ -54,7 +54,7 @@ namespace STARK {
                 @"\hl2mp\cfg",                              //cfgDir
                 @"\hl2mp",                                  //libDir
                 "hl2",                                      //exe
-                320                                         //id
+                320                                          //id
             );
 
         public static readonly SourceGame l4d = new SourceGame
