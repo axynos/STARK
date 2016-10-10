@@ -42,7 +42,7 @@ namespace STARK {
             trackListContent = new List<string>();
             helpContent = new List<string>();
             tracks = new List<TrackListItem>();
-
+ 
             //Create help menu
             AddLines(ref helpContent, new string[] {
                 "clear",
