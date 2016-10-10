@@ -101,8 +101,9 @@ namespace STARK {
         //DEBUG
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args) {
             Exception e = (Exception)args.ExceptionObject;
+
             var message = new System.Text.StringBuilder();
-            message.Append("Handler Caught: " + e.Message);
+            message.AppendLine("Handler Caught: " + e.Message);
             message.AppendLine("Stacktrace: " + e.StackTrace);
             if (e.InnerException != null) {
                 message.AppendLine("InnerException" + e.InnerException.Message);

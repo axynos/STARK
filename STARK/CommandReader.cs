@@ -26,7 +26,7 @@ namespace STARK {
 
         public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
-            this.logFile = selectedGame.libDir + @"\!tts-axynos.slf";
+            this.logFile = selectedGame.libDir + @"\!tts-axynos.txt";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
@@ -53,20 +53,7 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, playCmd)) {
-                    if (ape != null) {
-                        var parts = getParts(line, playCmd);
-                        string player = getPlayer(parts[0]);
-                        //Removes the leading space from the command arg
-                        string arg1 = new StringBuilder(parts[1]).Remove(0, 1).ToString();
-
-                        int id;
-                        if (int.TryParse(arg1, out id) && id >= 0) { 
-                            if (id < afm.getCollection().Count) {
-                                ape.Stop(); //you can't stop Harambe
-                                ape.Play(id);
-                            }
-                        }
-                    }
+                    TryParsePlay(line);
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
                     ape.Pause();
@@ -123,6 +110,71 @@ namespace STARK {
             }
             loop.Start();
         }
+
+        private void TryParsePlay(string line) {
+            if (ape != null) {
+                var parts = getParts(line, playCmd);
+                string player = getPlayer(parts[0]);
+                string arg = parts[1];
+
+                Func<bool> tryPlayByTitle = () => {
+                    if (!string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg)) {
+                        foreach (AudioPlaybackItem item in afm.getCollection()) {
+                            if (item.name.ToLower() == arg.ToLower()) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                };
+                bool canPlayByTitle = tryPlayByTitle();
+
+                Func<bool> tryPlayByTag = () => {
+                    if (!string.IsNullOrEmpty(arg) && !string.IsNullOrWhiteSpace(arg)) {
+                        foreach (AudioPlaybackItem item in afm.getCollection()) {
+                            foreach (string tag in item.tags) {
+                                if (tag.ToLower() == arg.ToLower()) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+
+                    return false;
+                };
+                bool canPlayByTag = tryPlayByTag();
+
+                string arg1 = new StringBuilder(parts[1]).ToString();
+                int id;
+                if (int.TryParse(arg1, out id) && id >= 0) {
+                    if (id < afm.getCollection().Count) {
+                        ape.Stop(); //you can't stop Harambe
+                        ape.Play(id);
+                    }
+                } else if (canPlayByTitle) {
+                    foreach (AudioPlaybackItem item in afm.getCollection()) {
+                        if (item.name.ToLower() == parts[1].ToLower()) {
+                            ape.Stop();
+                            ape.Play(item.id);
+                        }
+                    }
+                } else if (canPlayByTag) {
+                    foreach (AudioPlaybackItem item in afm.getCollection()) {
+                        foreach (string tag in item.tags) {
+                            if (tag.ToLower() == arg.ToLower()) {
+                                ape.Stop();
+                                ape.Play(item.id);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        
 
         //CHANGE METHODS
         #region "Change Methods"

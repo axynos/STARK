@@ -3,12 +3,14 @@
 
         string command { get; set; }
         string[] splitter { get; set; }
+        bool hasArgs = false;
 
         /// <summary>
         /// Creates a command and it's splitter based on the command identifier given.
         /// </summary>
         /// <param name="command">The command identifier</param>
-        public Command(string command) {
+        public Command(string command, bool hasArgs) {
+            this.hasArgs = hasArgs;
             ConstructCommand(command);
         }
 
@@ -28,7 +30,12 @@
         /// <param name="cmd">The identifier that the splitter is based on.</param>
         private void ConstructCommand(string cmd) {
             command = cmd;
-            splitter = new string[] { ": " + command, ":  " + command };
+            //Chat Splitter, command , args splitter
+            if (hasArgs) {
+                splitter = new string[] { ": " + command + " ", ":  " + command + " " };
+            } else {
+                splitter = new string[] { ": " + command, ":  " + command };
+            }
         }
 
         public string getCommand() {

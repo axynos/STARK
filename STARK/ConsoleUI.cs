@@ -46,30 +46,32 @@ namespace STARK {
             //Create help menu
             AddLines(ref helpContent, new string[] {
                 "clear",
-                "echo \"============ STARK by axynos ============\"",
+                "echo \"================ STARK by axynos ================\"",
                 "echo \"\"",
                 "echo \"     + Available *CONSOLE* commands:\"",
                 "echo \"\"",
                 "echo \"      * Media\"",
                 "echo \"        - exec s_play_<id> - play file by id\"",
-                "echo \"        - s_pause     - pause playback\"",
-                "echo \"        - s_resume    - resume playback\"",
-                "echo \"        - s_stop      - stop playback\"",
-                "echo \"        - s_tracklist - show tracklist\"",
-                "echo \"        - s_help      - show this menu\"",
+                "echo \"        - s_pause       - pause playback\"",
+                "echo \"        - s_resume      - resume playback\"",
+                "echo \"        - s_stop        - stop playback\"",
+                "echo \"        - s_tracklist   - show tracklist\"",
+                "echo \"        - s_help        - show this menu\"",
                 "echo \"\"",
                 "echo \"     + Available *CHAT* commands:\"",
                 "echo \"\"",
                 "echo \"      * Media\"",
-                "echo \"        - .play <id>  - play file by id\"",
-                "echo \"        - .pause      - pause playback\"",
-                "echo \"        - .resume     - resume playback\"",
-                "echo \"        - .stop       - stop playback\"",
+                "echo \"        - .play <id>    - play file by id\"",
+                "echo \"        - .play <name>  - play file by name\"",
+                "echo \"        - .play <tag>   - play file by tag\"",
+                "echo \"        - .pause        - pause playback\"",
+                "echo \"        - .resume       - resume playback\"",
+                "echo \"        - .stop         - stop playback\"",
                 "echo \"\"",
                 "echo \"      * Text-to-Speech\"",
                 "echo \"        - " + mw.TTS_CommandTextBox.Text + " <text> - say text from tts\"",
                 "echo \"\"",
-                "echo \"=========================================\""
+                "echo \"=================================================\""
             });
 
             //Create startup
@@ -86,7 +88,7 @@ namespace STARK {
 
             //Create list of tracks
             foreach (AudioPlaybackItem item in afm.getCollection()) {
-                tracks.Add(new TrackListItem("echo \"     " + item.id + " - " + item.name + "\"", item.id));
+                tracks.Add(new TrackListItem("echo \"     " + item.id + " :: " + item.name + " :: " + item.displayTags + "\"", item.id));
             }
 
             //Create tracklist

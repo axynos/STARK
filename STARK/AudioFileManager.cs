@@ -123,8 +123,8 @@ namespace STARK {
 
             if (IsAudioFile(ext)) {
                 //yes i know i could just change the name, but i'm wayyyy to lazy and tired
-                RemoveFromCollection(e.FullPath);
-                AddToCollection(new AudioPlaybackItem("", e.FullPath, 100));
+                ClearCollection();
+                LoadCurrentFiles();
                 App.Current.Dispatcher.Invoke(delegate {
                     (App.Current.MainWindow as MainWindow).RenderConUI();
                 });
