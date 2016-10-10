@@ -101,13 +101,16 @@ namespace STARK {
         //DEBUG
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args) {
             Exception e = (Exception)args.ExceptionObject;
-            MessageBox.Show("Handler Caught: " + e.Message);
-            MessageBox.Show("Stacktrace: " + e.StackTrace);
+            var message = new System.Text.StringBuilder();
+            message.Append("Handler Caught: " + e.Message);
+            message.AppendLine("Stacktrace: " + e.StackTrace);
             if (e.InnerException != null) {
-                MessageBox.Show("InnerException" + e.InnerException.Message);
-                MessageBox.Show("IE ST: " + e.InnerException.StackTrace);
+                message.AppendLine("InnerException" + e.InnerException.Message);
+                message.AppendLine("IE ST: " + e.InnerException.StackTrace);
             }
-            MessageBox.Show("Terminating: " + args.IsTerminating);
+            message.AppendLine("Terminating: " + args.IsTerminating);
+            message.AppendLine("Target Site:" + e.TargetSite);
+            MessageBox.Show(message.ToString());
         }
 
         private async void FindSteamApps() {
