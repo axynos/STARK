@@ -1,7 +1,7 @@
 ![Logo Image](http://i.imgur.com/Nryqfgk.pngg)
 ##Source Audio Mixer and TTS
 
-##[DOWNLOAD](https://github.com/axynos/STARK/releases/tag/1.0.1-Hotfix)
+##[DOWNLOAD](https://github.com/axynos/STARK/releases/latest)
 
 STARK is an application that allows you to read commands from Source games and playback audio files, or use Text-to-Speech.
 This is a project that evolved from a proof-of-concept I made a while ago using AutoHotKey [link](https://github.com/axynos/CSGO-Text-To-Speech).
