@@ -42,7 +42,7 @@ namespace STARK {
             trackListContent = new List<string>();
             helpContent = new List<string>();
             tracks = new List<TrackListItem>();
-
+ 
             //Create help menu
             AddLines(ref helpContent, new string[] {
                 "clear",
@@ -80,7 +80,7 @@ namespace STARK {
                 "alias s_stop \"exec s_stop\"",
                 "alias s_tracklist \"exec s_tracklist\"",
                 "alias s_help \"exec s_help\"",
-                "con_logfile !tts-axynos.slf",
+                "con_logfile !tts-axynos.txt",
                 "exec s_help"
             });
 

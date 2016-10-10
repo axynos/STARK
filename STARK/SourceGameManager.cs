@@ -22,8 +22,8 @@ namespace STARK {
                 "Counter-Strike: Source",                   //name
                 @"\common\Counter-Strike Source",           //dir
                 @"\cstrike\cfg",                            //cfgDir
-                @"\css",                                    //libDir
-                "hl2",                                         //exename
+                @"\cstrike",                                //libDir
+                "hl2",                                      //exename
                 240                                         //id
             );
 
@@ -32,8 +32,8 @@ namespace STARK {
                 "Team Fortress 2",                          //name
                 @"\common\Team Fortress 2",                 //dir
                 @"\tf\cfg",                                 //cfgDir
-                @"\tf2",                                    //libDir
-                "hl2",                                         //exe
+                @"\tf",                                     //libDir
+                "hl2",                                      //exe
                 440                                         //id
             );
 
@@ -42,8 +42,8 @@ namespace STARK {
                 "Garry's Mod",                              //name
                 @"\common\GarrysMod",                       //dir
                 @"\garrysmod\cfg",                          //cfgDir
-                @"\gmod",                                   //libDir
-                "hl2",                                         //exe
+                @"\garrysmod",                              //libDir
+                "hl2",                                      //exe
                 4000                                        //id
             );
 
@@ -52,9 +52,9 @@ namespace STARK {
                 "Half-Life 2 DeathMatch",                   //name
                 @"\common\half-life 2 deathmatch",          //dir
                 @"\hl2mp\cfg",                              //cfgDir
-                @"\hl2dm",                                  //libDir
-                "hl2",                                         //exe
-                320                                         //id
+                @"\hl2mp",                                  //libDir
+                "hl2",                                      //exe
+                320                                          //id
             );
 
         public static readonly SourceGame l4d = new SourceGame
@@ -62,8 +62,8 @@ namespace STARK {
                 "Left 4 Dead",                              //name
                 @"\common\Left 4 Dead",                     //dir
                 @"\left4dead\cfg",                          //cfgDir
-                @"\l4d",                                    //libDir
-                "hl2",                                         //exe
+                @"\left4dead",                              //libDir
+                "hl2",                                      //exe
                 500                                         //id
             );
 
@@ -72,7 +72,7 @@ namespace STARK {
                 "Left 4 Dead 2",                            //name
                 @"\common\Left 4 Dead 2",                   //dir
                 @"\left4dead2\cfg",                         //cfgDir
-                @"\l4d2",                                   //libDir
+                @"\left4dead2",                             //libDir
                 "left4dead2",                               //exe
                 550                                         //id
             );
@@ -82,8 +82,8 @@ namespace STARK {
                 "Day of Defeat Source",                     //name
                 @"\common\day of defeat source",            //dir
                 @"\dod\cfg",                                //cfgDir
-                @"\dods",                                   //libDir
-                "hl2",                                         //exe
+                @"\dod",                                    //libDir
+                "hl2",                                      //exe
                 300                                         //id
             );
 

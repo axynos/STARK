@@ -60,7 +60,7 @@ namespace STARK {
                         string arg1 = new StringBuilder(parts[1]).Remove(0, 1).ToString();
 
                         int id;
-                        if (int.TryParse(arg1, out id) && id >= 0) {
+                        if (int.TryParse(arg1, out id) && id >= 0) { 
                             if (id < afm.getCollection().Count) {
                                 ape.Stop(); //you can't stop Harambe
                                 ape.Play(id);
