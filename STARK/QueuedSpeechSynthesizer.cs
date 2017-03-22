@@ -103,7 +103,7 @@ namespace STARK {
                 mspStandard.AddMixerInput(vsp);
 				mspLoopback.AddMixerInput(vsp2);
 
-				try {
+                    try {
 					await Task.Delay(reader.TotalTime, token); //Wait for current playback to finish
 				}
 #pragma warning disable CS0168 // Variable is declared but never used

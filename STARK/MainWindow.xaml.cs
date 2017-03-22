@@ -43,6 +43,7 @@ namespace STARK {
         int combinedOutputSelectedIndex;
         int loopbackOutputSelectedIndex;
         int inputSelectedIndex;
+        static public bool whitelistedOnly;
 
         MainWindow mw;
 
@@ -95,7 +96,22 @@ namespace STARK {
 
             FindSteamApps();
 
-			loaded = true;
+            if (!File.Exists("blocked_users.txt"))
+            {
+                File.Create("blocked_users.txt");
+            }
+
+            if (!File.Exists("blocked_words.txt"))
+            {
+                File.Create("blocked_words.txt");
+            }
+
+            if (!File.Exists("whitelisted_users.txt"))
+            {
+                File.Create("whitelisted_users.txt");
+            }
+
+            loaded = true;
         }
 
         //DEBUG
@@ -493,7 +509,22 @@ namespace STARK {
             }
         }
 
-            private void TTS_CommandTextBox_TextChanged(object sender, TextChangedEventArgs e) {
+        private void whitelistToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnly = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnly = false;
+                }
+            }
+        }
+
+        private void TTS_CommandTextBox_TextChanged(object sender, TextChangedEventArgs e) {
             if (loaded) {
                 CommandManager.synthCmd.changeCommand((sender as TextBox).Text);
                 //saveSettings();

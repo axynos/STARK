@@ -26,7 +26,7 @@ namespace STARK {
 
         public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
-            this.logFile = selectedGame.libDir + @"\!tts-axynos.txt";
+            this.logFile = @"D:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\!tts-axynos.txt";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
@@ -49,7 +49,53 @@ namespace STARK {
                         string prompt = parts[1];
                         string player = getPlayer(parts[0]);
 
-                        qss.AddToQueue(new QSSQueueItem(prompt, player));
+                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
+                        string[] blocked_words = File.ReadAllLines("blocked_words.txt");
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int blockedUser = 0;
+                        int blockedWord = 0;
+                        int whitelistedUser = 0;
+
+                        if (MainWindow.whitelistedOnly == true)
+                        {
+                            for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                            {
+                                if (player.Contains(whitelisted_users[i]))
+                                {
+                                    whitelistedUser++;
+                                }
+                                if (whitelistedUser == 1)
+                                {
+                                    qss.AddToQueue(new QSSQueueItem(prompt, player));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i <= blocked_users.Length - 1; i++)
+                            {
+                                if (player.Contains(blocked_users[i]))
+                                {
+                                    blockedUser = 1;
+                                }
+                            }
+
+                            for (int i = 0; i <= blocked_words.Length - 1; i++)
+                            {
+                                if (prompt.Contains(blocked_words[i]))
+                                {
+                                    blockedWord = 1;
+                                }
+                            }
+
+                            if (blockedUser == 0)
+                            {
+                                if (blockedWord == 0)
+                                {
+                                    qss.AddToQueue(new QSSQueueItem(prompt, player));
+                                }
+                            }
+                        }
                     }
                 }
                 else if (ContainsCommand(line, playCmd)) {

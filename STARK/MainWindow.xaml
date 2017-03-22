@@ -59,6 +59,7 @@
                     </ListView>
                     <TextBox x:Name="TTS_AddTextBox" HorizontalAlignment="Left" Height="29" Margin="10,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" UndoLimit="5" KeyUp="TTS_AddTextBox_KeyUp"/>
                     <Button x:Name="TTS_Pause_Copy" Content="Add to queue" HorizontalAlignment="Left" Margin="340,177,0,0" VerticalAlignment="Top" Width="125" BorderThickness="0" Click="TTS_Add_Click" Height="29" Padding="10,2,10,5"/>
+                    <CheckBox x:Name="whitelistToggle" Content="Whitelisted Only" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" Checked="whitelistToggle_Checked" Unchecked="whitelistToggle_Checked"/>
 
 
                 </Grid>
