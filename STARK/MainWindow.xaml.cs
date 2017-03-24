@@ -165,7 +165,7 @@ namespace STARK {
                 Setup_steamAppsLabel.Content = "SteamApps Folder (Found)";
 
                 //Init things that need the steamapps folder
-                if (!Directory.Exists(PathManager.steamApps + SourceGameManager.selectedGame.dir)) {
+                if (!Directory.Exists(PathManager.steamApps + PathManager.steamApps + @"\common\Team Fortress 2")) {
                     conUI = new ConsoleUI(game, ref afm, ref mw);
                     cmdReader = new CommandReader(ref qss, ref ape, ref afm, game);
                 }

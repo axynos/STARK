@@ -139,10 +139,10 @@
                     <Button x:Name="steamAppsFolderSelectButton" Content="..." HorizontalAlignment="Left" Margin="235,111,0,0" VerticalAlignment="Top" Width="30" Height="26" FontSize="14" Padding="5,4" Click="steamAppsFolderSelectButton_Click" IsHitTestVisible="True"/>
 
                     <!--Game Selection-->
-                    <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged"  />
-                    <Label x:Name="Setup_GameLabel" Content="Current Game" HorizontalAlignment="Left" Margin="301,173,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="Setup_GameLaunch" Content="Launch" HorizontalAlignment="Left" Margin="235,173,0,0" VerticalAlignment="Top" Width="61" Height="25" FontSize="14" Padding="5,2,5,3" Click="Setup_GameLaunch_Click" VerticalContentAlignment="Center"/>
-                    
+                    <ComboBox x:Name="Setup_Game" DisplayMemberPath="name" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="220" Height="25" SelectionChanged="Setup_Game_SelectionChanged" IsEnabled="False" Visibility="Hidden"  />
+                    <Label x:Name="Setup_GameLabel" Content="Current Game" HorizontalAlignment="Left" Margin="301,173,0,0" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden"/>
+                    <Button x:Name="Setup_GameLaunch" Content="Launch" HorizontalAlignment="Left" Margin="235,173,0,0" VerticalAlignment="Top" Width="61" Height="25" FontSize="14" Padding="5,2,5,3" Click="Setup_GameLaunch_Click" VerticalContentAlignment="Center" IsEnabled="False" Visibility="Hidden"/>
+
                     <!--Watch Folder Selection-->
                     <TextBox x:Name="watchFolderPath" HorizontalAlignment="Left" Height="23" Margin="10,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" UndoLimit="40" IsEnabled="False"/>
                     <Label x:Name="watchFolderLabel" Content="Audio Watch Folder" HorizontalAlignment="Left" Margin="270,141,0,0" VerticalAlignment="Top"/>

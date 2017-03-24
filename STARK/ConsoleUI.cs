@@ -140,7 +140,7 @@ namespace STARK {
         }
 
         public void DeleteFiles() {
-            if (Directory.Exists(game.cfgDir)) {
+            if (Directory.Exists(PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg")) {
                 DeleteFile("s_help");
                 DeleteFile("stark");
                 DeleteFile("s_pause");
@@ -158,7 +158,7 @@ namespace STARK {
         }
 
         private void DeleteFile(string fileName) {
-            string path = game.cfgDir + "\\" + fileName + ".cfg";
+            string path = PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg" + "\\" + fileName + ".cfg";
 
             try {
                 if (File.Exists(path)) File.Delete(path);
@@ -168,7 +168,7 @@ namespace STARK {
         }
 
         private void WriteToFile(string fileName, List<string> content) {
-            string path = game.cfgDir + "\\" + fileName + ".cfg";
+            string path = PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg" + "\\" + fileName + ".cfg";
 
             try {
                 if (!File.Exists(path)) {
@@ -192,7 +192,7 @@ namespace STARK {
         }
 
         private void WriteToFile(string fileName, string content) {
-            string path = game.cfgDir + "\\" + fileName + ".cfg";
+            string path = PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg" + "\\" + fileName + ".cfg";
 
 
             if (!File.Exists(path)) {

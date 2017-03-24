@@ -26,7 +26,7 @@ namespace STARK {
 
         public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
-            this.logFile = @"D:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\!tts-axynos.txt";
+            this.logFile = PathManager.steamApps + @"\common\Team Fortress 2\tf\!tts-axynos.txt";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
@@ -99,16 +99,76 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, playCmd)) {
-                    TryParsePlay(line);
+                    var parts = getParts(line, synthCmd);
+                    string player = getPlayer(parts[0]);
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    {
+                        if (player.Contains(whitelisted_users[i]))
+                        {
+                            whitelistedUser++;
+                        }
+                        if (whitelistedUser == 1)
+                        {
+                            TryParsePlay(line);
+                        }
+                    }
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
-                    ape.Pause();
+                    var parts = getParts(line, synthCmd);
+                    string player = getPlayer(parts[0]);
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    {
+                        if (player.Contains(whitelisted_users[i]))
+                        {
+                            whitelistedUser++;
+                        }
+                        if (whitelistedUser == 1)
+                        {
+                            ape.Pause();
+                        }
+                    }
                 }
                 else if (ContainsCommand(line, resumeCmd)) {
-                    ape.Resume();
+                    var parts = getParts(line, synthCmd);
+                    string player = getPlayer(parts[0]);
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    {
+                        if (player.Contains(whitelisted_users[i]))
+                        {
+                            whitelistedUser++;
+                        }
+                        if (whitelistedUser == 1)
+                        {
+                            ape.Resume();
+                        }
+                    }
                 }
                 else if (ContainsCommand(line, stopCmd)) {
-                    ape.Stop();
+                    var parts = getParts(line, synthCmd);
+                    string player = getPlayer(parts[0]);
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    {
+                        if (player.Contains(whitelisted_users[i]))
+                        {
+                            whitelistedUser++;
+                        }
+                        if (whitelistedUser == 1)
+                        {
+                            ape.Stop();
+                        }
+                    }
                 }
             }
         }
@@ -122,7 +182,7 @@ namespace STARK {
 
         private void Setup(string path) {
             //makes a file if there is none
-            if (Directory.Exists(selectedGame.cfgDir)) {
+            if (Directory.Exists(PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg")) {
                 try {
                     if (!File.Exists(path)) File.CreateText(path).Close();
                     var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
