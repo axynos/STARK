@@ -1,7 +1,7 @@
 ![Logo Image](http://i.imgur.com/Nryqfgk.pngg)
 ##Source Audio Mixer and TTS
 
-(Download Grim's version by clicking on the "DOWNLOAD EXE FILE HERE" folder and download the exe file in it)
+(Grim's Version) ##[DOWNLOAD](https://github.com/GrimReaperFloof/STARK/blob/master/DOWNLOAD%20EXE%20FILE%20HERE/STARK.exe?raw=true)
 
 (Original Version) ##[DOWNLOAD](https://github.com/axynos/STARK/releases/latest)
 
