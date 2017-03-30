@@ -56,7 +56,7 @@ namespace STARK {
                         int blockedWord = 0;
                         int whitelistedUser = 0;
 
-                        if (MainWindow.whitelistedOnly == true)
+                        if (MainWindow.whitelistedOnlyTTS == true)
                         {
                             for (int i = 0; i <= whitelisted_users.Length - 1; i++)
                             {
@@ -99,75 +99,103 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, playCmd)) {
-                    var parts = getParts(line, synthCmd);
-                    string player = getPlayer(parts[0]);
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    if (MainWindow.whitelistedOnlyAudio == true)
                     {
-                        if (player.Contains(whitelisted_users[i]))
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
                         {
-                            whitelistedUser++;
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                TryParsePlay(line);
+                            }
                         }
-                        if (whitelistedUser == 1)
-                        {
-                            TryParsePlay(line);
-                        }
+                    }
+                    else
+                    {
+                        TryParsePlay(line);
                     }
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
-                    var parts = getParts(line, synthCmd);
-                    string player = getPlayer(parts[0]);
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    if (MainWindow.whitelistedOnlyAudio == true)
                     {
-                        if (player.Contains(whitelisted_users[i]))
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
                         {
-                            whitelistedUser++;
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                ape.Pause();
+                            }
                         }
-                        if (whitelistedUser == 1)
-                        {
-                            ape.Pause();
-                        }
+                    }
+                    else
+                    {
+                        ape.Pause();
                     }
                 }
                 else if (ContainsCommand(line, resumeCmd)) {
-                    var parts = getParts(line, synthCmd);
-                    string player = getPlayer(parts[0]);
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    if (MainWindow.whitelistedOnlyAudio == true)
                     {
-                        if (player.Contains(whitelisted_users[i]))
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
                         {
-                            whitelistedUser++;
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                ape.Resume();
+                            }
                         }
-                        if (whitelistedUser == 1)
-                        {
-                            ape.Resume();
-                        }
+                    }
+                    else
+                    {
+                        ape.Resume();
                     }
                 }
                 else if (ContainsCommand(line, stopCmd)) {
-                    var parts = getParts(line, synthCmd);
-                    string player = getPlayer(parts[0]);
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                    if (MainWindow.whitelistedOnlyAudio == true)
                     {
-                        if (player.Contains(whitelisted_users[i]))
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
                         {
-                            whitelistedUser++;
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                ape.Stop();
+                            }
                         }
-                        if (whitelistedUser == 1)
-                        {
-                            ape.Stop();
-                        }
+                    }
+                    else
+                    {
+                        ape.Stop();
                     }
                 }
             }

@@ -43,7 +43,8 @@ namespace STARK {
         int combinedOutputSelectedIndex;
         int loopbackOutputSelectedIndex;
         int inputSelectedIndex;
-        static public bool whitelistedOnly;
+        static public bool whitelistedOnlyTTS;
+        static public bool whitelistedOnlyAudio = true;
 
         MainWindow mw;
 
@@ -509,17 +510,32 @@ namespace STARK {
             }
         }
 
-        private void whitelistToggle_Checked(object sender, RoutedEventArgs e)
+        private void whitelistToggleTTS_Checked(object sender, RoutedEventArgs e)
         {
             if (loaded)
             {
                 if ((sender as CheckBox).IsChecked ?? true)
                 {
-                    whitelistedOnly = true;
+                    whitelistedOnlyTTS = true;
                 }
                 else if ((sender as CheckBox).IsChecked == false)
                 {
-                    whitelistedOnly = false;
+                    whitelistedOnlyTTS = false;
+                }
+            }
+        }
+
+        private void whitelistToggleAudio_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyAudio = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyAudio = false;
                 }
             }
         }
