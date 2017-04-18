@@ -82,7 +82,10 @@ namespace STARK {
 
                             for (int i = 0; i <= blocked_words.Length - 1; i++)
                             {
-                                if (prompt.Contains(blocked_words[i]))
+                                string lowercasePrompt = prompt.ToLower();
+                                string lowercaseBlocked_word = blocked_words[i].ToLower();
+
+                                if (lowercasePrompt.Contains(lowercaseBlocked_word))
                                 {
                                     blockedWord = 1;
                                 }
