@@ -2,7 +2,7 @@
   "name": "STARK",
   "productName": "STARK",
   "version": "2.0.0",
-  "description": "A sound mixing multitool & speech synthesizer for source-based games.",
+  "description": "A sound mixer & speech synthesizer for source-based games.",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 node --trace-warnings ./test/runTests.js",

@@ -2,7 +2,7 @@
   "name": "STARK",
   "productName": "STARK",
   "version": "1.0.0",
-  "description": "A sound mixing multitool & speech synthesizer for source-based games.",
+  "description": "A sound mixer multitool & speech synthesizer for source-based games.",
   "main": "./main.js",
   "author": {
     "name": "Silver Sten Kruus",
