@@ -1,0 +1,11 @@
+.titlebar {
+  background-color: blue;
+  width: 100%;
+  height: 6.5vh;
+}
+
+.titleContainer {
+  height: 100%;
+  background-color: red;
+  -webkit-app-region: drag
+}
