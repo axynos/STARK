@@ -6,9 +6,14 @@ class WinControlButton extends Component {
     // TODO rework this to use an image / icon from a font.
     const icon = (this.props.type === 'CLOSE') ? 'X' : '_';
 
+    // window.currentWindow is defined in app.html along with an apology for doing it this way.
+    const close = () => window.currentWindow.close();
+    const minimize = () => window.currentWindow.minimize();
+
     return (
-      // window.currentWindow is defined in app.html along with an apology for doing it this way.
-      <button onClick={() => (this.props.type === 'CLOSE' ? window.currentWindow.close() : window.currentWindow.minimize())}>{icon}</button>
+      <button onClick={() => (this.props.type === 'CLOSE' ? close() : minimize())}>
+        {icon}
+      </button>
     );
   }
 }

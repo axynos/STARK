@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import WinControlButton from './WinControlButton';
-import styles from './TitleBar.css';
+import styles from './TitleBar.scss';
 
 export default class TitleBar extends Component {
   render() {

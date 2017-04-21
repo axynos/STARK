@@ -1,0 +1,13 @@
+/*TODO Remove font-awesome from dependencies*/
+/*@import "~font-awesome/css/font-awesome.css";*/
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~material-design-icons/iconfont/material-icons.css";
+
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  background-color: #e8e8e8;
+  font-family: Roboto, Helvetica Neue, serif;
+  overflow-y: hidden;
+}
