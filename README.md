@@ -49,3 +49,9 @@ Donate to [axynos](https://github.com/axynos) --> [![Donation Image](http://i.im
 If you wish to contribute you can help [axynos](https://github.com/axynos) by either:
 * Committing more features/bugfixes/improvements
 * [Donating some cash to axynos to help feed his coffee addiction](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LB5YVGD9F8U5L)
+
+Also, reminder: this version of STARK only works with Team Fortress 2, I
+did this because selectedGame is broken, and tf2 is the only source game
+I play so yeah. You can change the game by pressing CTRL + SHIFT + F in
+Visual Studio and search for "tf\" in the entire solution, then replace
+the results with the source game of your choice.
