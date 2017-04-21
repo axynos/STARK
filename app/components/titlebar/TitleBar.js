@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import WinControlButton from './WinControlButton';
-import styles from './TitleBar.css';
+import styles from './TitleBar.scss';
 
 export default class TitleBar extends Component {
   render() {
@@ -12,8 +12,8 @@ export default class TitleBar extends Component {
       <div className={outerContainerClasses}>
         <div className={titleContainer}>STARK by axynos</div>
         <div className={controlContainer}>
-          <WinControlButton type="MINIMIZE" />
-          <WinControlButton type="CLOSE" />
+          <WinControlButton icon="remove" onClick={() => window.currentWindow.minimize()} />
+          <WinControlButton icon="close" onClick={() => window.currentWindow.close()} />
         </div>
       </div>
     );

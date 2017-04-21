@@ -14,6 +14,7 @@
   },
   "license": "GPL-3.0",
   "dependencies": {
-    "bootstrap": "4.0.0-alpha.6"
+    "bootstrap": "4.0.0-alpha.6",
+    "material-design-icons": "^3.0.1"
   }
 }

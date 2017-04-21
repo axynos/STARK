@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styles from './WinControlButton.scss';
 
 class WinControlButton extends Component {
   render() {
-    // TODO rework this to use an image / icon from a font.
-    const icon = (this.props.type === 'CLOSE') ? 'X' : '_';
+    const buttonStyle = `${styles.button}`;
 
     return (
-      // window.currentWindow is defined in app.html along with an apology for doing it this way.
-      <button onClick={() => (this.props.type === 'CLOSE' ? window.currentWindow.close() : window.currentWindow.minimize())}>{icon}</button>
+      <button className={buttonStyle} onClick={this.props.onClick}>
+        <i className="material-icons">{this.props.icon}</i>
+      </button>
     );
   }
 }
 
 WinControlButton.propTypes = {
-  type: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  icon: PropTypes.string.isRequired
 };
 
 export default WinControlButton;

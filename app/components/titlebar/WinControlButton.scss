@@ -1,0 +1,39 @@
+.button {
+	background: none;
+	user-select: none;
+	outline: none;
+	border: none;
+	cursor: pointer;
+
+	height: 100%;
+	width: 50%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	color: white;
+
+	transition: background-color 0.15s cubic-bezier(0.4,0.0,0.2,1.0);
+
+	i {
+		font-size: 16px !important;
+	}
+
+	&:hover {
+		background-color: rgba(255,255,255,0.5);
+	}
+
+	&:focus {
+	  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	  -webkit-focus-ring-color: rgba(0, 0, 0, 0);
+	  outline: none;
+	  border: none;
+	}
+
+	&:nth-of-type(2) {
+		&:hover {
+			background-color: #fb4f4f;
+		}
+	}
+}
