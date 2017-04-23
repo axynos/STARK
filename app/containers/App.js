@@ -13,8 +13,10 @@ export default class App extends Component {
     return (
       <div>
         <TitleBar />
-        <SideNav />
-        {this.props.children}
+        <div className="row no-gutters">
+          <SideNav />
+          {this.props.children}
+        </div>
       </div>
     );
   }
