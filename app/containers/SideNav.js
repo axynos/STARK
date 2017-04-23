@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SideNavButton from './SideNavButton';
+import SideNavButton from '../components/SideNav/SideNavButton';
 import styles from './SideNav.scss';
 
 class SideNav extends Component {

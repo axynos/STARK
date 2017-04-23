@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import type { Children } from 'react';
-import TitleBar from '../components/titlebar/TitleBar';
-import SideNav from '../components/sidenav/SideNav';
+import TitleBar from './TitleBar';
+import SideNav from './SideNav';
 
 export default class App extends Component {
   props: {
@@ -13,8 +13,10 @@ export default class App extends Component {
     return (
       <div>
         <TitleBar />
-        <SideNav />
-        {this.props.children}
+        <div className="row no-gutters">
+          <SideNav />
+          {this.props.children}
+        </div>
       </div>
     );
   }
