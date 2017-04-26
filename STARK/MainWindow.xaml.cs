@@ -112,6 +112,11 @@ namespace STARK {
                 File.Create("whitelisted_users.txt");
             }
 
+            if (!File.Exists("replace.txt"))
+            {
+                File.Create("replace.txt");
+            }
+
             loaded = true;
         }
 

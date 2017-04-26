@@ -52,9 +52,12 @@ namespace STARK {
                         string[] blocked_users = File.ReadAllLines("blocked_users.txt");
                         string[] blocked_words = File.ReadAllLines("blocked_words.txt");
                         string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        string[] replace = File.ReadAllLines("replace.txt");
+                        string lowercasePrompt = prompt.ToLower();
                         int blockedUser = 0;
                         int blockedWord = 0;
                         int whitelistedUser = 0;
+                        string replacement = lowercasePrompt;
 
                         if (MainWindow.whitelistedOnlyTTS == true)
                         {
@@ -82,7 +85,6 @@ namespace STARK {
 
                             for (int i = 0; i <= blocked_words.Length - 1; i++)
                             {
-                                string lowercasePrompt = prompt.ToLower();
                                 string lowercaseBlocked_word = blocked_words[i].ToLower();
 
                                 if (lowercasePrompt.Contains(lowercaseBlocked_word))
@@ -91,10 +93,27 @@ namespace STARK {
                                 }
                             }
 
+                            for (int i = 0; i <= replace.Length - 1; i++)
+                            {
+                                string[] replaceThing = replace[i].Split('=');
+
+                                if (replaceThing.Length == 2)
+                                {
+                                    string replaceTrigger = replaceThing[0].ToLower();
+                                    string replaceWith = replaceThing[1];
+
+                                    if (lowercasePrompt.Contains(replaceTrigger))
+                                    {
+                                        replacement = replacement.Replace(replaceTrigger, replaceWith);
+                                    }
+                                }
+                            }
+
                             if (blockedUser == 0)
                             {
                                 if (blockedWord == 0)
                                 {
+                                    prompt = replacement;
                                     qss.AddToQueue(new QSSQueueItem(prompt, player));
                                 }
                             }
