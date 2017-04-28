@@ -11,6 +11,8 @@ namespace STARK {
         Command pauseCmd;
         Command resumeCmd;
         Command stopCmd;
+        Command skipCurrentCmd;
+        Command clearQueueCmd;
 
         Timer loop; //no, you can't use FileSystemWatcher, it doesn't work. I tried.
         StreamReader reader;
@@ -36,6 +38,8 @@ namespace STARK {
             pauseCmd = CommandManager.pauseCmd;
             resumeCmd = CommandManager.resumeCmd;
             stopCmd = CommandManager.stopCmd;
+            skipCurrentCmd = CommandManager.skipCurrentCmd;
+            clearQueueCmd = CommandManager.clearQueueCmd;
 
             Setup(logFile);
             StartReadLoop();
@@ -54,8 +58,8 @@ namespace STARK {
                         string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
                         string[] replace = File.ReadAllLines("replace.txt");
                         string lowercasePrompt = prompt.ToLower();
-                        int blockedUser = 0;
-                        int blockedWord = 0;
+                        bool blockedUser = false;
+                        bool blockedWord = false;
                         int whitelistedUser = 0;
                         string replacement = lowercasePrompt;
 
@@ -79,7 +83,7 @@ namespace STARK {
                             {
                                 if (player.Contains(blocked_users[i]))
                                 {
-                                    blockedUser = 1;
+                                    blockedUser = true;
                                 }
                             }
 
@@ -89,7 +93,7 @@ namespace STARK {
 
                                 if (lowercasePrompt.Contains(lowercaseBlocked_word))
                                 {
-                                    blockedWord = 1;
+                                    blockedWord = true;
                                 }
                             }
 
@@ -109,9 +113,9 @@ namespace STARK {
                                 }
                             }
 
-                            if (blockedUser == 0)
+                            if (blockedUser == false)
                             {
-                                if (blockedWord == 0)
+                                if (blockedWord == false)
                                 {
                                     prompt = replacement;
                                     qss.AddToQueue(new QSSQueueItem(prompt, player));
@@ -121,7 +125,7 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, playCmd)) {
-                    if (MainWindow.whitelistedOnlyAudio == true)
+                    if (MainWindow.whitelistedOnlyPlayCmd == true)
                     {
                         var parts = getParts(line, synthCmd);
                         string player = getPlayer(parts[0]);
@@ -146,7 +150,7 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
-                    if (MainWindow.whitelistedOnlyAudio == true)
+                    if (MainWindow.whitelistedOnlyPauseCmd == true)
                     {
                         var parts = getParts(line, synthCmd);
                         string player = getPlayer(parts[0]);
@@ -171,7 +175,7 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, resumeCmd)) {
-                    if (MainWindow.whitelistedOnlyAudio == true)
+                    if (MainWindow.whitelistedOnlyResumeCmd == true)
                     {
                         var parts = getParts(line, synthCmd);
                         string player = getPlayer(parts[0]);
@@ -196,7 +200,7 @@ namespace STARK {
                     }
                 }
                 else if (ContainsCommand(line, stopCmd)) {
-                    if (MainWindow.whitelistedOnlyAudio == true)
+                    if (MainWindow.whitelistedOnlyStopCmd == true)
                     {
                         var parts = getParts(line, synthCmd);
                         string player = getPlayer(parts[0]);
@@ -218,6 +222,58 @@ namespace STARK {
                     else
                     {
                         ape.Stop();
+                    }
+                }
+                else if (ContainsCommand(line, skipCurrentCmd))
+                {
+                    if (MainWindow.whitelistedOnlySkipCurrentCmd == true)
+                    {
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        {
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                qss.SkipCurrent();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        qss.SkipCurrent();
+                    }
+                }
+                else if (ContainsCommand(line, clearQueueCmd))
+                {
+                    if (MainWindow.whitelistedOnlyClearQueueCmd == true)
+                    {
+                        var parts = getParts(line, synthCmd);
+                        string player = getPlayer(parts[0]);
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        {
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                qss.Clear();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        qss.Clear();
                     }
                 }
             }

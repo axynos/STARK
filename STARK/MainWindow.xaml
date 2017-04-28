@@ -107,8 +107,19 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <CheckBox x:Name="whitelistToggleAudio" Content="Whitelisted Only (Audio Chat Commands)" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleAudio_Checked" Unchecked="whitelistToggleAudio_Checked"/>
 
+                </Grid>
+            </TabItem>
+            <TabItem Header="Commands" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">
+                <Grid Background="#FFE5E5E5">
+                    <CheckBox x:Name="whitelistTogglePlayCmd" Content=".play" HorizontalAlignment="Left" Margin="10,0,0,388" VerticalAlignment="Bottom" Checked="whitelistTogglePlayCmd_Checked" Unchecked="whitelistTogglePlayCmd_Checked" IsChecked="True"/>
+                    <Label x:Name="label1" Content="Which commands should be disabled for non-whitelisted users?" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="whitelistTogglePauseCmd" Content=".pause" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistTogglePauseCmd_Checked" Unchecked="whitelistTogglePauseCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleResumeCmd" Content=".resume" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleResumeCmd_Checked" Unchecked="whitelistToggleResumeCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleStopCmd" Content=".stop" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleStopCmd_Checked" Unchecked="whitelistToggleStopCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleSkipCurrentCmd" Content=".skip" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleSkipCurrentCmd_Checked" Unchecked="whitelistToggleSkipCurrentCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleClearQueueCmd" Content=".clear" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleClearQueueCmd_Checked" Unchecked="whitelistToggleClearQueueCmd_Checked"/>
+                    <Label x:Name="label2" Content="You can whitelist people in whitelisted__users.txt" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Interface" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="144" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">

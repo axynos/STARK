@@ -43,8 +43,14 @@ namespace STARK {
         int combinedOutputSelectedIndex;
         int loopbackOutputSelectedIndex;
         int inputSelectedIndex;
-        static public bool whitelistedOnlyTTS;
-        static public bool whitelistedOnlyAudio = true;
+
+        public static bool whitelistedOnlyTTS;
+        public static bool whitelistedOnlyPlayCmd = true;
+        public static bool whitelistedOnlyPauseCmd = true;
+        public static bool whitelistedOnlyResumeCmd = true;
+        public static bool whitelistedOnlyStopCmd = true;
+        public static bool whitelistedOnlySkipCurrentCmd = true;
+        public static bool whitelistedOnlyClearQueueCmd = true;
 
         MainWindow mw;
 
@@ -530,17 +536,92 @@ namespace STARK {
             }
         }
 
-        private void whitelistToggleAudio_Checked(object sender, RoutedEventArgs e)
+        private void whitelistTogglePlayCmd_Checked(object sender, RoutedEventArgs e)
         {
             if (loaded)
             {
                 if ((sender as CheckBox).IsChecked ?? true)
                 {
-                    whitelistedOnlyAudio = true;
+                    whitelistedOnlyPlayCmd = true;
                 }
                 else if ((sender as CheckBox).IsChecked == false)
                 {
-                    whitelistedOnlyAudio = false;
+                    whitelistedOnlyPlayCmd = false;
+                }
+            }
+        }
+
+        private void whitelistTogglePauseCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyPauseCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyPauseCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleResumeCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyResumeCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyResumeCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleStopCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyStopCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyStopCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleSkipCurrentCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlySkipCurrentCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlySkipCurrentCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleClearQueueCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyClearQueueCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyClearQueueCmd = false;
                 }
             }
         }
