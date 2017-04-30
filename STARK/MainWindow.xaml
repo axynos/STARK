@@ -120,6 +120,8 @@
                     <CheckBox x:Name="whitelistToggleSkipCurrentCmd" Content=".skip" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleSkipCurrentCmd_Checked" Unchecked="whitelistToggleSkipCurrentCmd_Checked"/>
                     <CheckBox x:Name="whitelistToggleClearQueueCmd" Content=".clear" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleClearQueueCmd_Checked" Unchecked="whitelistToggleClearQueueCmd_Checked"/>
                     <Label x:Name="label2" Content="You can whitelist people in whitelisted__users.txt" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="whitelistToggleBlockUserCmd" Content=".block" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockUserCmd_Checked" Unchecked="whitelistToggleBlockUserCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleBlockWordCmd" Content=".blockword" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockWordCmd_Checked" Unchecked="whitelistToggleBlockWordCmd_Checked"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Interface" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="144" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">

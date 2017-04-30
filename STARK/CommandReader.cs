@@ -13,6 +13,8 @@ namespace STARK {
         Command stopCmd;
         Command skipCurrentCmd;
         Command clearQueueCmd;
+        Command blockUserCmd;
+        Command blockWordCmd;
 
         Timer loop; //no, you can't use FileSystemWatcher, it doesn't work. I tried.
         StreamReader reader;
@@ -40,9 +42,29 @@ namespace STARK {
             stopCmd = CommandManager.stopCmd;
             skipCurrentCmd = CommandManager.skipCurrentCmd;
             clearQueueCmd = CommandManager.clearQueueCmd;
+            blockUserCmd = CommandManager.blockUserCmd;
+            blockWordCmd = CommandManager.blockWordCmd;
 
             Setup(logFile);
             StartReadLoop();
+        }
+
+        public static Encoding GetEncoding(string filename)
+        {
+            // Read the BOM
+            var bom = new byte[4];
+            using (var file = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            {
+                file.Read(bom, 0, 4);
+            }
+
+            // Analyze the BOM
+            if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
+            if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
+            if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
+            if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
+            if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
+            return Encoding.Default;
         }
 
         private void parseCommand(string line) {
@@ -274,6 +296,176 @@ namespace STARK {
                     else
                     {
                         qss.Clear();
+                    }
+                }
+                if (ContainsCommand(line, blockUserCmd))
+                {
+                    var parts = getParts(line, blockUserCmd);
+                    string prompt = parts[1];
+                    string player = getPlayer(parts[0]);
+
+                    string blocked_users = File.ReadAllText("blocked_users.txt");
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    if (MainWindow.whitelistedOnlyBlockUserCmd == true)
+                    {
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        {
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                var encodingForFile = GetEncoding("blocked_users.txt");
+                                string lastline = string.Empty;
+
+                                string[] Lines = blocked_users.Split('\n');
+
+                                if (Lines.Length == 0)
+                                {
+                                    lastline = string.Empty;
+                                }
+                                else if (Lines.Length >= 1)
+                                {
+                                    lastline = Lines[Lines.Length - 1];
+                                }
+
+                                if (lastline.Length == 0)
+                                {
+                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                    {
+                                        sw.WriteLine(prompt);
+                                    }
+                                }
+                                else
+                                {
+                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                    {
+                                        sw.WriteLine();
+                                        sw.WriteLine(prompt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var encodingForFile = GetEncoding("blocked_users.txt");
+                        string lastline = string.Empty;
+
+                        string[] Lines = blocked_users.Split('\n');
+
+                        if (Lines.Length == 0)
+                        {
+                            lastline = string.Empty;
+                        }
+                        else if (Lines.Length >= 1)
+                        {
+                            lastline = Lines[Lines.Length - 1];
+                        }
+
+                        if (lastline.Length == 0)
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                            {
+                                sw.WriteLine(prompt);
+                            }
+                        }
+                        else
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                            {
+                                sw.WriteLine();
+                                sw.WriteLine(prompt);
+                            }
+                        }
+                    }
+                }
+                if (ContainsCommand(line, blockWordCmd))
+                {
+                    var parts = getParts(line, blockWordCmd);
+                    string prompt = parts[1];
+                    string player = getPlayer(parts[0]);
+
+                    string blocked_words = File.ReadAllText("blocked_words.txt");
+                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                    int whitelistedUser = 0;
+
+                    if (MainWindow.whitelistedOnlyBlockWordCmd == true)
+                    {
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        {
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+                            }
+                            if (whitelistedUser == 1)
+                            {
+                                var encodingForFile = GetEncoding("blocked_words.txt");
+                                string lastline = string.Empty;
+
+                                string[] Lines = blocked_words.Split('\n');
+
+                                if (Lines.Length == 0)
+                                {
+                                    lastline = string.Empty;
+                                }
+                                else if (Lines.Length >= 1)
+                                {
+                                    lastline = Lines[Lines.Length - 1];
+                                }
+
+                                if (lastline.Length == 0)
+                                {
+                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                    {
+                                        sw.WriteLine(prompt);
+                                    }
+                                }
+                                else
+                                {
+                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                    {
+                                        sw.WriteLine();
+                                        sw.WriteLine(prompt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var encodingForFile = GetEncoding("blocked_words.txt");
+                        string lastline = string.Empty;
+
+                        string[] Lines = blocked_words.Split('\n');
+
+                        if (Lines.Length == 0)
+                        {
+                            lastline = string.Empty;
+                        }
+                        else if (Lines.Length >= 1)
+                        {
+                            lastline = Lines[Lines.Length - 1];
+                        }
+
+                        if (lastline.Length == 0)
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                            {
+                                sw.WriteLine(prompt);
+                            }
+                        }
+                        else
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                            {
+                                sw.WriteLine();
+                                sw.WriteLine(prompt);
+                            }
+                        }
                     }
                 }
             }

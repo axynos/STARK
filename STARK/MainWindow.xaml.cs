@@ -51,6 +51,8 @@ namespace STARK {
         public static bool whitelistedOnlyStopCmd = true;
         public static bool whitelistedOnlySkipCurrentCmd = true;
         public static bool whitelistedOnlyClearQueueCmd = true;
+        public static bool whitelistedOnlyBlockUserCmd = true;
+        public static bool whitelistedOnlyBlockWordCmd = true;
 
         MainWindow mw;
 
@@ -622,6 +624,36 @@ namespace STARK {
                 else if ((sender as CheckBox).IsChecked == false)
                 {
                     whitelistedOnlyClearQueueCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleBlockUserCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyBlockUserCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyBlockUserCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleBlockWordCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyBlockWordCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyBlockWordCmd = false;
                 }
             }
         }
