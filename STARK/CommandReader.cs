@@ -92,10 +92,11 @@ namespace STARK {
                                 if (player.Contains(whitelisted_users[i]))
                                 {
                                     whitelistedUser++;
-                                }
-                                if (whitelistedUser == 1)
-                                {
-                                    qss.AddToQueue(new QSSQueueItem(prompt, player));
+
+                                    if (whitelistedUser == 1)
+                                    {
+                                        qss.AddToQueue(new QSSQueueItem(prompt, player));
+                                    }
                                 }
                             }
                         }
@@ -159,10 +160,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                TryParsePlay(line);
+
+                                if (whitelistedUser == 1)
+                                {
+                                    TryParsePlay(line);
+                                }
                             }
                         }
                     }
@@ -184,10 +186,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                ape.Pause();
+
+                                if (whitelistedUser == 1)
+                                {
+                                    ape.Pause();
+                                }
                             }
                         }
                     }
@@ -209,10 +212,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                ape.Resume();
+
+                                if (whitelistedUser == 1)
+                                {
+                                    ape.Resume();
+                                }
                             }
                         }
                     }
@@ -234,10 +238,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                ape.Stop();
+
+                                if (whitelistedUser == 1)
+                                {
+                                    ape.Stop();
+                                }
                             }
                         }
                     }
@@ -260,10 +265,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                qss.SkipCurrent();
+
+                                if (whitelistedUser == 1)
+                                {
+                                    qss.SkipCurrent();
+                                }
                             }
                         }
                     }
@@ -286,10 +292,11 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                qss.Clear();
+
+                                if (whitelistedUser == 1)
+                                {
+                                    qss.Clear();
+                                }
                             }
                         }
                     }
@@ -315,36 +322,37 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                var encodingForFile = GetEncoding("blocked_users.txt");
-                                string lastline = string.Empty;
 
-                                string[] Lines = blocked_users.Split('\n');
+                                if (whitelistedUser == 1)
+                                {
+                                    var encodingForFile = GetEncoding("blocked_users.txt");
+                                    string lastline = string.Empty;
 
-                                if (Lines.Length == 0)
-                                {
-                                    lastline = string.Empty;
-                                }
-                                else if (Lines.Length >= 1)
-                                {
-                                    lastline = Lines[Lines.Length - 1];
-                                }
+                                    string[] Lines = blocked_users.Split('\n');
 
-                                if (lastline.Length == 0)
-                                {
-                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                    if (Lines.Length == 0)
                                     {
-                                        sw.WriteLine(prompt);
+                                        lastline = string.Empty;
                                     }
-                                }
-                                else
-                                {
-                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                    else if (Lines.Length >= 1)
                                     {
-                                        sw.WriteLine();
-                                        sw.WriteLine(prompt);
+                                        lastline = Lines[Lines.Length - 1];
+                                    }
+
+                                    if (lastline.Length == 0)
+                                    {
+                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                        {
+                                            sw.WriteLine(prompt);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
+                                        {
+                                            sw.WriteLine();
+                                            sw.WriteLine(prompt);
+                                        }
                                     }
                                 }
                             }
@@ -400,36 +408,37 @@ namespace STARK {
                             if (player.Contains(whitelisted_users[i]))
                             {
                                 whitelistedUser++;
-                            }
-                            if (whitelistedUser == 1)
-                            {
-                                var encodingForFile = GetEncoding("blocked_words.txt");
-                                string lastline = string.Empty;
 
-                                string[] Lines = blocked_words.Split('\n');
+                                if (whitelistedUser == 1)
+                                {
+                                    var encodingForFile = GetEncoding("blocked_words.txt");
+                                    string lastline = string.Empty;
 
-                                if (Lines.Length == 0)
-                                {
-                                    lastline = string.Empty;
-                                }
-                                else if (Lines.Length >= 1)
-                                {
-                                    lastline = Lines[Lines.Length - 1];
-                                }
+                                    string[] Lines = blocked_words.Split('\n');
 
-                                if (lastline.Length == 0)
-                                {
-                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                    if (Lines.Length == 0)
                                     {
-                                        sw.WriteLine(prompt);
+                                        lastline = string.Empty;
                                     }
-                                }
-                                else
-                                {
-                                    using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                    else if (Lines.Length >= 1)
                                     {
-                                        sw.WriteLine();
-                                        sw.WriteLine(prompt);
+                                        lastline = Lines[Lines.Length - 1];
+                                    }
+
+                                    if (lastline.Length == 0)
+                                    {
+                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                        {
+                                            sw.WriteLine(prompt);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
+                                        {
+                                            sw.WriteLine();
+                                            sw.WriteLine(prompt);
+                                        }
                                     }
                                 }
                             }
