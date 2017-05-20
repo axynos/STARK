@@ -176,7 +176,7 @@
                     <Label x:Name="label_Copy6" Content="Twitch TTS donation trolls for inspiring me to bring the same cancer to CSGO in-game." HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy7" Content="SilentSys for indirectly inspiring me to improve on SLAM by creating SLAM" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy8" Content="FiniteReality for helping me with a bug that was consuming my sanity" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy9" Content="GrimReaperFloof for adding a few features" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy9" Content="GrimReaperFloof for adding features" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
         </Controls:MetroAnimatedTabControl>

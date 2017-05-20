@@ -30,7 +30,7 @@ namespace STARK {
 
         public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
-            this.logFile = PathManager.steamApps + @"\common\Team Fortress 2\tf\!tts-axynos.txt";
+            this.logFile = PathManager.steamApps + MainWindow.gameDir + @"\!tts-axynos.txt";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
@@ -489,7 +489,7 @@ namespace STARK {
 
         private void Setup(string path) {
             //makes a file if there is none
-            if (Directory.Exists(PathManager.steamApps + @"\common\Team Fortress 2\tf\cfg")) {
+            if (Directory.Exists(PathManager.steamApps + MainWindow.gameDir + @"\cfg")) {
                 try {
                     if (!File.Exists(path)) File.CreateText(path).Close();
                     var bufferedStream = new BufferedStream(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));

@@ -11,6 +11,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Text;
+using System.Linq;
 
 namespace STARK {
     public partial class MainWindow : MetroWindow, IDisposable {
@@ -54,6 +56,8 @@ namespace STARK {
         public static bool whitelistedOnlyBlockUserCmd = true;
         public static bool whitelistedOnlyBlockWordCmd = true;
 
+        public static string gameDir;
+
         MainWindow mw;
 
         string currentSettingsVersion = "1.0.0";
@@ -79,8 +83,97 @@ namespace STARK {
 			InitializeMixer(ref mspStandard);
 			InitializeMixer(ref mspLoopback);
 
+            if (!File.Exists("blocked_users.txt"))
+            {
+                File.Create("blocked_users.txt");
+            }
+
+            if (!File.Exists("blocked_words.txt"))
+            {
+                File.Create("blocked_words.txt");
+            }
+
+            if (!File.Exists("whitelisted_users.txt"))
+            {
+                File.Create("whitelisted_users.txt");
+            }
+
+            if (!File.Exists("replace.txt"))
+            {
+                File.Create("replace.txt");
+            }
+
+            if (!File.Exists("game.txt"))
+            {
+                using (StreamWriter sw = new StreamWriter(File.Open("game.txt", FileMode.Create), Encoding.UTF8))
+                {
+                    sw.WriteLine("tf2");
+                    sw.WriteLine();
+                    sw.WriteLine("Change the first line to the game you want STARK to use.");
+                    sw.WriteLine("After changing the game you will need to restart STARK.");
+                    sw.WriteLine();
+                    sw.WriteLine("Here is the list of supported games:");
+                    sw.WriteLine("csgo: Counter-Strike: Global Offensive");
+                    sw.WriteLine("css: Counter-Strike: Source");
+                    sw.WriteLine("tf2: Team Fortress 2");
+                    sw.WriteLine("gmod: Garry's Mod");
+                    sw.WriteLine("hl2dm: Half-Life 2 DeathMatch");
+                    sw.WriteLine("l4d: Left 4 Dead");
+                    sw.WriteLine("l4d2: Left 4 Dead 2");
+                    sw.WriteLine("dods: Day of Defeat Source");
+                    sw.WriteLine("insurg: Insurgency");
+
+                    gameDir = @"\common\Team Fortress 2\tf";
+                }
+            }
+            else
+            {
+                string game = File.ReadLines("game.txt").First();
+
+                if (game == "csgo")
+                {
+                    gameDir = @"\common\Counter-Strike Global Offensive\csgo";
+                }
+                else if (game == "css")
+                {
+                    gameDir = @"\common\Counter-Strike Source\cstrike";
+                }
+                else if (game == "tf2")
+                {
+                    gameDir = @"\common\Team Fortress 2\tf";
+                }
+                else if (game == "gmod")
+                {
+                    gameDir = @"\common\GarrysMod\garrysmod";
+                }
+                else if (game == "hl2dm")
+                {
+                    gameDir = @"\common\half-life 2 deathmatch\hl2mp";
+                }
+                else if (game == "l4d")
+                {
+                    gameDir = @"\common\Left 4 Dead\left4dead";
+                }
+                else if (game == "l4d2")
+                {
+                    gameDir = @"\common\Left 4 Dead 2\left4dead2";
+                }
+                else if (game == "dods")
+                {
+                    gameDir = @"\common\day of defeat source\dod";
+                }
+                else if (game == "insurg")
+                {
+                    gameDir = @"\common\insurgency2\insurgency";
+                }
+                else
+                {
+                    gameDir = @"\common\Team Fortress 2\tf";
+                }
+            }
+
             //Startup fam
-			qss = new QueuedSpeechSynthesizer(ref mspStandard, ref mspLoopback, 50, -1);
+            qss = new QueuedSpeechSynthesizer(ref mspStandard, ref mspLoopback, 50, -1);
             afm = new AudioFileManager();
             ape = new AudioPlaybackEngine(ref audioFormat, ref mspStandard, ref mspLoopback, ref afm, 10);
 
@@ -104,26 +197,6 @@ namespace STARK {
             changeLoopbackOutput(Setup_SynthesizerOnly.SelectedIndex);
 
             FindSteamApps();
-
-            if (!File.Exists("blocked_users.txt"))
-            {
-                File.Create("blocked_users.txt");
-            }
-
-            if (!File.Exists("blocked_words.txt"))
-            {
-                File.Create("blocked_words.txt");
-            }
-
-            if (!File.Exists("whitelisted_users.txt"))
-            {
-                File.Create("whitelisted_users.txt");
-            }
-
-            if (!File.Exists("replace.txt"))
-            {
-                File.Create("replace.txt");
-            }
 
             loaded = true;
         }
