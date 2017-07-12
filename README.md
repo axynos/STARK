@@ -1,5 +1,6 @@
-##STARK
 ![Logo Image](http://i.imgur.com/Nryqfgk.png)
+
+# STARK
 ## Source Games Audio Mixer and TTS
 
 ## [DOWNLOAD](https://github.com/axynos/STARK/releases/latest)
