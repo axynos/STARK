@@ -9,7 +9,7 @@ This is a project that evolved from a proof-of-concept [axynos](https://github.c
 Donate to [axynos](https://github.com/axynos) --> [![Donation Image](http://i.imgur.com/fbH2hRv.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LB5YVGD9F8U5L) if you want to or contribute to the project with code (see contributing section).
 
 ### Dependencies
-* [Virtual Audio Cable](http://software.muzychenko.net/eng/vac.htm). You can also use a free alternative called [VB-CABLE](http://vb-audio.pagesperso-orange.fr/Cable/index.htm) ([Direct download link](http://vbaudio.jcedeveloppement.com/Download_CABLE/VBCABLE_Driver_Pack43.zip))
+* [Virtual Audio Cable](http://software.muzychenko.net/eng/vac.htm). You can also use a free alternative called [VB-CABLE](http://www.vb-audio.com/Cable/index.htm) ([Direct download link](http://vbaudio.jcedeveloppement.com/Download_CABLE/VBCABLE_Driver_Pack43.zip))
 
 
 ### How to set up
