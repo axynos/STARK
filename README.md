@@ -1,8 +1,7 @@
 ![Logo Image](http://i.imgur.com/Nryqfgk.pngg)
 ## Source Audio Mixer and TTS
 
-## [DOWNLOAD (Grim's Version)](https://github.com/GrimReaperFloof/STARK/blob/master/DOWNLOAD%20EXE%20FILE%20HERE/STARK.exe?raw=true)
-## [DOWNLOAD (Original Version)](https://github.com/axynos/STARK/releases/latest)
+## [DOWNLOAD](https://github.com/GrimReaperFloof/STARK/blob/master/DOWNLOAD%20EXE%20FILE%20HERE/STARK.exe?raw=true)
 
 STARK is an application that allows you to read commands from Source games and playback audio files, or use Text-to-Speech.
 This is a project that evolved from a proof-of-concept [axynos](https://github.com/axynos) made a while ago using AutoHotKey [link](https://github.com/axynos/CSGO-Text-To-Speech).
@@ -14,7 +13,7 @@ Donate to [axynos](https://github.com/axynos) --> [![Donation Image](http://i.im
 
 
 ### How to set up
-1. Download [STARK](http://google.com) and Virtual Audio Cable (or [VB-CABLE](http://vb-audio.pagesperso-orange.fr/Cable/index.htm), which is a free alternative)
+1. Download [STARK](http://google.com) and Virtual Audio Cable (or [VB-CABLE](http://www.vb-audio.com/Cable/index.htm), which is a free alternative)
 2. Install 32/64 bit version of Virtual Audio Cable according to your Windows version (or VB-CABLE)
 3. Open the x86/x64 folder from the installation folder of Virtual Audio Cable (or VB-CABLE)
 4. Open vcctlpan.exe as Administrator (not required if you have VB-CABLE)
