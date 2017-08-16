@@ -8,6 +8,7 @@ namespace STARK {
 
         Command synthCmd;
         Command playCmd;
+        Command playVideoCmd;
         Command pauseCmd;
         Command resumeCmd;
         Command stopCmd;
@@ -37,6 +38,7 @@ namespace STARK {
 
             this.synthCmd = CommandManager.synthCmd;
             playCmd = CommandManager.playCmd;
+            playVideoCmd = CommandManager.playVideoCmd;
             pauseCmd = CommandManager.pauseCmd;
             resumeCmd = CommandManager.resumeCmd;
             stopCmd = CommandManager.stopCmd;
@@ -171,6 +173,43 @@ namespace STARK {
                     else
                     {
                         TryParsePlay(line);
+                    }
+                }
+                else if (ContainsCommand(line, playVideoCmd))
+                {
+                    var parts = getParts(line, playVideoCmd);
+                    string prompt = parts[1];
+                    string player = getPlayer(parts[0]);
+
+                    if (MainWindow.whitelistedOnlyPlayVideoCmd == true)
+                    {
+                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                        int whitelistedUser = 0;
+
+                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        {
+                            if (player.Contains(whitelisted_users[i]))
+                            {
+                                whitelistedUser++;
+
+                                if (whitelistedUser == 1)
+                                {
+                                    if (MainWindow.allowPlayCommandDuringSong)
+                                    {
+                                        ape.Stop();
+                                    }
+                                    ape.PlayVideo(prompt);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (MainWindow.allowPlayCommandDuringSong)
+                        {
+                            ape.Stop();
+                        }
+                        ape.PlayVideo(prompt);
                     }
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
@@ -563,13 +602,19 @@ namespace STARK {
                 int id;
                 if (int.TryParse(arg1, out id) && id >= 0) {
                     if (id < afm.getCollection().Count) {
-                        ape.Stop(); //you can't stop Harambe
+                        if (MainWindow.allowPlayCommandDuringSong)
+                        {
+                            ape.Stop(); //you can't stop Harambe
+                        }
                         ape.Play(id);
                     }
                 } else if (canPlayByTitle) {
                     foreach (AudioPlaybackItem item in afm.getCollection()) {
                         if (item.name.ToLower() == parts[1].ToLower()) {
-                            ape.Stop();
+                            if (MainWindow.allowPlayCommandDuringSong)
+                            {
+                                ape.Stop();
+                            }
                             ape.Play(item.id);
                         }
                     }
@@ -577,7 +622,10 @@ namespace STARK {
                     foreach (AudioPlaybackItem item in afm.getCollection()) {
                         foreach (string tag in item.tags) {
                             if (tag.ToLower() == arg.ToLower()) {
-                                ape.Stop();
+                                if (MainWindow.allowPlayCommandDuringSong)
+                                {
+                                    ape.Stop();
+                                }
                                 ape.Play(item.id);
                             }
                         }

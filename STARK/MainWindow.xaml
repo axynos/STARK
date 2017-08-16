@@ -71,29 +71,29 @@
                     <CheckBox x:Name="Audio_MicCheckBox" Content="Microphone Enabled" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="Audio_MicCheckBox_Checked" Unchecked="Audio_MicCheckBox_Checked"/>
 
                     <!--Microphone Volume Slider-->
-                    <Slider x:Name="Audio_MicVolumeSlider" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" Maximum="200" ValueChanged="Audio_MicVolumeSlider_ValueChanged" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_MicVolumeTextBox, StringFormat=\{0:###\}}"/>
+                    <Slider x:Name="Audio_MicVolumeSlider" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" Maximum="200" ValueChanged="Audio_MicVolumeSlider_ValueChanged" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_MicVolumeTextBox, StringFormat=\{0:###\}}"/>
                     <TextBox x:Name="Audio_MicVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3" Text="50"/>
-                    <Label x:Name="Audio_MicVolumeLabel" Content="Microphone Volume" HorizontalAlignment="Left" Margin="192,33,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Label x:Name="Audio_MicVolumeLabel" Content="Microphone Volume" HorizontalAlignment="Left" Margin="192,32,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Buffer for Microphone Slider-->
-                    <Slider x:Name="Audio_MicBufferSlider" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="20" TickPlacement="BottomRight" Maximum="200" Value="{Binding Text, ElementName=Audio_MicBufferTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_MicBufferSlider_ValueChanged" Minimum="25"/>
-                    <TextBox x:Name="Audio_MicBufferTextBox" HorizontalAlignment="Left" Height="25" Margin="149,67,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_MicBufferLabel" Content="Microphone Buffer Time (ms)" HorizontalAlignment="Left" Margin="192,68,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Slider x:Name="Audio_MicBufferSlider" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="20" TickPlacement="BottomRight" Maximum="200" Value="{Binding Text, ElementName=Audio_MicBufferTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_MicBufferSlider_ValueChanged" Minimum="25"/>
+                    <TextBox x:Name="Audio_MicBufferTextBox" HorizontalAlignment="Left" Height="25" Margin="149,64,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_MicBufferLabel" Content="Microphone Buffer Time (ms)" HorizontalAlignment="Left" Margin="192,63,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Loopback Volume Slider-->
                     <Slider x:Name="Audio_LoopbackVolumeSlider" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_LoopbackVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_LoopbackVolumeSlider_ValueChanged"/>
-                    <TextBox x:Name="Audio_LoopbackVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,127,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_LoopbackVolumeLabel" Content="Loopback Volume" HorizontalAlignment="Left" Margin="192,128,0,0" VerticalAlignment="Top" Height="25"/>
+                    <TextBox x:Name="Audio_LoopbackVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,126,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_LoopbackVolumeLabel" Content="Loopback Volume" HorizontalAlignment="Left" Margin="192,125,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Loopback Volume-->
-                    <Slider x:Name="Audio_AFFVolumeSlider" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_AFFVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_AFFVolumeSlider_ValueChanged" Maximum="200"/>
-                    <TextBox x:Name="Audio_AFFVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,98,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_AFFVolumeLabel" Content="Audio Track Volume" HorizontalAlignment="Left" Margin="192,97,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Slider x:Name="Audio_AFFVolumeSlider" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_AFFVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_AFFVolumeSlider_ValueChanged" Maximum="200"/>
+                    <TextBox x:Name="Audio_AFFVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,95,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_AFFVolumeLabel" Content="Audio Track Volume" HorizontalAlignment="Left" Margin="192,94,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--Standard Output Volume-->
-                    <Slider x:Name="Audio_OutputVolumeSlider" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_OutputVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_OutputVolumeSlider_ValueChanged"/>
-                    <TextBox x:Name="Audio_OutputVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,159,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
-                    <Label x:Name="Audio_OutputVolumeLabel" Content="Output Volume" HorizontalAlignment="Left" Margin="192,160,0,0" VerticalAlignment="Top" Height="25"/>
+                    <Slider x:Name="Audio_OutputVolumeSlider" HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top" Width="134" Height="25" SmallChange="1" LargeChange="5" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding Text, ElementName=Audio_OutputVolumeTextBox, StringFormat=\{0:###\}}" ValueChanged="Audio_OutputVolumeSlider_ValueChanged"/>
+                    <TextBox x:Name="Audio_OutputVolumeTextBox" HorizontalAlignment="Left" Height="25" Margin="149,157,0,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top" Width="38" UndoLimit="5" MaxLength="3"/>
+                    <Label x:Name="Audio_OutputVolumeLabel" Content="Output Volume" HorizontalAlignment="Left" Margin="192,156,0,0" VerticalAlignment="Top" Height="25"/>
 
                     <!--AUDIO LIST-->
                     <ListView x:Name="AudioItemList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="250" Margin="10,211,0,0" VerticalAlignment="Top" Width="455" BorderThickness="0" IsHitTestVisible="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True">
@@ -107,6 +107,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <CheckBox x:Name="allowPlayCommandDuringSongCheckBox" Content="Allow .play and .playvideo while a song is playing" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Checked="allowPlayCommandDuringSongCheckBox_Checked" Unchecked="allowPlayCommandDuringSongCheckBox_Checked" IsChecked="True"/>
 
                 </Grid>
             </TabItem>
@@ -114,14 +115,15 @@
                 <Grid Background="#FFE5E5E5">
                     <CheckBox x:Name="whitelistTogglePlayCmd" Content=".play" HorizontalAlignment="Left" Margin="10,0,0,388" VerticalAlignment="Bottom" Checked="whitelistTogglePlayCmd_Checked" Unchecked="whitelistTogglePlayCmd_Checked" IsChecked="True"/>
                     <Label x:Name="label1" Content="Which commands should be disabled for non-whitelisted users?" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="whitelistTogglePauseCmd" Content=".pause" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistTogglePauseCmd_Checked" Unchecked="whitelistTogglePauseCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleResumeCmd" Content=".resume" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleResumeCmd_Checked" Unchecked="whitelistToggleResumeCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleStopCmd" Content=".stop" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleStopCmd_Checked" Unchecked="whitelistToggleStopCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleSkipCurrentCmd" Content=".skip" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleSkipCurrentCmd_Checked" Unchecked="whitelistToggleSkipCurrentCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleClearQueueCmd" Content=".clear" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleClearQueueCmd_Checked" Unchecked="whitelistToggleClearQueueCmd_Checked"/>
+                    <CheckBox x:Name="whitelistTogglePauseCmd" Content=".pause" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistTogglePauseCmd_Checked" Unchecked="whitelistTogglePauseCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleResumeCmd" Content=".resume" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleResumeCmd_Checked" Unchecked="whitelistToggleResumeCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleStopCmd" Content=".stop" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleStopCmd_Checked" Unchecked="whitelistToggleStopCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleSkipCurrentCmd" Content=".skip" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleSkipCurrentCmd_Checked" Unchecked="whitelistToggleSkipCurrentCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleClearQueueCmd" Content=".clear" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleClearQueueCmd_Checked" Unchecked="whitelistToggleClearQueueCmd_Checked"/>
                     <Label x:Name="label2" Content="You can whitelist people in whitelisted__users.txt" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="whitelistToggleBlockUserCmd" Content=".block" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockUserCmd_Checked" Unchecked="whitelistToggleBlockUserCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleBlockWordCmd" Content=".blockword" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockWordCmd_Checked" Unchecked="whitelistToggleBlockWordCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleBlockUserCmd" Content=".block" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockUserCmd_Checked" Unchecked="whitelistToggleBlockUserCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleBlockWordCmd" Content=".blockword" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockWordCmd_Checked" Unchecked="whitelistToggleBlockWordCmd_Checked"/>
+                    <CheckBox x:Name="whitelistTogglePlayVideoCmd" Content=".playvideo" HorizontalAlignment="Left" Margin="10,0,0,365" VerticalAlignment="Bottom" Checked="whitelistTogglePlayVideoCmd_Checked" Unchecked="whitelistTogglePlayVideoCmd_Checked" IsChecked="True"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Interface" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="144" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">

@@ -7,6 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using YoutubeExplode;
+using YoutubeExplode.Models;
+using MediaToolkit;
+using MediaToolkit.Model;
 
 namespace STARK {
     class AudioPlaybackEngine : IDisposable {
@@ -130,6 +134,61 @@ namespace STARK {
         public void Play(int id) {
             AudioPlaybackItem item = afm.getCollection().ElementAt(id);
             PlayAudioFile(item.path, item.volume, tokenSource.Token);
+        }
+
+        public async void PlayVideo(string videoID)
+        {
+            videoID = videoID.Replace("https://", "");
+            videoID = videoID.Replace("http://", "");
+            videoID = videoID.Replace("youtu.be/", "");
+            videoID = videoID.Replace("www.youtube.com/", "");
+            videoID = videoID.Replace("youtube.com/", "");
+            videoID = videoID.Replace("watch?v=", "");
+
+            var client = new YoutubeClient();
+            bool exists = false;
+
+            try
+            {
+                exists = await client.CheckVideoExistsAsync(videoID);
+            }
+            catch (ArgumentException)
+            {
+                
+            }
+
+            if (exists)
+            {
+                Directory.CreateDirectory("ytAudioFiles");
+
+                var videoInfo = await client.GetVideoInfoAsync(videoID);
+
+                string FormattedVideoTitle = "(" + videoInfo.Id + ")" + videoInfo.Title.Replace(@"\", "").Replace("/", "").Replace(":", "").Replace("*", "").Replace("?", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "");
+
+                if (!File.Exists($@"ytAudioFiles\{FormattedVideoTitle}.mp3"))
+                {
+                    var streamInfo = videoInfo.AudioStreams.OrderBy(s => s.Bitrate).Last();
+
+                    string fileExtension = streamInfo.Container.GetFileExtension();
+                    string fileName = $"{FormattedVideoTitle}.{fileExtension}";
+
+                    using (var input = await client.GetMediaStreamAsync(streamInfo))
+                    using (var output = File.Create($@"ytAudioFiles\{fileName}"))
+                        await input.CopyToAsync(output);
+                    
+                    var inputFile = new MediaFile { Filename = $@"ytAudioFiles\{fileName}" };
+                    var outputFile = new MediaFile { Filename = $@"ytAudioFiles\{FormattedVideoTitle}.mp3" };
+
+                    using (var engine = new Engine())
+                    {
+                        engine.Convert(inputFile, outputFile);
+                    }
+
+                    File.Delete($@"ytAudioFiles\{fileName}");
+                }
+
+                PlayAudioFile($@"ytAudioFiles\{FormattedVideoTitle}.mp3", 100, tokenSource.Token);
+            }
         }
 
         public void Play(string path, int volume) {

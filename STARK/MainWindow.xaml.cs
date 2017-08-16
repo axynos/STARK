@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -48,6 +47,7 @@ namespace STARK {
 
         public static bool whitelistedOnlyTTS;
         public static bool whitelistedOnlyPlayCmd = true;
+        public static bool whitelistedOnlyPlayVideoCmd = true;
         public static bool whitelistedOnlyPauseCmd = true;
         public static bool whitelistedOnlyResumeCmd = true;
         public static bool whitelistedOnlyStopCmd = true;
@@ -55,6 +55,8 @@ namespace STARK {
         public static bool whitelistedOnlyClearQueueCmd = true;
         public static bool whitelistedOnlyBlockUserCmd = true;
         public static bool whitelistedOnlyBlockWordCmd = true;
+
+        public static bool allowPlayCommandDuringSong = true;
 
         public static string gameDir;
 
@@ -626,6 +628,21 @@ namespace STARK {
             }
         }
 
+        private void whitelistTogglePlayVideoCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyPlayVideoCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyPlayVideoCmd = false;
+                }
+            }
+        }
+
         private void whitelistTogglePauseCmd_Checked(object sender, RoutedEventArgs e)
         {
             if (loaded)
@@ -727,6 +744,21 @@ namespace STARK {
                 else if ((sender as CheckBox).IsChecked == false)
                 {
                     whitelistedOnlyBlockWordCmd = false;
+                }
+            }
+        }
+
+        private void allowPlayCommandDuringSongCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    allowPlayCommandDuringSong = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    allowPlayCommandDuringSong = false;
                 }
             }
         }
