@@ -60,6 +60,7 @@
                     <TextBox x:Name="TTS_AddTextBox" HorizontalAlignment="Left" Height="29" Margin="10,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" UndoLimit="5" KeyUp="TTS_AddTextBox_KeyUp"/>
                     <Button x:Name="TTS_Pause_Copy" Content="Add to queue" HorizontalAlignment="Left" Margin="340,177,0,0" VerticalAlignment="Top" Width="125" BorderThickness="0" Click="TTS_Add_Click" Height="29" Padding="10,2,10,5"/>
                     <CheckBox x:Name="whitelistToggleTTS" Content="Whitelisted Only" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" Checked="whitelistToggleTTS_Checked" Unchecked="whitelistToggleTTS_Checked"/>
+                    <CheckBox x:Name="invertRegexFilterCheckBox" Content="Invert Regex Filter" HorizontalAlignment="Left" Margin="308,10,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Stretch" FontSize="15" Checked="invertRegexFilterCheckBox_Checked" Unchecked="invertRegexFilterCheckBox_Checked" ToolTip="Instead of blocking TTS messages that match the Regex filter, it will only allow messages that match the Regex filter"/>
 
 
                 </Grid>

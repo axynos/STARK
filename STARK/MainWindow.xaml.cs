@@ -57,6 +57,7 @@ namespace STARK {
         public static bool whitelistedOnlyBlockWordCmd = true;
 
         public static bool allowPlayCommandDuringSong = true;
+        public static bool invertRegexFilter = false;
 
         public static string gameDir;
 
@@ -103,6 +104,11 @@ namespace STARK {
             if (!File.Exists("replace.txt"))
             {
                 File.Create("replace.txt");
+            }
+
+            if (!File.Exists("regex_filter.txt"))
+            {
+                File.Create("regex_filter.txt");
             }
 
             if (!File.Exists("game.txt"))
@@ -759,6 +765,21 @@ namespace STARK {
                 else if ((sender as CheckBox).IsChecked == false)
                 {
                     allowPlayCommandDuringSong = false;
+                }
+            }
+        }
+
+        private void invertRegexFilterCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    invertRegexFilter = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    invertRegexFilter = false;
                 }
             }
         }
