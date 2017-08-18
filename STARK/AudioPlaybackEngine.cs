@@ -145,6 +145,10 @@ namespace STARK {
             videoID = videoID.Replace("youtube.com/", "");
             videoID = videoID.Replace("watch?v=", "");
 
+            int index = videoID.IndexOf("&");
+            if (index > 0)
+                videoID = videoID.Substring(0, index);
+
             var client = new YoutubeClient();
             bool exists = false;
 
