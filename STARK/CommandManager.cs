@@ -8,6 +8,8 @@
         public static Command stopCmd = new Command(".stop", false);
         public static Command skipCurrentCmd = new Command(".skip", false);
         public static Command clearQueueCmd = new Command(".clear", false);
+        public static Command ttsSkipCurrentCmd = new Command(".ttsskip", false);
+        public static Command ttsClearQueueCmd = new Command(".ttsclear", false);
         public static Command blockUserCmd = new Command(".block", true);
         public static Command blockWordCmd = new Command(".blockword", true);
     }

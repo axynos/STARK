@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YoutubeExplode;
-using YoutubeExplode.Models;
 
 namespace STARK {
     class AudioPlaybackEngine : IDisposable {
@@ -18,7 +17,7 @@ namespace STARK {
         WaveFormat audioFormat;
         AudioFileManager afm;
         TimeSpan savedTime;
-
+        
         MixingSampleProvider mspStandard;
         MixingSampleProvider mspLoopback;
 
@@ -33,6 +32,8 @@ namespace STARK {
 
         bool currentlyPlaying = false;
         bool paused = false;
+
+        ObservableCollection<AudioQueueItem> audioQueue = new ObservableCollection<AudioQueueItem>();
         #endregion
 
 
@@ -124,62 +125,97 @@ namespace STARK {
                 vsp = null;
                 vsp2 = null;
                 currentlyPlaying = false;
+
+                if (audioQueue.Count > 0 && !paused)
+                {
+                    App.Current.Dispatcher.Invoke(delegate {
+                        audioQueue.RemoveAt(0);
+                    });
+
+                    if (audioQueue.Count > 0) PlayAudioFile(audioQueue[0].filePath, 100, tokenSource.Token);
+                }
             }
+        }
+
+        public ObservableCollection<AudioQueueItem> getAudioQueue()
+        {
+            return audioQueue;
         }
 
         //MEDIA CONTROL
         #region "Media Control"
-        public void Play(int id) {
+        public void Play(int id, string requester) {
             AudioPlaybackItem item = afm.getCollection().ElementAt(id);
-            PlayAudioFile(item.path, item.volume, tokenSource.Token);
+
+            App.Current.Dispatcher.Invoke(delegate
+            {
+                AudioFileReader reader = new AudioFileReader(item.path);
+                TimeSpan duration = TimeSpan.FromSeconds((int)reader.TotalTime.TotalSeconds);
+
+                audioQueue.Add(new AudioQueueItem(item.name, item.path, duration, requester));
+            });
+
+            if (!currentlyPlaying) PlayAudioFile(item.path, item.volume, tokenSource.Token);
         }
 
-        public async void PlayVideo(string videoID)
+        public async void PlayVideo(string video, string requester)
         {
-            videoID = videoID.Replace("https://", "");
-            videoID = videoID.Replace("http://", "");
-            videoID = videoID.Replace("youtu.be/", "");
-            videoID = videoID.Replace("www.youtube.com/", "");
-            videoID = videoID.Replace("youtube.com/", "");
-            videoID = videoID.Replace("watch?v=", "");
+            video = video.Replace("https://", "");
+            video = video.Replace("http://", "");
+            video = video.Replace("youtu.be/", "");
+            video = video.Replace("www.youtube.com/", "");
+            video = video.Replace("youtube.com/", "");
+            video = video.Replace("watch?v=", "");
 
-            int index = videoID.IndexOf("&");
+            int index = video.IndexOf("&");
             if (index > 0)
-                videoID = videoID.Substring(0, index);
+                video = video.Substring(0, index);
 
             var client = new YoutubeClient();
             bool exists = false;
-            
+
             try
             {
-                exists = await client.CheckVideoExistsAsync(videoID);
+                await client.GetVideoAsync(video);
+
+                exists = true;
             }
             catch (ArgumentException)
             {
-                
+                System.Collections.Generic.List<YoutubeSearch.VideoInformation> searchResults = new YoutubeSearch.VideoSearch().SearchQuery(video, 1);
+
+                if (searchResults.Count > 0)
+                {
+                    video = searchResults[0].Url;
+
+                    video = video.Replace("http://www.youtube.com/watch?v=", "");
+
+                    exists = true;
+                }
             }
 
             if (exists)
             {
                 Directory.CreateDirectory("ytAudioFiles");
 
-                var videoInfo = await client.GetVideoInfoAsync(videoID);
+                var videoInfo = await client.GetVideoAsync(video);
 
                 string FormattedVideoTitle = "(" + videoInfo.Id + ")" + videoInfo.Title.Replace(@"\", "").Replace("/", "").Replace(":", "").Replace("*", "").Replace("?", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "");
 
                 if (!File.Exists($@"ytAudioFiles\{FormattedVideoTitle}.m4a"))
                 {
-                    var streamInfo = videoInfo.AudioStreams.Where(s => s.Container == YoutubeExplode.Models.MediaStreams.Container.M4A).OrderBy(s => s.Bitrate).Last();
+                    var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(video);
+                    var streamInfo = streamInfoSet.Audio.Where(s => s.Container == YoutubeExplode.Models.MediaStreams.Container.M4A).OrderBy(s => s.Bitrate).Last();
 
-                    string fileExtension = streamInfo.Container.GetFileExtension();
-                    string fileName = $"{FormattedVideoTitle}.{fileExtension}";
-
-                    using (var input = await client.GetMediaStreamAsync(streamInfo))
-                    using (var output = File.Create($@"ytAudioFiles\{fileName}"))
-                        await input.CopyToAsync(output);
+                    await client.DownloadMediaStreamAsync(streamInfo, $@"ytAudioFiles\{FormattedVideoTitle}.m4a");
                 }
 
-                PlayAudioFile($@"ytAudioFiles\{FormattedVideoTitle}.m4a", 100, tokenSource.Token);
+                App.Current.Dispatcher.Invoke(delegate
+                {
+                    audioQueue.Add(new AudioQueueItem(videoInfo.Title, $@"ytAudioFiles\{FormattedVideoTitle}.m4a", videoInfo.Duration, requester));
+                });
+
+                if (!currentlyPlaying) PlayAudioFile($@"ytAudioFiles\{FormattedVideoTitle}.m4a", 100, tokenSource.Token);
             }
         }
 
@@ -203,12 +239,47 @@ namespace STARK {
             }
         }
 
+        public void TogglePause()
+        {
+            if (!paused)
+            {
+                Pause();
+            }
+            else
+            {
+                Resume();
+            }
+        }
+
         public void Stop() {
+            App.Current.Dispatcher.Invoke(delegate {
+                audioQueue.Clear();
+            });
+
             paused = false;
             savedTime = TimeSpan.Zero;
             tokenSource.Cancel();
             tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();
+        }
+
+        public void SkipCurrent()
+        {
+            paused = false;
+            savedTime = TimeSpan.Zero;
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+            tokenSource = new CancellationTokenSource();
+        }
+
+        public void ClearQueue()
+        {
+            for (int i = audioQueue.Count - 1; i > 0; i--)
+            {
+                App.Current.Dispatcher.Invoke(delegate {
+                    audioQueue.RemoveAt(i);
+                });
+            }
         }
         #endregion
 

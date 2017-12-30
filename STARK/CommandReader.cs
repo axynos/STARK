@@ -16,6 +16,8 @@ namespace STARK {
         Command stopCmd;
         Command skipCurrentCmd;
         Command clearQueueCmd;
+        Command ttsSkipCurrentCmd;
+        Command ttsClearQueueCmd;
         Command blockUserCmd;
         Command blockWordCmd;
 
@@ -46,6 +48,8 @@ namespace STARK {
             stopCmd = CommandManager.stopCmd;
             skipCurrentCmd = CommandManager.skipCurrentCmd;
             clearQueueCmd = CommandManager.clearQueueCmd;
+            ttsSkipCurrentCmd = CommandManager.ttsSkipCurrentCmd;
+            ttsClearQueueCmd = CommandManager.ttsClearQueueCmd;
             blockUserCmd = CommandManager.blockUserCmd;
             blockWordCmd = CommandManager.blockWordCmd;
 
@@ -79,42 +83,15 @@ namespace STARK {
                         string prompt = parts[1];
                         string player = getPlayer(parts[0]);
 
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
                         string[] blocked_words = File.ReadAllLines("blocked_words.txt");
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
                         string[] replace = File.ReadAllLines("replace.txt");
                         string[] regex_filter = File.ReadAllLines("regex_filter.txt");
                         string lowercasePrompt = prompt.ToLower();
-                        bool blockedUser = false;
                         bool blockedWord = false;
                         bool regexIsMatch = false;
-                        int whitelistedUser = 0;
 
-                        if (MainWindow.whitelistedOnlyTTS == true)
+                        if (HasRights(MainWindow.whitelistedOnlyTTS, player))
                         {
-                            for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                            {
-                                if (player.Contains(whitelisted_users[i]))
-                                {
-                                    whitelistedUser++;
-
-                                    if (whitelistedUser == 1)
-                                    {
-                                        qss.AddToQueue(new QSSQueueItem(prompt, player));
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i <= blocked_users.Length - 1; i++)
-                            {
-                                if (player.Contains(blocked_users[i]))
-                                {
-                                    blockedUser = true;
-                                }
-                            }
-
                             for (int i = 0; i <= blocked_words.Length - 1; i++)
                             {
                                 string lowercaseBlocked_word = blocked_words[i].ToLower();
@@ -156,23 +133,20 @@ namespace STARK {
                                 }
                             }
 
-                            if (blockedUser == false)
+                            if (blockedWord == false)
                             {
-                                if (blockedWord == false)
+                                if (MainWindow.invertRegexFilter == true)
                                 {
-                                    if (MainWindow.invertRegexFilter == true)
+                                    if (regexIsMatch == true)
                                     {
-                                        if (regexIsMatch == true)
-                                        {
-                                            qss.AddToQueue(new QSSQueueItem(prompt, player));
-                                        }
+                                        qss.AddToQueue(new QSSQueueItem(prompt, player));
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    if (regexIsMatch == false)
                                     {
-                                        if (regexIsMatch == false)
-                                        {
-                                            qss.AddToQueue(new QSSQueueItem(prompt, player));
-                                        }
+                                        qss.AddToQueue(new QSSQueueItem(prompt, player));
                                     }
                                 }
                             }
@@ -183,41 +157,9 @@ namespace STARK {
                     var parts = getParts(line, playCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyPlayCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyPlayCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    TryParsePlay(line);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            TryParsePlay(line);
-                        }
+                        TryParsePlay(line);
                     }
                 }
                 else if (ContainsCommand(line, playVideoCmd))
@@ -226,172 +168,36 @@ namespace STARK {
                     string prompt = parts[1];
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyPlayVideoCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyPlayVideoCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    if (MainWindow.allowPlayCommandDuringSong)
-                                    {
-                                        ape.Stop();
-                                    }
-                                    ape.PlayVideo(prompt);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            if (MainWindow.allowPlayCommandDuringSong)
-                            {
-                                ape.Stop();
-                            }
-                            ape.PlayVideo(prompt);
-                        }
+                        ape.PlayVideo(prompt, player);
                     }
                 }
                 else if (ContainsCommand(line, pauseCmd)) {
                     var parts = getParts(line, pauseCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyPauseCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyPauseCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    ape.Pause();
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            ape.Pause();
-                        }
+                        ape.TogglePause();
                     }
                 }
                 else if (ContainsCommand(line, resumeCmd)) {
                     var parts = getParts(line, resumeCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyResumeCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyResumeCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    ape.Resume();
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            ape.Resume();
-                        }
+                        ape.Resume();
                     }
                 }
                 else if (ContainsCommand(line, stopCmd)) {
                     var parts = getParts(line, stopCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyStopCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyStopCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    ape.Stop();
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            ape.Stop();
-                        }
+                        ape.Stop();
                     }
                 }
                 else if (ContainsCommand(line, skipCurrentCmd))
@@ -399,41 +205,9 @@ namespace STARK {
                     var parts = getParts(line, skipCurrentCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlySkipCurrentCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlySkipCurrentCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    qss.SkipCurrent();
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            qss.SkipCurrent();
-                        }
+                        ape.SkipCurrent();
                     }
                 }
                 else if (ContainsCommand(line, clearQueueCmd))
@@ -441,243 +215,150 @@ namespace STARK {
                     var parts = getParts(line, clearQueueCmd);
                     string player = getPlayer(parts[0]);
 
-                    if (MainWindow.whitelistedOnlyClearQueueCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyClearQueueCmd, player))
                     {
-                        string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                        int whitelistedUser = 0;
-
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
-                        {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    qss.Clear();
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
-                        {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
-                        }
-
-                        if (blockedUser == false)
-                        {
-                            qss.Clear();
-                        }
+                        ape.ClearQueue();
                     }
                 }
-                if (ContainsCommand(line, blockUserCmd))
+                else if (ContainsCommand(line, ttsSkipCurrentCmd))
+                {
+                    var parts = getParts(line, ttsSkipCurrentCmd);
+                    string player = getPlayer(parts[0]);
+
+                    if (HasRights(MainWindow.whitelistedOnlyTTSSkipCurrentCmd, player))
+                    {
+                        qss.SkipCurrent();
+                    }
+                }
+                else if (ContainsCommand(line, ttsClearQueueCmd))
+                {
+                    var parts = getParts(line, ttsClearQueueCmd);
+                    string player = getPlayer(parts[0]);
+
+                    if (HasRights(MainWindow.whitelistedOnlyTTSClearQueueCmd, player))
+                    {
+                        qss.Clear();
+                    }
+                }
+                else if (ContainsCommand(line, blockUserCmd))
                 {
                     var parts = getParts(line, blockUserCmd);
                     string prompt = parts[1];
                     string player = getPlayer(parts[0]);
 
-                    string blocked_users = File.ReadAllText("blocked_users.txt");
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    if (MainWindow.whitelistedOnlyBlockUserCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyBlockUserCmd, player))
                     {
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        string blocked_users = File.ReadAllText("blocked_users.txt");
+
+                        var encodingForFile = GetEncoding("blocked_users.txt");
+                        string lastline = string.Empty;
+
+                        string[] Lines = blocked_users.Split('\n');
+
+                        if (Lines.Length == 0)
                         {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    var encodingForFile = GetEncoding("blocked_users.txt");
-                                    string lastline = string.Empty;
-
-                                    string[] Lines = blocked_users.Split('\n');
-
-                                    if (Lines.Length == 0)
-                                    {
-                                        lastline = string.Empty;
-                                    }
-                                    else if (Lines.Length >= 1)
-                                    {
-                                        lastline = Lines[Lines.Length - 1];
-                                    }
-
-                                    if (lastline.Length == 0)
-                                    {
-                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
-                                        {
-                                            sw.WriteLine(prompt);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
-                                        {
-                                            sw.WriteLine();
-                                            sw.WriteLine(prompt);
-                                        }
-                                    }
-                                }
-                            }
+                            lastline = string.Empty;
                         }
-                    }
-                    else
-                    {
-                        string[] blocked_users_file = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
+                        else if (Lines.Length >= 1)
                         {
-                            if (player.Contains(blocked_users_file[i]))
-                            {
-                                blockedUser = true;
-                            }
+                            lastline = Lines[Lines.Length - 1];
                         }
 
-                        if (blockedUser == false)
+                        if (lastline.Length == 0)
                         {
-                            var encodingForFile = GetEncoding("blocked_users.txt");
-                            string lastline = string.Empty;
-
-                            string[] Lines = blocked_users.Split('\n');
-
-                            if (Lines.Length == 0)
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
                             {
-                                lastline = string.Empty;
+                                sw.WriteLine(prompt);
                             }
-                            else if (Lines.Length >= 1)
+                        }
+                        else
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
                             {
-                                lastline = Lines[Lines.Length - 1];
-                            }
-
-                            if (lastline.Length == 0)
-                            {
-                                using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
-                                {
-                                    sw.WriteLine(prompt);
-                                }
-                            }
-                            else
-                            {
-                                using (StreamWriter sw = new StreamWriter(File.Open("blocked_users.txt", FileMode.Append), encodingForFile))
-                                {
-                                    sw.WriteLine();
-                                    sw.WriteLine(prompt);
-                                }
+                                sw.WriteLine();
+                                sw.WriteLine(prompt);
                             }
                         }
                     }
                 }
-                if (ContainsCommand(line, blockWordCmd))
+                else if (ContainsCommand(line, blockWordCmd))
                 {
                     var parts = getParts(line, blockWordCmd);
                     string prompt = parts[1];
                     string player = getPlayer(parts[0]);
 
-                    string blocked_words = File.ReadAllText("blocked_words.txt");
-                    string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
-                    int whitelistedUser = 0;
-
-                    if (MainWindow.whitelistedOnlyBlockWordCmd == true)
+                    if (HasRights(MainWindow.whitelistedOnlyBlockWordCmd, player))
                     {
-                        for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                        string blocked_words = File.ReadAllText("blocked_words.txt");
+
+                        var encodingForFile = GetEncoding("blocked_words.txt");
+                        string lastline = string.Empty;
+
+                        string[] Lines = blocked_words.Split('\n');
+
+                        if (Lines.Length == 0)
                         {
-                            if (player.Contains(whitelisted_users[i]))
-                            {
-                                whitelistedUser++;
-
-                                if (whitelistedUser == 1)
-                                {
-                                    var encodingForFile = GetEncoding("blocked_words.txt");
-                                    string lastline = string.Empty;
-
-                                    string[] Lines = blocked_words.Split('\n');
-
-                                    if (Lines.Length == 0)
-                                    {
-                                        lastline = string.Empty;
-                                    }
-                                    else if (Lines.Length >= 1)
-                                    {
-                                        lastline = Lines[Lines.Length - 1];
-                                    }
-
-                                    if (lastline.Length == 0)
-                                    {
-                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
-                                        {
-                                            sw.WriteLine(prompt);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
-                                        {
-                                            sw.WriteLine();
-                                            sw.WriteLine(prompt);
-                                        }
-                                    }
-                                }
-                            }
+                            lastline = string.Empty;
                         }
-                    }
-                    else
-                    {
-                        string[] blocked_users = File.ReadAllLines("blocked_users.txt");
-                        bool blockedUser = false;
-
-                        for (int i = 0; i <= blocked_users.Length - 1; i++)
+                        else if (Lines.Length >= 1)
                         {
-                            if (player.Contains(blocked_users[i]))
-                            {
-                                blockedUser = true;
-                            }
+                            lastline = Lines[Lines.Length - 1];
                         }
 
-                        if (blockedUser == false)
+                        if (lastline.Length == 0)
                         {
-                            var encodingForFile = GetEncoding("blocked_words.txt");
-                            string lastline = string.Empty;
-
-                            string[] Lines = blocked_words.Split('\n');
-
-                            if (Lines.Length == 0)
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
                             {
-                                lastline = string.Empty;
+                                sw.WriteLine(prompt);
                             }
-                            else if (Lines.Length >= 1)
+                        }
+                        else
+                        {
+                            using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
                             {
-                                lastline = Lines[Lines.Length - 1];
-                            }
-
-                            if (lastline.Length == 0)
-                            {
-                                using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
-                                {
-                                    sw.WriteLine(prompt);
-                                }
-                            }
-                            else
-                            {
-                                using (StreamWriter sw = new StreamWriter(File.Open("blocked_words.txt", FileMode.Append), encodingForFile))
-                                {
-                                    sw.WriteLine();
-                                    sw.WriteLine(prompt);
-                                }
+                                sw.WriteLine();
+                                sw.WriteLine(prompt);
                             }
                         }
                     }
                 }
+            }
+        }
+
+        private bool HasRights(bool whitelistedOnly, string player)
+        {
+            if (whitelistedOnly == true)
+            {
+                string[] whitelisted_users = File.ReadAllLines("whitelisted_users.txt");
+                int whitelistedUser = 0;
+
+                for (int i = 0; i <= whitelisted_users.Length - 1; i++)
+                {
+                    if (player.Contains(whitelisted_users[i]))
+                    {
+                        whitelistedUser++;
+
+                        if (whitelistedUser == 1)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                string[] blocked_users = File.ReadAllLines("blocked_users.txt");
+
+                for (int i = 0; i <= blocked_users.Length - 1; i++)
+                {
+                    if (player.Contains(blocked_users[i]))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
             }
         }
 
@@ -764,31 +445,19 @@ namespace STARK {
                 int id;
                 if (int.TryParse(arg1, out id) && id >= 0) {
                     if (id < afm.getCollection().Count) {
-                        if (MainWindow.allowPlayCommandDuringSong)
-                        {
-                            ape.Stop(); //you can't stop Harambe
-                        }
-                        ape.Play(id);
+                        ape.Play(id, player);
                     }
                 } else if (canPlayByTitle) {
                     foreach (AudioPlaybackItem item in afm.getCollection()) {
                         if (item.name.ToLower() == parts[1].ToLower()) {
-                            if (MainWindow.allowPlayCommandDuringSong)
-                            {
-                                ape.Stop();
-                            }
-                            ape.Play(item.id);
+                            ape.Play(item.id, player);
                         }
                     }
                 } else if (canPlayByTag) {
                     foreach (AudioPlaybackItem item in afm.getCollection()) {
                         foreach (string tag in item.tags) {
                             if (tag.ToLower() == arg.ToLower()) {
-                                if (MainWindow.allowPlayCommandDuringSong)
-                                {
-                                    ape.Stop();
-                                }
-                                ape.Play(item.id);
+                                ape.Play(item.id, player);
                             }
                         }
                     }

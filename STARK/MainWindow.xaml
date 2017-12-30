@@ -108,7 +108,32 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <CheckBox x:Name="allowPlayCommandDuringSongCheckBox" Content="Allow .play and .playvideo while a song is playing" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Checked="allowPlayCommandDuringSongCheckBox_Checked" Unchecked="allowPlayCommandDuringSongCheckBox_Checked" IsChecked="True"/>
+                    <Button x:Name="Audio_AddToQueue" Content="Add to queue" HorizontalAlignment="Left" Margin="470,211,0,0" VerticalAlignment="Top" Width="90" FontSize="11" ToolTip="Add the selected item to the queue." Click="Audio_AddToQueue_Click"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Audio queue" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">
+                <Grid Background="#FFE5E5E5">
+
+                    <!--AUDIO LIST-->
+                    <ListView x:Name="AudioQueue" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="250" Margin="10,211,0,0" VerticalAlignment="Top" Width="555" BorderThickness="0" IsHitTestVisible="True" IsTextSearchEnabled="False" IsSynchronizedWithCurrentItem="True">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="TITLE" Width="300" DisplayMemberBinding="{Binding title}"/>
+                                <GridViewColumn Header="DURATION" Width="100" DisplayMemberBinding="{Binding duration}"/>
+                                <GridViewColumn Header="REQUESTER" Width="155" DisplayMemberBinding="{Binding requester}"/>
+                                <!--<GridViewColumn Header="BIND" Width="50" DisplayMemberBinding="{Binding name}"/>-->
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button x:Name="AudioQueue_Stop" Content="Stop" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" Width="75" Click="AudioQueue_Stop_Click"/>
+                    <Button x:Name="AudioQueue_Skip" Content="Skip" HorizontalAlignment="Left" Margin="90,177,0,0" VerticalAlignment="Top" Width="75" Click="AudioQueue_Skip_Click"/>
+                    <Button x:Name="AudioQueue_Clear" Content="Clear" HorizontalAlignment="Left" Margin="170,177,0,0" VerticalAlignment="Top" Width="75" Click="AudioQueue_Clear_Click"/>
+                    <Button x:Name="AudioQueue_Pause" Content="Pause/Resume" HorizontalAlignment="Left" Margin="250,177,0,0" VerticalAlignment="Top" Width="110" Click="AudioQueue_Pause_Click"/>
+                    <Label x:Name="AudioQueue_AddToQueueLabel" Content="Add YouTube Video to queue:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="AudioQueue_AddToQueueTextBox" Controls:TextBoxHelper.Watermark="Video URL or tags" HorizontalAlignment="Left" Height="23" Margin="10,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="168" KeyUp="AudioQueue_AddToQueueTextBox_KeyUp"/>
+                    <Button x:Name="AudioQueue_AddToQueue" Content="Add" HorizontalAlignment="Left" Margin="178,35,0,0" VerticalAlignment="Top" Width="50" Height="26" FontSize="12" Click="AudioQueue_AddToQueue_Click"/>
+                    <Button x:Name="AudioQueue_RemoveSelected" Content="Remove selected" HorizontalAlignment="Left" Margin="365,177,0,0" VerticalAlignment="Top" Width="125" Click="AudioQueue_RemoveSelected_Click"/>
 
                 </Grid>
             </TabItem>
@@ -122,9 +147,11 @@
                     <CheckBox x:Name="whitelistToggleSkipCurrentCmd" Content=".skip" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleSkipCurrentCmd_Checked" Unchecked="whitelistToggleSkipCurrentCmd_Checked"/>
                     <CheckBox x:Name="whitelistToggleClearQueueCmd" Content=".clear" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleClearQueueCmd_Checked" Unchecked="whitelistToggleClearQueueCmd_Checked"/>
                     <Label x:Name="label2" Content="You can whitelist people in whitelisted__users.txt" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="whitelistToggleBlockUserCmd" Content=".block" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockUserCmd_Checked" Unchecked="whitelistToggleBlockUserCmd_Checked"/>
-                    <CheckBox x:Name="whitelistToggleBlockWordCmd" Content=".blockword" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockWordCmd_Checked" Unchecked="whitelistToggleBlockWordCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleBlockUserCmd" Content=".block" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockUserCmd_Checked" Unchecked="whitelistToggleBlockUserCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleBlockWordCmd" Content=".blockword" HorizontalAlignment="Left" Margin="10,295,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleBlockWordCmd_Checked" Unchecked="whitelistToggleBlockWordCmd_Checked"/>
                     <CheckBox x:Name="whitelistTogglePlayVideoCmd" Content=".playvideo" HorizontalAlignment="Left" Margin="10,0,0,365" VerticalAlignment="Bottom" Checked="whitelistTogglePlayVideoCmd_Checked" Unchecked="whitelistTogglePlayVideoCmd_Checked" IsChecked="True"/>
+                    <CheckBox x:Name="whitelistToggleTTSSkipCurrentCmd" Content=".ttsskip" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleTTSSkipCurrentCmd_Checked" Unchecked="whitelistToggleTTSSkipCurrentCmd_Checked"/>
+                    <CheckBox x:Name="whitelistToggleTTSClearQueueCmd" Content=".ttsclear" HorizontalAlignment="Left" Margin="10,249,0,0" VerticalAlignment="Top" IsChecked="True" Checked="whitelistToggleTTSClearQueueCmd_Checked" Unchecked="whitelistToggleTTSClearQueueCmd_Checked"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Interface" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="144" Controls:ControlsHelper.HeaderFontSize="25" Padding="12,2,6,2">

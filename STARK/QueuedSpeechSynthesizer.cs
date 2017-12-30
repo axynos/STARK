@@ -18,6 +18,7 @@ namespace STARK {
         //VARIABLES
         #region "variables"
         SpeechAudioFormatInfo synthesizerAudioFormat;
+        WaveFormat waveFormat;
 		SpeechSynthesizer synthesizer;
 
 		MixingSampleProvider mspStandard;
@@ -49,7 +50,7 @@ namespace STARK {
 
         public QueuedSpeechSynthesizer(ref MixingSampleProvider mspStandard, ref MixingSampleProvider mspLoopback, int volume, int rate) {
 			synthesizer = new SpeechSynthesizer();
-
+            
             this.volume = volume;
 			this.rate = rate;
 
@@ -58,7 +59,12 @@ namespace STARK {
 			this.mspStandard = mspStandard;
 			this.mspLoopback = mspLoopback;
 
-			synthesizerAudioFormat = new SpeechAudioFormatInfo(22050, AudioBitsPerSample.Sixteen, AudioChannel.Mono);
+            int samplerate = int.Parse(File.ReadAllLines("audioformat.txt")[0].Replace("Sample rate: ", ""));
+            int channels = int.Parse(File.ReadAllLines("audioformat.txt")[1].Replace("Channels: ", ""));
+
+            if (channels == 1) synthesizerAudioFormat = new SpeechAudioFormatInfo(samplerate, AudioBitsPerSample.Sixteen, AudioChannel.Mono);
+            else synthesizerAudioFormat = new SpeechAudioFormatInfo(samplerate, AudioBitsPerSample.Sixteen, AudioChannel.Stereo);
+            waveFormat = new WaveFormat(samplerate, channels);
 
 			startSpeakLoop();
 		}
@@ -73,20 +79,20 @@ namespace STARK {
                 Stream tempStream1 = new MemoryStream();
                 Stream tempStream2 = new MemoryStream();
 
-
-                synthesizer.SetOutputToWaveStream(rawStream);
+                synthesizer.SetOutputToAudioStream(rawStream, synthesizerAudioFormat);
 				synthesizer.Rate = rate;
 
                 synthesizer.Speak(prompt);
 
-				rawStream.Seek(0, SeekOrigin.Begin);
-                WriteToStream(tempStream1, new WaveFileReader(rawStream));
                 rawStream.Seek(0, SeekOrigin.Begin);
-                WriteToStream(tempStream2, new WaveFileReader(rawStream));
+
+				rawStream.Seek(0, SeekOrigin.Begin);
+                WriteToStream(tempStream1, new RawSourceWaveStream(rawStream, waveFormat));
+                rawStream.Seek(0, SeekOrigin.Begin);
+                WriteToStream(tempStream2, new RawSourceWaveStream(rawStream, waveFormat));
 
                 tempStream1.Seek(0, SeekOrigin.Begin);
                 tempStream2.Seek(0, SeekOrigin.Begin);
-                
 
                 WaveFileReader reader = new WaveFileReader(tempStream1);
 				reader.CurrentTime = savedTime;

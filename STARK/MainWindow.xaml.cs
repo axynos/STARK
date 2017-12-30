@@ -28,7 +28,7 @@ namespace STARK {
 		WaveOut woLoopback; //Synth
 
         //Formats
-        WaveFormat audioFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
+        WaveFormat audioFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
 		//Volume Controllers & Buffers
 		VolumeSampleProvider vspMicrophone;
@@ -53,10 +53,11 @@ namespace STARK {
         public static bool whitelistedOnlyStopCmd = true;
         public static bool whitelistedOnlySkipCurrentCmd = true;
         public static bool whitelistedOnlyClearQueueCmd = true;
+        public static bool whitelistedOnlyTTSSkipCurrentCmd = true;
+        public static bool whitelistedOnlyTTSClearQueueCmd = true;
         public static bool whitelistedOnlyBlockUserCmd = true;
         public static bool whitelistedOnlyBlockWordCmd = true;
 
-        public static bool allowPlayCommandDuringSong = true;
         public static bool invertRegexFilter = false;
 
         public static string gameDir;
@@ -71,7 +72,22 @@ namespace STARK {
         #endregion
 
         public MainWindow() {
-			InitializeComponent();
+            if (!File.Exists("audioformat.txt"))
+            {
+                using (StreamWriter sw = new StreamWriter(File.Open("audioformat.txt", FileMode.Create), Encoding.UTF8))
+                {
+                    sw.WriteLine("Sample rate: 44100");
+                    sw.WriteLine("Channels: 2");
+                }
+            }
+            else
+            {
+                int samplerate = int.Parse(File.ReadAllLines("audioformat.txt")[0].Replace("Sample rate: ", ""));
+                int channels = int.Parse(File.ReadAllLines("audioformat.txt")[1].Replace("Channels: ", ""));
+                audioFormat = WaveFormat.CreateIeeeFloatWaveFormat(samplerate, channels);
+            }
+
+            InitializeComponent();
 
             //DEBUG CODE
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -86,31 +102,12 @@ namespace STARK {
 			InitializeMixer(ref mspStandard);
 			InitializeMixer(ref mspLoopback);
 
-            if (!File.Exists("blocked_users.txt"))
-            {
-                File.Create("blocked_users.txt");
-            }
-
-            if (!File.Exists("blocked_words.txt"))
-            {
-                File.Create("blocked_words.txt");
-            }
-
-            if (!File.Exists("whitelisted_users.txt"))
-            {
-                File.Create("whitelisted_users.txt");
-            }
-
-            if (!File.Exists("replace.txt"))
-            {
-                File.Create("replace.txt");
-            }
-
-            if (!File.Exists("regex_filter.txt"))
-            {
-                File.Create("regex_filter.txt");
-            }
-
+            if (!File.Exists("blocked_users.txt")) File.Create("blocked_users.txt");
+            if (!File.Exists("blocked_words.txt")) File.Create("blocked_words.txt");
+            if (!File.Exists("whitelisted_users.txt")) File.Create("whitelisted_users.txt");
+            if (!File.Exists("replace.txt")) File.Create("replace.txt");
+            if (!File.Exists("regex_filter.txt")) File.Create("regex_filter.txt");
+            
             if (!File.Exists("game.txt"))
             {
                 using (StreamWriter sw = new StreamWriter(File.Open("game.txt", FileMode.Create), Encoding.UTF8))
@@ -130,9 +127,8 @@ namespace STARK {
                     sw.WriteLine("l4d2: Left 4 Dead 2");
                     sw.WriteLine("dods: Day of Defeat Source");
                     sw.WriteLine("insurg: Insurgency");
-
-                    gameDir = @"\common\Team Fortress 2\tf";
                 }
+                gameDir = @"\common\Team Fortress 2\tf";
             }
             else
             {
@@ -190,6 +186,7 @@ namespace STARK {
             InitializeVoiceComboBox();
 			populateSetupComboBoxes();
             InitializeAudioItemList();
+            InitializeAudioQueue();
 
             loadSettings();
 
@@ -478,13 +475,18 @@ namespace STARK {
 			SynthQueue.SelectedIndex = -1; //Prevents the first text from getting selected automatically
 		}
 
+        private void InitializeAudioQueue() {
+			AudioQueue.ItemsSource = ape.getAudioQueue();
+            AudioQueue.SelectedIndex = -1; //Prevents the first text from getting selected automatically
+		}
+
         private void InitializeAudioItemList() {
             afm.LoadCurrentFiles();
             AudioItemList.ItemsSource = afm.getCollection();
             AudioItemList.SelectedIndex = -1;
         }
 
-		private void InitializeVoiceComboBox() {
+        private void InitializeVoiceComboBox() {
 			if (TTS_VoiceComboBox.Items.Count > 0) TTS_VoiceComboBox.Items.Clear();
 			foreach (InstalledVoice voice in qss.GetVoices()) {
 				TTS_VoiceComboBox.Items.Add(voice.VoiceInfo.Name);
@@ -547,8 +549,8 @@ namespace STARK {
 
         //SYNTHESIZER PANEL EVENTS
         #region "synthpanelevents"
-            #region "mediaButtons"
-                private void TTS_Pause_Click(object sender, RoutedEventArgs e) {
+        #region "mediaButtons"
+        private void TTS_Pause_Click(object sender, RoutedEventArgs e) {
 			        switch(TTS_Pause.Content.ToString()) {
 				        case "Pause":
 					        qss.PauseSpeaking();
@@ -619,6 +621,171 @@ namespace STARK {
             }
         }
 
+        private void invertRegexFilterCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    invertRegexFilter = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    invertRegexFilter = false;
+                }
+            }
+        }
+
+        private void TTS_CommandTextBox_TextChanged(object sender, TextChangedEventArgs e) {
+            if (loaded) {
+                CommandManager.synthCmd.changeCommand((sender as TextBox).Text);
+                //saveSettings();
+                if (conUI != null) conUI.Render();
+            }
+        }
+
+            private void TTS_VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			    if (loaded) {
+				    (sender as Slider).Value = Math.Round(e.NewValue, 0);
+				    if (qss != null) qss.ChangeVolume((int)(sender as Slider).Value);
+			    }
+		    }
+
+		    private void TTS_RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			    if (loaded) {
+				    (sender as Slider).Value = Math.Round(e.NewValue, 0);
+				    if (qss != null) qss.ChangeRate((int)(sender as Slider).Value);
+			    }
+		    }
+
+            private void TTS_VoiceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+                if (loaded) qss.ChangeVoice(e.AddedItems[0] as String);
+            }
+        #endregion
+
+        //AUDIO PANEL EVENTS
+        #region "audiopanelevents"
+        private void Audio_MicVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			if (loaded) {
+				(sender as Slider).Value = Math.Round(e.NewValue, 0);
+				changeMicrophoneVolume((int)(sender as Slider).Value);
+			}
+		}
+
+		private void Audio_MicBufferSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			if (loaded) {
+				(sender as Slider).Value = Math.Round(e.NewValue, 0);
+				changeMicrophoneBuffer((int)(sender as Slider).Value);
+			}
+		}
+
+		private void Audio_LoopbackVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+			if (loaded) {
+				(sender as Slider).Value = Math.Round(e.NewValue, 0);
+				changeLoopbackVolume((int)(sender as Slider).Value);
+			}
+		}
+
+		private void Audio_AFFVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            if (loaded) {
+                (sender as Slider).Value = Math.Round(e.NewValue, 0);
+                ape.ChangeVolume((int)(sender as Slider).Value);
+            }
+		}
+
+        private void Audio_OutputVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+            if (loaded) {
+                (sender as Slider).Value = Math.Round(e.NewValue, 0);
+                changeStandardVolume((int)(sender as Slider).Value);
+            }
+        }
+
+        private void Audio_MicCheckBox_Checked(object sender, RoutedEventArgs e) {
+            if (loaded) {
+                if ((sender as CheckBox).IsChecked == false) {
+                    if (wiMicrophone != null) {
+                        mspStandard.RemoveMixerInput(vspMicrophone);
+                        wiMicrophone.StopRecording();
+                    }
+                } else if ((sender as CheckBox).IsChecked ?? true) {
+                    if (wiMicrophone != null) {
+                        mspStandard.AddMixerInput(vspMicrophone);
+                        wiMicrophone.StartRecording();
+                    }
+                }
+            }
+        }
+
+        private void Audio_AddToQueue_Click(object sender, RoutedEventArgs e)
+        {
+            if (AudioItemList.SelectedIndex >= 0) ape.Play(AudioItemList.SelectedIndex, "STARK");
+        }
+        #endregion
+
+        //SONG QUEUE PANEL EVENTS
+        #region "songqueuepanelevents"
+        private void AudioQueue_Stop_Click(object sender, RoutedEventArgs e)
+        {
+            ape.Stop();
+        }
+
+        private void AudioQueue_Skip_Click(object sender, RoutedEventArgs e)
+        {
+            ape.SkipCurrent();
+        }
+
+        private void AudioQueue_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ape.ClearQueue();
+        }
+
+        private void AudioQueue_Pause_Click(object sender, RoutedEventArgs e)
+        {
+            ape.TogglePause();
+        }
+
+        private void AudioQueue_AddToQueue_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(AudioQueue_AddToQueueTextBox.Text) && !string.IsNullOrWhiteSpace(AudioQueue_AddToQueueTextBox.Text))
+            {
+                ape.PlayVideo(AudioQueue_AddToQueueTextBox.Text, "STARK");
+            }
+
+            AudioQueue_AddToQueueTextBox.Text = "";
+        }
+
+        private void AudioQueue_AddToQueueTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+
+            if (!string.IsNullOrEmpty(AudioQueue_AddToQueueTextBox.Text) && !string.IsNullOrWhiteSpace(AudioQueue_AddToQueueTextBox.Text))
+            {
+                ape.PlayVideo(AudioQueue_AddToQueueTextBox.Text, "STARK");
+            }
+
+            AudioQueue_AddToQueueTextBox.Text = "";
+        }
+
+        private void AudioQueue_RemoveSelected_Click(object sender, RoutedEventArgs e)
+        {
+            if (AudioQueue.SelectedIndex == 0)
+            {
+                ape.SkipCurrent();
+            }
+            else if (AudioQueue.SelectedIndex > 0)
+            {
+                App.Current.Dispatcher.Invoke(delegate {
+                    if (ape.getAudioQueue().Count > AudioQueue.SelectedIndex)
+                    {
+                        ape.getAudioQueue().RemoveAt(AudioQueue.SelectedIndex);
+                    }
+                });
+            }
+        }
+        #endregion
+
+        //COMMANDS PANEL EVENTS
+        #region "commandpanelevents"
         private void whitelistTogglePlayCmd_Checked(object sender, RoutedEventArgs e)
         {
             if (loaded)
@@ -724,6 +891,36 @@ namespace STARK {
             }
         }
 
+        private void whitelistToggleTTSSkipCurrentCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyTTSSkipCurrentCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyTTSSkipCurrentCmd = false;
+                }
+            }
+        }
+
+        private void whitelistToggleTTSClearQueueCmd_Checked(object sender, RoutedEventArgs e)
+        {
+            if (loaded)
+            {
+                if ((sender as CheckBox).IsChecked ?? true)
+                {
+                    whitelistedOnlyTTSClearQueueCmd = true;
+                }
+                else if ((sender as CheckBox).IsChecked == false)
+                {
+                    whitelistedOnlyTTSClearQueueCmd = false;
+                }
+            }
+        }
+
         private void whitelistToggleBlockUserCmd_Checked(object sender, RoutedEventArgs e)
         {
             if (loaded)
@@ -750,116 +947,6 @@ namespace STARK {
                 else if ((sender as CheckBox).IsChecked == false)
                 {
                     whitelistedOnlyBlockWordCmd = false;
-                }
-            }
-        }
-
-        private void allowPlayCommandDuringSongCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (loaded)
-            {
-                if ((sender as CheckBox).IsChecked ?? true)
-                {
-                    allowPlayCommandDuringSong = true;
-                }
-                else if ((sender as CheckBox).IsChecked == false)
-                {
-                    allowPlayCommandDuringSong = false;
-                }
-            }
-        }
-
-        private void invertRegexFilterCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (loaded)
-            {
-                if ((sender as CheckBox).IsChecked ?? true)
-                {
-                    invertRegexFilter = true;
-                }
-                else if ((sender as CheckBox).IsChecked == false)
-                {
-                    invertRegexFilter = false;
-                }
-            }
-        }
-
-        private void TTS_CommandTextBox_TextChanged(object sender, TextChangedEventArgs e) {
-            if (loaded) {
-                CommandManager.synthCmd.changeCommand((sender as TextBox).Text);
-                //saveSettings();
-                if (conUI != null) conUI.Render();
-            }
-        }
-
-            private void TTS_VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			    if (loaded) {
-				    (sender as Slider).Value = Math.Round(e.NewValue, 0);
-				    if (qss != null) qss.ChangeVolume((int)(sender as Slider).Value);
-			    }
-		    }
-
-		    private void TTS_RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			    if (loaded) {
-				    (sender as Slider).Value = Math.Round(e.NewValue, 0);
-				    if (qss != null) qss.ChangeRate((int)(sender as Slider).Value);
-			    }
-		    }
-
-            private void TTS_VoiceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-                if (loaded) qss.ChangeVoice(e.AddedItems[0] as String);
-            }
-        #endregion
-
-        //AUDIO PANEL EVENTS
-        #region "audiopanelevents"
-        private void Audio_MicVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			if (loaded) {
-				(sender as Slider).Value = Math.Round(e.NewValue, 0);
-				changeMicrophoneVolume((int)(sender as Slider).Value);
-			}
-		}
-
-		private void Audio_MicBufferSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			if (loaded) {
-				(sender as Slider).Value = Math.Round(e.NewValue, 0);
-				changeMicrophoneBuffer((int)(sender as Slider).Value);
-			}
-		}
-
-		private void Audio_LoopbackVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-			if (loaded) {
-				(sender as Slider).Value = Math.Round(e.NewValue, 0);
-				changeLoopbackVolume((int)(sender as Slider).Value);
-			}
-		}
-
-		private void Audio_AFFVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            if (loaded) {
-                (sender as Slider).Value = Math.Round(e.NewValue, 0);
-                ape.ChangeVolume((int)(sender as Slider).Value);
-            }
-		}
-
-        private void Audio_OutputVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            if (loaded) {
-                (sender as Slider).Value = Math.Round(e.NewValue, 0);
-                changeStandardVolume((int)(sender as Slider).Value);
-            }
-        }
-
-        private void Audio_MicCheckBox_Checked(object sender, RoutedEventArgs e) {
-            if (loaded) {
-                if ((sender as CheckBox).IsChecked == false) {
-                    if (wiMicrophone != null) {
-                        mspStandard.RemoveMixerInput(vspMicrophone);
-                        wiMicrophone.StopRecording();
-                    }
-                } else if ((sender as CheckBox).IsChecked ?? true) {
-                    if (wiMicrophone != null) {
-                        mspStandard.AddMixerInput(vspMicrophone);
-                        wiMicrophone.StartRecording();
-                    }
                 }
             }
         }
