@@ -126,6 +126,12 @@ namespace STARK {
                 vsp2 = null;
                 currentlyPlaying = false;
 
+                if (tokenSource.IsCancellationRequested)
+                {
+                    tokenSource.Dispose();
+                    tokenSource = new CancellationTokenSource();
+                }
+
                 if (audioQueue.Count > 0 && !paused)
                 {
                     App.Current.Dispatcher.Invoke(delegate {
@@ -227,8 +233,6 @@ namespace STARK {
             if (!paused) {
                 paused = true;
                 tokenSource.Cancel();
-                tokenSource.Dispose();
-                tokenSource = new CancellationTokenSource();
             }
         }
 
@@ -259,8 +263,6 @@ namespace STARK {
             paused = false;
             savedTime = TimeSpan.Zero;
             tokenSource.Cancel();
-            tokenSource.Dispose();
-            tokenSource = new CancellationTokenSource();
         }
 
         public void SkipCurrent()
@@ -268,8 +270,6 @@ namespace STARK {
             paused = false;
             savedTime = TimeSpan.Zero;
             tokenSource.Cancel();
-            tokenSource.Dispose();
-            tokenSource = new CancellationTokenSource();
         }
 
         public void ClearQueue()
