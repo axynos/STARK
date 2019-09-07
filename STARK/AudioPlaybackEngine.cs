@@ -211,7 +211,7 @@ namespace STARK {
                 if (!File.Exists($@"ytAudioFiles\{FormattedVideoTitle}.m4a"))
                 {
                     var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(video);
-                    var streamInfo = streamInfoSet.Audio.Where(s => s.Container == YoutubeExplode.Models.MediaStreams.Container.M4A).OrderBy(s => s.Bitrate).Last();
+                    var streamInfo = streamInfoSet.Audio.Where(s => s.Container == YoutubeExplode.Models.MediaStreams.Container.Mp4).OrderBy(s => s.Bitrate).Last();
 
                     await client.DownloadMediaStreamAsync(streamInfo, $@"ytAudioFiles\{FormattedVideoTitle}.m4a");
                 }

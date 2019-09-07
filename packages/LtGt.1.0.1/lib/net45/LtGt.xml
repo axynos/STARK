@@ -1,0 +1,546 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LtGt</name>
+    </assembly>
+    <members>
+        <member name="T:LtGt.Extensions">
+            <summary>
+            Extensions for <see cref="N:LtGt"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Extensions.LoadDocument(LtGt.IHtmlParser,System.IO.TextReader)">
+            <summary>
+            Parses an HTML document from <see cref="T:System.IO.TextReader"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Extensions.SaveNode(LtGt.IHtmlRenderer,LtGt.Models.HtmlNode,System.IO.TextWriter)">
+            <summary>
+            Renders an HTML node to <see cref="T:System.IO.TextWriter"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Extensions.LoadDocument(LtGt.IHtmlParser,System.String)">
+            <summary>
+            Parses an HTML document from a file.
+            </summary>
+        </member>
+        <member name="M:LtGt.Extensions.SaveNode(LtGt.IHtmlRenderer,LtGt.Models.HtmlNode,System.String)">
+            <summary>
+            Renders an HTML node to a file.
+            </summary>
+        </member>
+        <member name="T:LtGt.HtmlParser">
+            <summary>
+            HTML parser.
+            </summary>
+        </member>
+        <member name="M:LtGt.HtmlParser.ParseDocument(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.HtmlParser.ParseElement(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.HtmlParser.ParseNode(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:LtGt.HtmlParser.Default">
+            <summary>
+            Default instance of <see cref="T:LtGt.HtmlParser"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.HtmlRenderer">
+            <summary>
+            HTML renderer.
+            </summary>
+        </member>
+        <member name="M:LtGt.HtmlRenderer.RenderNode(LtGt.Models.HtmlNode)">
+            <inheritdoc />
+        </member>
+        <member name="P:LtGt.HtmlRenderer.Default">
+            <summary>
+            Default instance of <see cref="T:LtGt.HtmlRenderer"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.IHtmlParser">
+            <summary>
+            Provides an interface to parse HTML into objects.
+            </summary>
+        </member>
+        <member name="M:LtGt.IHtmlParser.ParseDocument(System.String)">
+            <summary>
+            Parses <see cref="T:LtGt.Models.HtmlDocument"/> from input.
+            </summary>
+        </member>
+        <member name="M:LtGt.IHtmlParser.ParseElement(System.String)">
+            <summary>
+            Parses <see cref="T:LtGt.Models.HtmlElement"/> from input.
+            </summary>
+        </member>
+        <member name="M:LtGt.IHtmlParser.ParseNode(System.String)">
+            <summary>
+            Parses any <see cref="T:LtGt.Models.HtmlNode"/> from input.
+            </summary>
+        </member>
+        <member name="T:LtGt.IHtmlRenderer">
+            <summary>
+            Provides an interface to render HTML objects to code.
+            </summary>
+        </member>
+        <member name="M:LtGt.IHtmlRenderer.RenderNode(LtGt.Models.HtmlNode)">
+            <summary>
+            Renders any <see cref="T:LtGt.Models.HtmlNode"/> to string.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.Extensions">
+            <summary>
+            Extensions for <see cref="N:LtGt.Models"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXAttribute(LtGt.Models.HtmlAttribute)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlAttribute"/> to an instance of <see cref="T:System.Xml.Linq.XAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXComment(LtGt.Models.HtmlComment)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlComment"/> to an instance of <see cref="T:System.Xml.Linq.XComment"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetDescendants(LtGt.Models.HtmlContainer)">
+            <summary>
+            Gets all descendants of this <see cref="T:LtGt.Models.HtmlContainer"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetElementById(LtGt.Models.HtmlContainer,System.String)">
+            <summary>
+            Gets the first descendant element in this <see cref="T:LtGt.Models.HtmlContainer"/> that has specified id or null if it's not found.
+            Element ID comparison is case sensitive.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetElementsByTagName(LtGt.Models.HtmlContainer,System.String)">
+            <summary>
+            Gets all descendant elements in this <see cref="T:LtGt.Models.HtmlContainer"/> that have specified tag name.
+            Element tag name comparison is not case sensitive.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetElementsByClassName(LtGt.Models.HtmlContainer,System.String)">
+            <summary>
+            Gets all descendant elements in this <see cref="T:LtGt.Models.HtmlContainer"/> that match specified class name.
+            Element class name comparison is case sensitive.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetElementsBySelector(LtGt.Models.HtmlContainer,System.String)">
+            <summary>
+            Gets all descendant elements in this <see cref="T:LtGt.Models.HtmlContainer"/> that match specified CSS selector.
+            See https://w3.org/TR/selectors-3 for the list of supported selectors.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetInnerText(LtGt.Models.HtmlContainer)">
+            <summary>
+            Gets the text representation of descendants of this <see cref="T:LtGt.Models.HtmlContainer"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXDocument(LtGt.Models.HtmlDocument)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlDocument"/> to an instance of <see cref="T:System.Xml.Linq.XDocument"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetHead(LtGt.Models.HtmlDocument)">
+            <summary>
+            Gets the 'head' element inside this <see cref="T:LtGt.Models.HtmlDocument"/> or null if it's not found.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetBody(LtGt.Models.HtmlDocument)">
+            <summary>
+            Gets the 'body' element inside this <see cref="T:LtGt.Models.HtmlDocument"/> or null if it's not found.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetTitle(LtGt.Models.HtmlDocument)">
+            <summary>
+            Gets the title of this <see cref="T:LtGt.Models.HtmlDocument"/> or null if it's not set.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXElement(LtGt.Models.HtmlElement)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlElement"/> to an instance of <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetAttribute(LtGt.Models.HtmlElement,System.String)">
+            <summary>
+            Gets an attribute of this <see cref="T:LtGt.Models.HtmlElement"/> that has specified name, or null if it's not found.
+            Attribute name comparison is not case sensitive.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetId(LtGt.Models.HtmlElement)">
+            <summary>
+            Gets the value of 'id' attribute of this <see cref="T:LtGt.Models.HtmlElement"/> or null if it's not set.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetClassName(LtGt.Models.HtmlElement)">
+            <summary>
+            Gets the value of 'class' attribute of this <see cref="T:LtGt.Models.HtmlElement"/> or null if it's not set.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetClassNames(LtGt.Models.HtmlElement)">
+            <summary>
+            Gets all individual whitespace-separated values of 'class' attribute of this <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.MatchesClassName(LtGt.Models.HtmlElement,System.String)">
+            <summary>
+            Gets whether the value of 'class' attribute of this <see cref="T:LtGt.Models.HtmlElement"/> matches specified class name.
+            Element class name comparison is case sensitive.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetHref(LtGt.Models.HtmlElement)">
+            <summary>
+            Gets the value of the 'href' attribute of this <see cref="T:LtGt.Models.HtmlElement"/> or null if it's not set.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetSrc(LtGt.Models.HtmlElement)">
+            <summary>
+            Gets the value of the 'src' attribute of this <see cref="T:LtGt.Models.HtmlElement"/> or null if it's not set.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXNode(LtGt.Models.HtmlNode)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlNode"/> to an instance of <see cref="T:System.Xml.Linq.XNode"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetAncestors(LtGt.Models.HtmlNode)">
+            <summary>
+            Gets all ancestors of this <see cref="T:LtGt.Models.HtmlNode"/>, from immediate parent to the root node.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetSiblings(LtGt.Models.HtmlNode)">
+            <summary>
+            Gets all siblings of this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetPreviousSiblings(LtGt.Models.HtmlNode)">
+            <summary>
+            Gets all siblings preceding this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.GetNextSiblings(LtGt.Models.HtmlNode)">
+            <summary>
+            Gets all siblings following this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.Extensions.ToXText(LtGt.Models.HtmlText)">
+            <summary>
+            Converts this <see cref="T:LtGt.Models.HtmlText"/> to an instance of <see cref="T:System.Xml.Linq.XText"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlAttribute">
+            <summary>
+            Represents an attribute entity in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlAttribute.Name">
+            <summary>
+            Name of this <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlAttribute.Value">
+            <summary>
+            Value of this <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlAttribute.Parent">
+            <summary>
+            Parent of this <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlAttribute.Previous">
+            <summary>
+            Previous sibling of this <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlAttribute.Next">
+            <summary>
+            Next sibling of this <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlAttribute.#ctor(System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlAttribute.#ctor(LtGt.Models.HtmlAttribute)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlAttribute.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlAttribute.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:LtGt.Models.HtmlComment">
+            <summary>
+            Represents a comment node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlComment.Value">
+            <summary>
+            Text content of this <see cref="T:LtGt.Models.HtmlComment"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlComment.#ctor(System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlComment"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlComment.#ctor(LtGt.Models.HtmlComment)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlComment"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlComment.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlComment.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:LtGt.Models.HtmlContainer">
+            <summary>
+            Represents an abstract container node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlContainer.Children">
+            <summary>
+            Direct children of this <see cref="T:LtGt.Models.HtmlContainer"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlContainer.#ctor(System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlNode})">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlContainer"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlDeclaration">
+            <summary>
+            Represents a declaration entity in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlDeclaration.Name">
+            <summary>
+            Name of this <see cref="T:LtGt.Models.HtmlDeclaration"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlDeclaration.Value">
+            <summary>
+            Value of this <see cref="T:LtGt.Models.HtmlDeclaration"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDeclaration.#ctor(System.String,System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlDeclaration"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDeclaration.#ctor(LtGt.Models.HtmlDeclaration)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlDeclaration"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDeclaration.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlDeclaration.ToString">
+            <inheritdoc />
+        </member>
+        <member name="P:LtGt.Models.HtmlDeclaration.DoctypeHtml">
+            <summary>
+            HTML document type declaration.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlDocument">
+            <summary>
+            Represents a document node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlDocument.Declaration">
+            <summary>
+            Declaration of this <see cref="T:LtGt.Models.HtmlDocument"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDocument.#ctor(LtGt.Models.HtmlDeclaration,System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlNode})">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlDocument"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDocument.#ctor(LtGt.Models.HtmlDeclaration,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlDocument"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDocument.#ctor(LtGt.Models.HtmlDocument)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlDocument"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlDocument.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlDocument.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:LtGt.Models.HtmlElement">
+            <summary>
+            Represents an element node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlElement.Name">
+            <summary>
+            Tag name of this <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlElement.Attributes">
+            <summary>
+            Attributes of this <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlAttribute},System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlNode})">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlAttribute})">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,System.Collections.Generic.IReadOnlyList{LtGt.Models.HtmlNode})">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlAttribute,LtGt.Models.HtmlNode[])">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.#ctor(LtGt.Models.HtmlElement)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlElement"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlElement.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:LtGt.Models.HtmlEntity">
+            <summary>
+            Represents an abstract entity in HTML document object model.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlEntity.Clone">
+            <summary>
+            Clones this <see cref="T:LtGt.Models.HtmlEntity"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlEntity.System#ICloneable#Clone">
+            <inheritdoc />
+        </member>
+        <member name="P:LtGt.Models.HtmlEntity.EqualityComparer">
+            <summary>
+            Comparer that can be used to compare values of two <see cref="T:LtGt.Models.HtmlEntity"/>s.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlEntityEqualityComparer">
+            <summary>
+            Comparer that can compare two <see cref="T:LtGt.Models.HtmlEntity"/>s for equality.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlEntityEqualityComparer.Equals(LtGt.Models.HtmlEntity,LtGt.Models.HtmlEntity)">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlEntityEqualityComparer.GetHashCode(LtGt.Models.HtmlEntity)">
+            <inheritdoc />
+        </member>
+        <member name="P:LtGt.Models.HtmlEntityEqualityComparer.Default">
+            <summary>
+            Default instance of <see cref="T:LtGt.Models.HtmlEntityEqualityComparer"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlNode">
+            <summary>
+            Represents an abstract node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlNode.Parent">
+            <summary>
+            Parent of this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlNode.Previous">
+            <summary>
+            Previous sibling of this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlNode.Next">
+            <summary>
+            Next sibling of this <see cref="T:LtGt.Models.HtmlNode"/>.
+            </summary>
+        </member>
+        <member name="T:LtGt.Models.HtmlText">
+            <summary>
+            Represents a text node in HTML document object model.
+            </summary>
+        </member>
+        <member name="P:LtGt.Models.HtmlText.Value">
+            <summary>
+            Text content of this <see cref="T:LtGt.Models.HtmlText"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlText.#ctor(System.String)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlText"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlText.#ctor(LtGt.Models.HtmlText)">
+            <summary>
+            Initializes an instance of <see cref="T:LtGt.Models.HtmlText"/>.
+            </summary>
+        </member>
+        <member name="M:LtGt.Models.HtmlText.Clone">
+            <inheritdoc />
+        </member>
+        <member name="M:LtGt.Models.HtmlText.ToString">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
