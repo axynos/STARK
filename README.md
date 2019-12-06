@@ -6,6 +6,8 @@
 STARK is an application that allows you to read commands from Source games and playback audio files, or use Text-to-Speech.
 This is a project that evolved from a proof-of-concept [axynos](https://github.com/axynos) made a while ago using AutoHotKey [link](https://github.com/axynos/CSGO-Text-To-Speech).
 
+**NOTE: STARK no longer works with CS:GO.**
+
 Donate to [axynos](https://github.com/axynos) --> [![Donation Image](http://i.imgur.com/fbH2hRv.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LB5YVGD9F8U5L) if you want to or contribute to the project with code (see contributing section).
 
 ### Dependencies
