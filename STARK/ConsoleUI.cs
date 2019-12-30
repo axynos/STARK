@@ -82,7 +82,7 @@ namespace STARK {
                 "alias s_stop \"exec s_stop\"",
                 "alias s_tracklist \"exec s_tracklist\"",
                 "alias s_help \"exec s_help\"",
-                "con_logfile !tts-axynos.txt",
+                "con_logfile !tts-axynos.log",
                 "exec s_help"
             });
 
