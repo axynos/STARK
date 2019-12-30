@@ -35,7 +35,7 @@ namespace STARK {
 
         public CommandReader(ref QueuedSpeechSynthesizer qss, ref AudioPlaybackEngine ape, ref AudioFileManager afm, SourceGame selectedGame) {
             this.selectedGame = selectedGame;
-            this.logFile = PathManager.steamApps + MainWindow.gameDir + @"\!tts-axynos.txt";
+            this.logFile = PathManager.steamApps + MainWindow.gameDir + @"\!tts-axynos.log";
             this.qss = qss;
             this.ape = ape;
             this.afm = afm;
